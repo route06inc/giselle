@@ -1,0 +1,11 @@
+name: Add assignee to PR
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  add-assignee-to-pr:
+    permissions:
+      pull-requests: write
+    uses: route06/actions/.github/workflows/add_assignee_to_pr.yml@v2
