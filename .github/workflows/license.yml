@@ -10,6 +10,11 @@ jobs:
   license_finder:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: read
+    env:
+      HTML_REPORT: docs/package-licenses.html
     steps:
       - uses: actions/checkout@v4
       # To make the success of this job a prerequisite for merging into the main branch,
@@ -40,3 +45,19 @@ jobs:
       - name: Run License Finder
         if: steps.changes.outputs.target == 'true'
         run: license_finder
+
+      # Commit the License Finder report as docs/package-licenses.html
+      - name: Generate HTML report
+        if: steps.changes.outputs.target == 'true' && github.ref_name != github.event.repository.default_branch
+        run: license_finder report --format=html | tail -n +2 > "$HTML_REPORT"
+      - name: Commit HTML report and push
+        if: steps.changes.outputs.target == 'true' && github.ref_name != github.event.repository.default_branch
+        run: |
+          git remote set-url origin "https://github-actions:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}"
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git add "$HTML_REPORT"
+          git commit -m "Update $HTML_REPORT"
+          git push origin HEAD:${{ github.ref_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
