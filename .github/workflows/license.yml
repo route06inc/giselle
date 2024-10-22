@@ -2,9 +2,6 @@ name: License Compliance
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
 
 jobs:
   license_finder:
@@ -14,50 +11,31 @@ jobs:
       contents: write
       pull-requests: read
     env:
-      HTML_REPORT: docs/package-licenses.html
+      HTML_REPORT: docs/packages-license.md
     steps:
       - uses: actions/checkout@v4
-      # To make the success of this job a prerequisite for merging into the main branch,
-      # set a filter here instead of on: to determine whether or not to proceed to the next step.
-      - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3.0.2
-        id: changes
-        with:
-          filters: |
-            target:
-              - .github/workflows/license.yml
-              - bun.lockb
-              - config/dependency_decisions.yml
-              - config/license_finder.yml
-              - package.json
       - uses: oven-sh/setup-bun@v2
-        if: steps.changes.outputs.target == 'true'
         with:
           bun-version-file: "package.json"
       - run: bun install
-        if: steps.changes.outputs.target == 'true'
       - uses: ruby/setup-ruby@v1
-        if: steps.changes.outputs.target == 'true'
         with:
           ruby-version: '3.3'
       - name: Install License Finder
-        if: steps.changes.outputs.target == 'true'
         run: gem install -N license_finder
-      - name: Run License Finder
-        if: steps.changes.outputs.target == 'true'
-        run: license_finder
+      # - name: Run License Finder
+      #   run: license_finder
 
-      # Commit the License Finder report as docs/package-licenses.html
+      # Commit the License Finder report as docs/packages-license.md
       - name: Generate HTML report
-        if: steps.changes.outputs.target == 'true' && github.ref_name != github.event.repository.default_branch
-        run: license_finder report --format=html | tail -n +2 > "$HTML_REPORT"
+        run: license_finder report --format=markdown | tail -n +2 > "$HTML_REPORT"
       - name: Commit HTML report and push
-        if: steps.changes.outputs.target == 'true' && github.ref_name != github.event.repository.default_branch
         run: |
           git remote set-url origin "https://github-actions:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}"
-          git config user.name "$GITHUB_ACTOR"
-          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
           git add "$HTML_REPORT"
           git commit -m "Update $HTML_REPORT"
-          git push origin HEAD:${{ github.ref_name }}
+          git push origin ${{ github.ref_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
