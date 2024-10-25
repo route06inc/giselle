@@ -23,12 +23,25 @@ import {
 
 export type ReactFlowNode = Node<GiselleNodeType>;
 
-export const ReactFlowNode: FC<NodeProps<ReactFlowNode>> = ({ data }) => {
+export const ReactFlowNode: FC<NodeProps<ReactFlowNode>> = ({
+	data,
+	selected,
+	positionAbsoluteX,
+	positionAbsoluteY,
+}) => {
 	const edges = useEdges<ReactFlowEdge>();
 	const { debugFlag } = useFeatureFlags();
 	return (
 		<GiselleNode
 			{...data}
+			ui={{
+				...data.ui,
+				position: {
+					x: positionAbsoluteX,
+					y: positionAbsoluteY,
+				},
+				selected,
+			}}
 			parameterPortHandle={({ id, className }) => (
 				<Handle
 					id={id}

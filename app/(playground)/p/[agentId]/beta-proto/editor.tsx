@@ -76,23 +76,8 @@ function EditorInner() {
 				colorMode="dark"
 				onConnect={handleConnect}
 				onNodesChange={handleNodesChange}
-				onNodeClick={(_, node) => {
-					graphDispatch(
-						selectNodeAndSetPanelTab({
-							selectNode: {
-								id: node.id as GiselleNodeId,
-								panelTab: panelTabs.property,
-							},
-						}),
-					);
-				}}
 				onPaneClick={(event) => {
 					event.preventDefault();
-					graphDispatch(
-						selectNode({
-							selectedNodeIds: [],
-						}),
-					);
 					if (toolState.activeTool.type === "addGiselleNode") {
 						const position = reactFlowInstance.flowToScreenPosition({
 							x: event.clientX,
@@ -149,7 +134,6 @@ function EditorInner() {
 						toolDispatch(setSelectTool);
 					}
 				}}
-				deleteKeyCode={null}
 			>
 				<Background
 					className="!bg-black-100"
