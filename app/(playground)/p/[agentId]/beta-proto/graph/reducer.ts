@@ -1,9 +1,9 @@
 import { isV2ConnectorAction, v2ConnectorReducer } from "../connector/actions";
 import { isV2FlowAction, v2FlowReducer } from "../flow/action";
+import { isV2NodeAction, v2NodeReducer } from "../giselle-node/actions";
 import type { GraphAction } from "./actions";
 import type { GraphState } from "./types";
 import { isV2ModeAction, v2ModeReducer } from "./v2/mode";
-import { isV2NodeAction, v2NodeReducer } from "./v2/node";
 import { isV2XyFlowAction, v2XyFlowReducer } from "./v2/xy-flow";
 
 export const graphReducer = (

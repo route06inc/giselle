@@ -11,6 +11,7 @@ import {
 } from "@xyflow/react";
 import { type KeyboardEventHandler, useCallback, useEffect } from "react";
 import type { ConnectorId } from "../connector/types";
+import { setNodes } from "../giselle-node/actions";
 import {
 	type GiselleNodeId,
 	assertGiselleNodeId,
@@ -26,7 +27,6 @@ import {
 import { useGraph } from "../graph/context";
 import type { Graph } from "../graph/types";
 import { removeConnector } from "../graph/v2/composition/remove-connector";
-import { setNodes } from "../graph/v2/node";
 import { setXyFlowEdges, setXyFlowNodes } from "../graph/v2/xy-flow";
 import {
 	type ReactFlowEdge,

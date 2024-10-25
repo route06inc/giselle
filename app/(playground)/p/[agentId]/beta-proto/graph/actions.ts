@@ -16,6 +16,7 @@ import {
 	fileStatuses,
 } from "../files/types";
 import type { V2FlowAction } from "../flow/action";
+import { type V2NodeAction, updateNode } from "../giselle-node/actions";
 import {
 	type GiselleNodeArchetype,
 	giselleNodeArchetypes,
@@ -65,7 +66,6 @@ import {
 import { addConnector as v2AddConnector } from "./v2/composition/add-connector";
 import { addNode as v2AddNode } from "./v2/composition/add-node";
 import type { V2ModeAction } from "./v2/mode";
-import { type V2NodeAction, updateNode } from "./v2/node";
 import type { V2XyFlowAction } from "./v2/xy-flow";
 
 export type AddNodeAction = {

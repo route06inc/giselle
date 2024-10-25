@@ -1,4 +1,4 @@
-import type { GiselleNode, GiselleNodeId } from "../../giselle-node/types";
+import type { GiselleNode, GiselleNodeId } from "./types";
 
 const v2NodeActionTypes = {
 	updateNode: "v2.updateNode",
@@ -59,8 +59,6 @@ export function v2NodeReducer(
 				}
 				return node;
 			});
-		case v2NodeActionTypes.add:
-			return [...nodes, action.input.node];
 		case v2NodeActionTypes.set:
 			return action.input.nodes;
 	}
