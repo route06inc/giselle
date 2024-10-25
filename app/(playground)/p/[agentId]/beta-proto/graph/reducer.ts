@@ -1,3 +1,4 @@
+import { isV2ConnectorAction, v2ConnectorReducer } from "../connector/actions";
 import { isV2FlowAction, v2FlowReducer } from "../flow/action";
 import type { GraphAction } from "./actions";
 import type { GraphState } from "./types";
@@ -42,6 +43,15 @@ export const graphReducer = (
 			graph: {
 				...state.graph,
 				xyFlow: v2XyFlowReducer(state.graph.xyFlow, action),
+			},
+		};
+	}
+	if (isV2ConnectorAction(action)) {
+		return {
+			...state,
+			graph: {
+				...state.graph,
+				connectors: v2ConnectorReducer(state.graph.connectors, action),
 			},
 		};
 	}

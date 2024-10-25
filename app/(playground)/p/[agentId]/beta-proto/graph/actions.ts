@@ -6,8 +6,10 @@ import type {
 	ArtifactReference,
 } from "../artifact/types";
 import type { PartialGeneratedObject } from "../artifact/types";
+import type { V2ConnectorAction } from "../connector/actions";
 import { createConnectorId } from "../connector/factory";
 import type { ConnectorId, ConnectorObject } from "../connector/types";
+import { buildConnector } from "../connector/utils";
 import {
 	type GiselleFile,
 	type StructuredData,
@@ -60,6 +62,7 @@ import {
 	parseFile,
 	uploadFile,
 } from "./server-actions";
+import { addConnector as v2AddConnector } from "./v2/composition/add-connector";
 import { addNode as v2AddNode } from "./v2/composition/add-node";
 import type { V2ModeAction } from "./v2/mode";
 import { type V2NodeAction, updateNode } from "./v2/node";
@@ -129,6 +132,7 @@ type AddConnectorArgs = {
 		archetype: GiselleNodeArchetype;
 	};
 };
+/** @deprecated */
 export const addConnector = (args: AddConnectorArgs): AddConnectorAction => {
 	return {
 		type: "addConnector",
@@ -194,17 +198,21 @@ export const addNodesAndConnect = (
 		});
 		dispatch(v2AddNode({ input: { node: addTargetNode } }));
 		dispatch(
-			addConnector({
-				sourceNode: {
-					id: addSourceNode.id,
-					category: args.sourceNode.node.category,
-					archetype: args.sourceNode.node.archetype,
-				},
-				targetNode: {
-					id: addTargetNode.id,
-					handle: args.connector.targetParameterName,
-					category: args.targetNode.node.category,
-					archetype: args.targetNode.node.archetype,
+			v2AddConnector({
+				input: {
+					connector: buildConnector({
+						sourceNode: {
+							id: addSourceNode.id,
+							category: args.sourceNode.node.category,
+							archetype: args.sourceNode.node.archetype,
+						},
+						targetNode: {
+							id: addTargetNode.id,
+							handle: args.connector.targetParameterName,
+							category: args.targetNode.node.category,
+							archetype: args.targetNode.node.archetype,
+						},
+					}),
 				},
 			}),
 		);
@@ -1352,4 +1360,5 @@ export type GraphAction =
 	| V2NodeAction
 	| V2ModeAction
 	| V2FlowAction
-	| V2XyFlowAction;
+	| V2XyFlowAction
+	| V2ConnectorAction;

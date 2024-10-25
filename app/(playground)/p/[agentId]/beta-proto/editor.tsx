@@ -66,7 +66,7 @@ function EditorInner() {
 		<div className="w-full h-screen">
 			<ReactFlow<ReactFlowNode>
 				nodes={graphState.graph.xyFlow.nodes}
-				defaultEdges={[]}
+				edges={graphState.graph.xyFlow.edges}
 				nodeTypes={nodeTypes}
 				edgeTypes={edgeTypes}
 				panOnScroll
