@@ -65,6 +65,7 @@ import {
 } from "./server-actions";
 import { addConnector as v2AddConnector } from "./v2/composition/add-connector";
 import { addNode as v2AddNode } from "./v2/composition/add-node";
+import { updateNode as v2UpdateNode } from "./v2/composition/update-node";
 import type { V2ModeAction } from "./v2/mode";
 import type { V2XyFlowAction } from "./v2/xy-flow";
 
@@ -882,30 +883,41 @@ export function addSourceToPromptNode(
 							).length
 						: 0;
 				dispatch(
-					addParameterToNode({
-						node: {
-							id: outgoingConnector.target,
-						},
-						parameter: {
-							key: `source${currentSourceHandleLength + 1}`,
-							value: createStringParameter({
-								label: `Source${currentSourceHandleLength + 1}`,
-							}),
+					v2UpdateNode({
+						input: {
+							nodeId: outgoingConnector.target,
+							parameters:
+								outgoingNode.parameters?.object === "objectParameter"
+									? {
+											...outgoingNode.parameters,
+											properties: {
+												...outgoingNode.parameters.properties,
+												[`source${currentSourceHandleLength + 1}`]:
+													createStringParameter({
+														label: `Source${currentSourceHandleLength + 1}`,
+													}),
+											},
+										}
+									: undefined,
 						},
 					}),
 				);
 				dispatch(
-					addConnector({
-						sourceNode: {
-							id: artifact.generatorNode.id,
-							category: artifact.generatorNode.category,
-							archetype: artifact.generatorNode.archetype,
-						},
-						targetNode: {
-							id: outgoingConnector.target,
-							handle: `source${currentSourceHandleLength + 1}`,
-							category: outgoingConnector.targetNodeCategory,
-							archetype: outgoingNode.archetype,
+					v2AddConnector({
+						input: {
+							connector: buildConnector({
+								sourceNode: {
+									id: artifact.generatorNode.id,
+									category: artifact.generatorNode.category,
+									archetype: artifact.generatorNode.archetype,
+								},
+								targetNode: {
+									id: outgoingConnector.target,
+									handle: `source${currentSourceHandleLength + 1}`,
+									category: outgoingConnector.targetNodeCategory,
+									archetype: outgoingNode.archetype,
+								},
+							}),
 						},
 					}),
 				);
@@ -1018,17 +1030,21 @@ export function addSourceToPromptNode(
 					}),
 				);
 				dispatch(
-					addConnector({
-						sourceNode: {
-							id: webSearch.generatorNode.id,
-							category: webSearch.generatorNode.category,
-							archetype: webSearch.generatorNode.archetype,
-						},
-						targetNode: {
-							id: outgoingConnector.target,
-							handle: `source${currentSourceHandleLength + 1}`,
-							category: outgoingConnector.targetNodeCategory,
-							archetype: outgoingNode.archetype,
+					v2AddConnector({
+						input: {
+							connector: buildConnector({
+								sourceNode: {
+									id: webSearch.generatorNode.id,
+									category: webSearch.generatorNode.category,
+									archetype: webSearch.generatorNode.archetype,
+								},
+								targetNode: {
+									id: outgoingConnector.target,
+									handle: `source${currentSourceHandleLength + 1}`,
+									category: outgoingConnector.targetNodeCategory,
+									archetype: outgoingNode.archetype,
+								},
+							}),
 						},
 					}),
 				);
