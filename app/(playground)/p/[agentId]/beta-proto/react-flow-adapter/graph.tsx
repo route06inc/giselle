@@ -72,6 +72,20 @@ export const useReactFlowNodeEventHandler = () => {
 					},
 				}),
 			);
+			changes.map((change) => {
+				if (change.type === "select") {
+					dispatch(
+						updateNodesUI({
+							nodes: [
+								{
+									id: change.id as GiselleNodeId,
+									ui: { selected: change.selected },
+								},
+							],
+						}),
+					);
+				}
+			});
 		},
 		[dispatch, state.graph.xyFlow.nodes],
 	);
