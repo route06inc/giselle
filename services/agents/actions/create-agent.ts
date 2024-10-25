@@ -18,7 +18,10 @@ export const createAgent = async (args: CreateAgentArgs) => {
 		graphv2: {
 			agentId: id,
 			nodes: [],
-			xyFlowNodes: [],
+			xyFlow: {
+				nodes: [],
+				edges: [],
+			},
 			connectors: [],
 			artifacts: [],
 			webSearches: [],

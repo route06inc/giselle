@@ -1,7 +1,9 @@
 import {
 	type Connection,
+	type NodeChange,
 	type OnNodeDrag,
 	type OnSelectionChangeFunc,
+	applyNodeChanges,
 	useOnSelectionChange,
 	useReactFlow,
 } from "@xyflow/react";
@@ -20,6 +22,7 @@ import {
 } from "../graph/actions";
 import { useGraph } from "../graph/context";
 import type { Graph } from "../graph/types";
+import { setXyFlowNodes } from "../graph/v2/xy-flow-node";
 import {
 	type ReactFlowEdge,
 	type ReactFlowNode,
@@ -56,6 +59,24 @@ export function graphToReactFlow(grpah: Graph) {
 		edges,
 	};
 }
+
+export const useReactFlowNodeEventHandler = () => {
+	const { state, dispatch } = useGraph();
+
+	const handleNodesChange = useCallback(
+		(changes: NodeChange<ReactFlowNode>[]) => {
+			dispatch(
+				setXyFlowNodes({
+					input: {
+						xyFlowNodes: applyNodeChanges(changes, state.graph.xyFlow.nodes),
+					},
+				}),
+			);
+		},
+		[dispatch, state.graph.xyFlow.nodes],
+	);
+	return { handleNodesChange };
+};
 
 export const useGraphToReactFlowEffect = () => {
 	const { state, dispatch } = useGraph();

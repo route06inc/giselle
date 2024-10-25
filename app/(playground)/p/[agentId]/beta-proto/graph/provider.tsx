@@ -55,9 +55,6 @@ export const GraphProvider: FC<PropsWithChildren<GraphProviderProps>> = ({
 	}, [deboucedSetGraphToDb]);
 	return (
 		<GraphContext.Provider value={{ state, dispatch: enhancedDispatch }}>
-			<pre className="absolute top-0 z-10">
-				{JSON.stringify(state.graph.xyFlowNodes, null, 2)}
-			</pre>
 			{children}
 		</GraphContext.Provider>
 	);

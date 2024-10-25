@@ -14,7 +14,7 @@ interface SetXyFlowNodeAction {
 interface SetXyFlowNodeInput {
 	xyFlowNodes: ReactFlowNode[];
 }
-export function setXyFlowNode({
+export function setXyFlowNodes({
 	input,
 }: { input: SetXyFlowNodeInput }): SetXyFlowNodeAction {
 	return {

@@ -45,6 +45,7 @@ import {
 	useGraphToReactFlowEffect,
 	useKeyUpHandler,
 	useNodeEventHandler,
+	useReactFlowNodeEventHandler,
 } from "./react-flow-adapter/graph";
 import { setSelectTool } from "./tool/actions";
 import { Toolbar } from "./tool/components";
@@ -55,17 +56,16 @@ import type { AgentId } from "./types";
 function EditorInner() {
 	const [previewMode, setPreviewMode] = useState(false);
 	const { state: toolState, dispatch: toolDispatch } = useTool();
-	const { dispatch: graphDispatch } = useGraph();
+	const { state: graphState, dispatch: graphDispatch } = useGraph();
 	const reactFlowInstance = useReactFlow();
 	const mousePosition = useMousePosition();
-	useGraphToReactFlowEffect();
 	const { handleConnect } = useConnectionHandler();
-	const { handleNodeDragStop } = useNodeEventHandler();
 	const { handleKeyUp } = useKeyUpHandler();
+	const { handleNodesChange } = useReactFlowNodeEventHandler();
 	return (
 		<div className="w-full h-screen">
 			<ReactFlow<ReactFlowNode>
-				defaultNodes={[]}
+				nodes={graphState.graph.xyFlow.nodes}
 				defaultEdges={[]}
 				nodeTypes={nodeTypes}
 				edgeTypes={edgeTypes}
@@ -75,7 +75,7 @@ function EditorInner() {
 				panOnDrag={false}
 				colorMode="dark"
 				onConnect={handleConnect}
-				onNodeDragStop={handleNodeDragStop}
+				onNodesChange={handleNodesChange}
 				onNodeClick={(_, node) => {
 					graphDispatch(
 						selectNodeAndSetPanelTab({

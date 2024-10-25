@@ -41,7 +41,10 @@ export const graphReducer = (
 			...state,
 			graph: {
 				...state.graph,
-				xyFlowNodes: v2XyFlowNodeReducer(state.graph.xyFlowNodes, action),
+				xyFlow: {
+					...state.graph.xyFlow,
+					nodes: v2XyFlowNodeReducer(state.graph.xyFlow.nodes, action),
+				},
 			},
 		};
 	}
