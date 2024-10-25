@@ -3,6 +3,7 @@ import type { GraphAction } from "./actions";
 import type { GraphState } from "./types";
 import { isV2ModeAction, v2ModeReducer } from "./v2/mode";
 import { isV2NodeAction, v2NodeReducer } from "./v2/node";
+import { isV2XyFlowNodeAction, v2XyFlowNodeReducer } from "./v2/xy-flow-node";
 
 export const graphReducer = (
 	state: GraphState,
@@ -32,6 +33,15 @@ export const graphReducer = (
 			graph: {
 				...state.graph,
 				flow: v2FlowReducer(state.graph.flow, action),
+			},
+		};
+	}
+	if (isV2XyFlowNodeAction(action)) {
+		return {
+			...state,
+			graph: {
+				...state.graph,
+				xyFlowNodes: v2XyFlowNodeReducer(state.graph.xyFlowNodes, action),
 			},
 		};
 	}

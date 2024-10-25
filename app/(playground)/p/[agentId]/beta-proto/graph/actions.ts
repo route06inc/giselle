@@ -59,6 +59,7 @@ import {
 } from "./server-actions";
 import type { V2ModeAction } from "./v2/mode";
 import { type V2NodeAction, updateNode } from "./v2/node";
+import type { V2XyFlowNodeAction } from "./v2/xy-flow-node";
 
 export type AddNodeAction = {
 	type: "addNode";
@@ -1345,4 +1346,5 @@ export type GraphAction =
 	| UpsertWebSearchAction
 	| V2NodeAction
 	| V2ModeAction
-	| V2FlowAction;
+	| V2FlowAction
+	| V2XyFlowNodeAction;
