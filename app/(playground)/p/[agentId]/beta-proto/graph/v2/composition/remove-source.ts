@@ -5,6 +5,7 @@ import type { TextContentReference } from "../../../text-content/types";
 import type { WebSearch } from "../../../web-search/types";
 import { removeParameterFromNode, updateNodeProperty } from "../../actions";
 import type { CompositeAction } from "../../context";
+import { updateNode } from "./update-node";
 
 export type Source = ArtifactReference | TextContentReference | WebSearch;
 type RemoveSourceInput = {
@@ -29,12 +30,12 @@ export function removeSource({
 			throw new Error(`${node.id}'s sources property is not an array`);
 		}
 		dispatch(
-			updateNodeProperty({
-				node: {
-					id: input.nodeId,
-					property: {
-						key: "sources",
-						value: currentSources.filter(
+			updateNode({
+				input: {
+					nodeId: input.nodeId,
+					properties: {
+						...node.properties,
+						sources: currentSources.filter(
 							(currentSource) =>
 								typeof currentSource === "object" &&
 								currentSource !== null &&
@@ -74,13 +75,27 @@ export function removeSource({
 					`Source connector not found: ${sourceCreatorNodeId} -> ${relevantConnector.target}`,
 				);
 			}
+			const relevantNode = getState().graph.nodes.find(
+				(node) => node.id === relevantConnector.target,
+			);
+			if (relevantNode === undefined) {
+				throw new Error(`Node not found: ${relevantConnector.target}`);
+			}
+			if (relevantNode.parameters?.object !== "objectParameter") {
+				throw new Error(
+					`Node's parameters are not an object: ${relevantConnector.target}`,
+				);
+			}
+			const { [relevantConnector.targetHandle]: _, ...properties } =
+				relevantNode.parameters.properties;
 			dispatch(
-				removeParameterFromNode({
-					node: {
-						id: relevantConnector.target,
-					},
-					parameter: {
-						key: sourceConnector.targetHandle,
+				updateNode({
+					input: {
+						nodeId: relevantConnector.target,
+						parameters: {
+							...relevantNode.parameters,
+							properties,
+						},
 					},
 				}),
 			);

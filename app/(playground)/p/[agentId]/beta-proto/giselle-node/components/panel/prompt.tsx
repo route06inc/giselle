@@ -24,6 +24,7 @@ import {
 	updateNodesUI,
 } from "../../../graph/actions";
 import { type CompositeAction, useGraph } from "../../../graph/context";
+import { removeSource } from "../../../graph/v2/composition/remove-source";
 import type {
 	TextContent,
 	TextContentReference,
@@ -183,13 +184,13 @@ export const PromptPropertyPanel: FC<PromptPropertyPanelProps> = ({ node }) => {
 			const artifactIds = sources.map(({ id }) => id);
 			if (artifactIds.includes(artifact.id)) {
 				dispatch(
-					removeSourceFromPromptNode({
-						promptNode: {
-							id: node.id,
-						},
-						source: {
-							id: artifact.id,
-							object: "artifact.reference",
+					removeSource({
+						input: {
+							nodeId: node.id,
+							source: {
+								id: artifact.id,
+								object: "artifact.reference",
+							},
 						},
 					}),
 				);
