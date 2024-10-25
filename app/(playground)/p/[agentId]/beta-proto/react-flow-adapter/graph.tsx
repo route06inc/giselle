@@ -26,6 +26,7 @@ import {
 import { useGraph } from "../graph/context";
 import type { Graph } from "../graph/types";
 import { removeConnector } from "../graph/v2/composition/remove-connector";
+import { setNodes } from "../graph/v2/node";
 import { setXyFlowEdges, setXyFlowNodes } from "../graph/v2/xy-flow";
 import {
 	type ReactFlowEdge,
@@ -89,11 +90,19 @@ export const useReactFlowNodeEventHandler = () => {
 						}),
 					);
 				} else if (change.type === "remove") {
-					console.log(`remove node ${change.id}`);
+					dispatch(
+						setNodes({
+							input: {
+								nodes: state.graph.nodes.filter(
+									(node) => node.id !== change.id,
+								),
+							},
+						}),
+					);
 				}
 			});
 		},
-		[dispatch, state.graph.xyFlow.nodes],
+		[dispatch, state.graph.xyFlow.nodes, state.graph.nodes],
 	);
 	return { handleNodesChange };
 };
