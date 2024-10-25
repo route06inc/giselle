@@ -1,36 +1,28 @@
-import { createGiselleNodeId } from "../../../giselle-node/factory";
-import type {
-	GiselleNodeBlueprint,
-	XYPosition,
-} from "../../../giselle-node/types";
+import type { GiselleNode } from "../../../giselle-node/types";
 import { giselleNodeType } from "../../../react-flow-adapter/giselle-node";
-import { addNode as oldAddNode } from "../../actions";
-import type { ThunkAction } from "../../context";
+import type { CompositeAction } from "../../context";
+import { addNode as addNodeInternal } from "../node";
 import { setXyFlowNode } from "../xy-flow-node";
 
 interface AddNodeInput {
-	node: GiselleNodeBlueprint;
-	position: XYPosition;
-	name: string;
-	isFinal?: boolean;
-	properties?: Record<string, unknown>;
+	node: GiselleNode;
 }
 
-export const addNode = (input: AddNodeInput): ThunkAction => {
+export const addNode = ({
+	input,
+}: { input: AddNodeInput }): CompositeAction => {
 	return (dispatch, getState) => {
-		const state = getState();
-		const oldAction = oldAddNode(input);
-		dispatch(oldAction);
+		dispatch(addNodeInternal({ input: { node: input.node } }));
 		dispatch(
 			setXyFlowNode({
 				input: {
 					xyFlowNodes: [
-						...state.graph.xyFlowNodes,
+						...getState().graph.xyFlowNodes,
 						{
-							id: oldAction.payload.node.id,
+							id: input.node.id,
 							type: giselleNodeType,
-							position: input.position,
-							data: oldAction.payload.node,
+							position: input.node.ui.position,
+							data: input.node,
 						},
 					],
 				},

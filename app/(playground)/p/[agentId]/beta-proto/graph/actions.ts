@@ -41,7 +41,10 @@ import {
 	giselleNodeState,
 	panelTabs,
 } from "../giselle-node/types";
-import { giselleNodeToGiselleNodeArtifactElement } from "../giselle-node/utils";
+import {
+	buildGiselleNode,
+	giselleNodeToGiselleNodeArtifactElement,
+} from "../giselle-node/utils";
 import type { TextContent, TextContentReference } from "../text-content/types";
 import { generateWebSearchStream } from "../web-search/server-action";
 import {
@@ -57,6 +60,7 @@ import {
 	parseFile,
 	uploadFile,
 } from "./server-actions";
+import { addNode as v2AddNode } from "./v2/composition/add-node";
 import type { V2ModeAction } from "./v2/mode";
 import { type V2NodeAction, updateNode } from "./v2/node";
 import type { V2XyFlowNodeAction } from "./v2/xy-flow-node";
@@ -76,6 +80,7 @@ type AddNodeArgs = {
 	properties?: Record<string, unknown>;
 };
 
+/** deprecated */
 export const addNode = (args: AddNodeArgs): AddNodeAction => {
 	let parameters: ObjectParameter | StringParameter | undefined;
 	if (args.node.parameters?.type === "object") {
@@ -177,38 +182,38 @@ export const addNodesAndConnect = (
 		const state = getState();
 		const hasFinalNode = state.graph.nodes.some((node) => node.isFinal);
 		const currentNodes = getState().graph.nodes;
-		const addSourceNode = addNode({
+		const addSourceNode = buildGiselleNode({
 			...args.sourceNode,
 			name: `Untitled node - ${currentNodes.length + 1}`,
 		});
-		dispatch(addSourceNode);
-		const addTargetNode = addNode({
+		dispatch(v2AddNode({ input: { node: addSourceNode } }));
+		const addTargetNode = buildGiselleNode({
 			...args.targetNode,
 			isFinal: !hasFinalNode,
 			name: `Untitled node - ${currentNodes.length + 2}`,
 		});
-		dispatch(addTargetNode);
+		dispatch(v2AddNode({ input: { node: addTargetNode } }));
 		dispatch(
 			addConnector({
 				sourceNode: {
-					id: addSourceNode.payload.node.id,
+					id: addSourceNode.id,
 					category: args.sourceNode.node.category,
 					archetype: args.sourceNode.node.archetype,
 				},
 				targetNode: {
-					id: addTargetNode.payload.node.id,
+					id: addTargetNode.id,
 					handle: args.connector.targetParameterName,
 					category: args.targetNode.node.category,
 					archetype: args.targetNode.node.archetype,
 				},
 			}),
 		);
-		if (addSourceNode.payload.node.archetype === giselleNodeArchetypes.prompt) {
+		if (addSourceNode.archetype === giselleNodeArchetypes.prompt) {
 			dispatch(
 				updateNodesUI({
 					nodes: [
 						{
-							id: addSourceNode.payload.node.id,
+							id: addSourceNode.id,
 							ui: {
 								selected: true,
 								panelTab: panelTabs.property,

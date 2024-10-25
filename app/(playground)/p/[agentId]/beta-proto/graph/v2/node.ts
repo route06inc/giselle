@@ -2,6 +2,7 @@ import type { GiselleNode, GiselleNodeId } from "../../giselle-node/types";
 
 const v2NodeActionTypes = {
 	updateNode: "v2.updateNode",
+	add: "v2.addNode",
 } as const;
 type V2NodeActionType =
 	(typeof v2NodeActionTypes)[keyof typeof v2NodeActionTypes];
@@ -27,7 +28,21 @@ export function updateNode({
 	};
 }
 
-export type V2NodeAction = UpdateNodeAction;
+interface AddNodeAction {
+	type: Extract<V2NodeActionType, "v2.addNode">;
+	input: AddNodeInput;
+}
+interface AddNodeInput {
+	node: GiselleNode;
+}
+export function addNode({ input }: { input: AddNodeInput }): AddNodeAction {
+	return {
+		type: v2NodeActionTypes.add,
+		input,
+	};
+}
+
+export type V2NodeAction = UpdateNodeAction | AddNodeAction;
 
 export function v2NodeReducer(
 	nodes: GiselleNode[],
@@ -44,6 +59,8 @@ export function v2NodeReducer(
 				}
 				return node;
 			});
+		case v2NodeActionTypes.add:
+			return [...nodes, action.input.node];
 	}
 	return nodes;
 }
