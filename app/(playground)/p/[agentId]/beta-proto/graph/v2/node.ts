@@ -2,7 +2,6 @@ import type { GiselleNode, GiselleNodeId } from "../../giselle-node/types";
 
 const v2NodeActionTypes = {
 	updateNode: "v2.updateNode",
-	add: "v2.addNode",
 	set: "v2.setNodes",
 } as const;
 type V2NodeActionType =
@@ -29,20 +28,6 @@ export function updateNode({
 	};
 }
 
-interface AddNodeAction {
-	type: Extract<V2NodeActionType, "v2.addNode">;
-	input: AddNodeInput;
-}
-interface AddNodeInput {
-	node: GiselleNode;
-}
-export function addNode({ input }: { input: AddNodeInput }): AddNodeAction {
-	return {
-		type: v2NodeActionTypes.add,
-		input,
-	};
-}
-
 interface SetNodesAction {
 	type: Extract<V2NodeActionType, "v2.setNodes">;
 	input: SetNodeInput;
@@ -57,7 +42,7 @@ export function setNodes({ input }: { input: SetNodeInput }) {
 	};
 }
 
-export type V2NodeAction = UpdateNodeAction | AddNodeAction | SetNodesAction;
+export type V2NodeAction = UpdateNodeAction | SetNodesAction;
 
 export function v2NodeReducer(
 	nodes: GiselleNode[],

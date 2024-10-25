@@ -1,7 +1,7 @@
 import type { GiselleNode } from "../../../giselle-node/types";
 import { giselleNodeType } from "../../../react-flow-adapter/giselle-node";
 import type { CompositeAction } from "../../context";
-import { addNode as addNodeInternal } from "../node";
+import { setNodes } from "../node";
 import { setXyFlowNodes } from "../xy-flow";
 
 interface AddNodeInput {
@@ -12,7 +12,9 @@ export const addNode = ({
 	input,
 }: { input: AddNodeInput }): CompositeAction => {
 	return (dispatch, getState) => {
-		dispatch(addNodeInternal({ input: { node: input.node } }));
+		dispatch(
+			setNodes({ input: { nodes: [...getState().graph.nodes, input.node] } }),
+		);
 		dispatch(
 			setXyFlowNodes({
 				input: {
