@@ -1,14 +1,15 @@
 import type { GiselleNode, GiselleNodeId } from "../../giselle-node/types";
 import type { ReactFlowNode } from "../../react-flow-adapter/giselle-node";
+import type { XYFlow } from "../types";
 
-const v2XyFlowNodeActionTypes = {
+const v2XyFlowActionTypes = {
 	set: "v2.setXyFlowNode",
 } as const;
-type V2NodeActionType =
-	(typeof v2XyFlowNodeActionTypes)[keyof typeof v2XyFlowNodeActionTypes];
+type V2XyFlowActionType =
+	(typeof v2XyFlowActionTypes)[keyof typeof v2XyFlowActionTypes];
 
 interface SetXyFlowNodeAction {
-	type: Extract<V2NodeActionType, "v2.setXyFlowNode">;
+	type: Extract<V2XyFlowActionType, "v2.setXyFlowNode">;
 	input: SetXyFlowNodeInput;
 }
 interface SetXyFlowNodeInput {
@@ -18,28 +19,26 @@ export function setXyFlowNodes({
 	input,
 }: { input: SetXyFlowNodeInput }): SetXyFlowNodeAction {
 	return {
-		type: v2XyFlowNodeActionTypes.set,
+		type: v2XyFlowActionTypes.set,
 		input,
 	};
 }
 
-export type V2XyFlowNodeAction = SetXyFlowNodeAction;
+export type V2XyFlowAction = SetXyFlowNodeAction;
 
-export function isV2XyFlowNodeAction(
-	action: unknown,
-): action is V2XyFlowNodeAction {
-	return Object.values(v2XyFlowNodeActionTypes).includes(
-		(action as V2XyFlowNodeAction).type,
+export function isV2XyFlowAction(action: unknown): action is V2XyFlowAction {
+	return Object.values(v2XyFlowActionTypes).includes(
+		(action as V2XyFlowAction).type,
 	);
 }
 
-export function v2XyFlowNodeReducer(
-	nodes: ReactFlowNode[],
-	action: V2XyFlowNodeAction,
-): ReactFlowNode[] {
+export function v2XyFlowReducer(
+	xyflow: XYFlow,
+	action: V2XyFlowAction,
+): XYFlow {
 	switch (action.type) {
-		case v2XyFlowNodeActionTypes.set:
-			return action.input.xyFlowNodes;
+		case v2XyFlowActionTypes.set:
+			return { ...xyflow, nodes: action.input.xyFlowNodes };
 	}
-	return nodes;
+	return xyflow;
 }

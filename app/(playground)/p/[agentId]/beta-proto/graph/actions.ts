@@ -63,7 +63,7 @@ import {
 import { addNode as v2AddNode } from "./v2/composition/add-node";
 import type { V2ModeAction } from "./v2/mode";
 import { type V2NodeAction, updateNode } from "./v2/node";
-import type { V2XyFlowNodeAction } from "./v2/xy-flow";
+import type { V2XyFlowAction } from "./v2/xy-flow";
 
 export type AddNodeAction = {
 	type: "addNode";
@@ -1352,4 +1352,4 @@ export type GraphAction =
 	| V2NodeAction
 	| V2ModeAction
 	| V2FlowAction
-	| V2XyFlowNodeAction;
+	| V2XyFlowAction;

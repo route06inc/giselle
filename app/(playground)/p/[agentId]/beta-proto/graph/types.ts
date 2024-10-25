@@ -15,13 +15,14 @@ export const playgroundModes = {
 } as const;
 export type PlaygroundMode =
 	(typeof playgroundModes)[keyof typeof playgroundModes];
+export interface XYFlow {
+	nodes: ReactFlowNode[];
+	edges: ReactFlowEdge[];
+}
 export type Graph = {
 	agentId: AgentId;
 	nodes: GiselleNode[];
-	xyFlow: {
-		nodes: ReactFlowNode[];
-		edges: ReactFlowEdge[];
-	};
+	xyFlow: XYFlow;
 	connectors: ConnectorObject[];
 	artifacts: Artifact[];
 	webSearches: WebSearch[];
