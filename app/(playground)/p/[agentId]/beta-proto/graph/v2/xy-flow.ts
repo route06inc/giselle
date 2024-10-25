@@ -3,13 +3,13 @@ import type { ReactFlowNode } from "../../react-flow-adapter/giselle-node";
 import type { XYFlow } from "../types";
 
 const v2XyFlowActionTypes = {
-	set: "v2.setXyFlowNode",
+	setNodes: "v2.setXyFlowNodes",
 } as const;
 type V2XyFlowActionType =
 	(typeof v2XyFlowActionTypes)[keyof typeof v2XyFlowActionTypes];
 
 interface SetXyFlowNodeAction {
-	type: Extract<V2XyFlowActionType, "v2.setXyFlowNode">;
+	type: Extract<V2XyFlowActionType, "v2.setXyFlowNodes">;
 	input: SetXyFlowNodeInput;
 }
 interface SetXyFlowNodeInput {
@@ -19,7 +19,7 @@ export function setXyFlowNodes({
 	input,
 }: { input: SetXyFlowNodeInput }): SetXyFlowNodeAction {
 	return {
-		type: v2XyFlowActionTypes.set,
+		type: v2XyFlowActionTypes.setNodes,
 		input,
 	};
 }
@@ -37,7 +37,7 @@ export function v2XyFlowReducer(
 	action: V2XyFlowAction,
 ): XYFlow {
 	switch (action.type) {
-		case v2XyFlowActionTypes.set:
+		case v2XyFlowActionTypes.setNodes:
 			return { ...xyflow, nodes: action.input.xyFlowNodes };
 	}
 	return xyflow;
