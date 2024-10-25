@@ -2,7 +2,7 @@ import type { GiselleNode } from "../../../giselle-node/types";
 import { giselleNodeType } from "../../../react-flow-adapter/giselle-node";
 import type { CompositeAction } from "../../context";
 import { addNode as addNodeInternal } from "../node";
-import { setXyFlowNodes } from "../xy-flow-node";
+import { setXyFlowNodes } from "../xy-flow";
 
 interface AddNodeInput {
 	node: GiselleNode;

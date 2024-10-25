@@ -22,7 +22,7 @@ import {
 } from "../graph/actions";
 import { useGraph } from "../graph/context";
 import type { Graph } from "../graph/types";
-import { setXyFlowNodes } from "../graph/v2/xy-flow-node";
+import { setXyFlowNodes } from "../graph/v2/xy-flow";
 import {
 	type ReactFlowEdge,
 	type ReactFlowNode,
