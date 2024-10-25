@@ -36,6 +36,7 @@ import { useGraph } from "./graph/context";
 import type { Graph } from "./graph/types";
 import { Header } from "./header";
 import {
+	type ReactFlowEdge,
 	type ReactFlowNode,
 	edgeTypes,
 	nodeTypes,
@@ -45,6 +46,7 @@ import {
 	useGraphToReactFlowEffect,
 	useKeyUpHandler,
 	useNodeEventHandler,
+	useReacrFlowEdgeEventHandler,
 	useReactFlowNodeEventHandler,
 } from "./react-flow-adapter/graph";
 import { setSelectTool } from "./tool/actions";
@@ -62,9 +64,10 @@ function EditorInner() {
 	const { handleConnect } = useConnectionHandler();
 	const { handleKeyUp } = useKeyUpHandler();
 	const { handleNodesChange } = useReactFlowNodeEventHandler();
+	const { handleEdgesChange } = useReacrFlowEdgeEventHandler();
 	return (
 		<div className="w-full h-screen">
-			<ReactFlow<ReactFlowNode>
+			<ReactFlow<ReactFlowNode, ReactFlowEdge>
 				nodes={graphState.graph.xyFlow.nodes}
 				edges={graphState.graph.xyFlow.edges}
 				nodeTypes={nodeTypes}
@@ -76,6 +79,7 @@ function EditorInner() {
 				colorMode="dark"
 				onConnect={handleConnect}
 				onNodesChange={handleNodesChange}
+				onEdgesChange={handleEdgesChange}
 				onPaneClick={(event) => {
 					event.preventDefault();
 					if (toolState.activeTool.type === "addGiselleNode") {

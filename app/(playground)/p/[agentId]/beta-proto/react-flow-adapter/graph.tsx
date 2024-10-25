@@ -1,13 +1,16 @@
 import {
 	type Connection,
+	type EdgeChange,
 	type NodeChange,
 	type OnNodeDrag,
 	type OnSelectionChangeFunc,
+	applyEdgeChanges,
 	applyNodeChanges,
 	useOnSelectionChange,
 	useReactFlow,
 } from "@xyflow/react";
 import { type KeyboardEventHandler, useCallback, useEffect } from "react";
+import type { ConnectorId } from "../connector/types";
 import {
 	type GiselleNodeId,
 	assertGiselleNodeId,
@@ -22,7 +25,8 @@ import {
 } from "../graph/actions";
 import { useGraph } from "../graph/context";
 import type { Graph } from "../graph/types";
-import { setXyFlowNodes } from "../graph/v2/xy-flow";
+import { removeConnector } from "../graph/v2/composition/remove-connector";
+import { setXyFlowEdges, setXyFlowNodes } from "../graph/v2/xy-flow";
 import {
 	type ReactFlowEdge,
 	type ReactFlowNode,
@@ -84,6 +88,8 @@ export const useReactFlowNodeEventHandler = () => {
 							],
 						}),
 					);
+				} else if (change.type === "remove") {
+					console.log(`remove node ${change.id}`);
 				}
 			});
 		},
@@ -91,6 +97,36 @@ export const useReactFlowNodeEventHandler = () => {
 	);
 	return { handleNodesChange };
 };
+
+export function useReacrFlowEdgeEventHandler() {
+	const { state, dispatch } = useGraph();
+
+	const handleEdgesChange = useCallback(
+		(changes: EdgeChange<ReactFlowEdge>[]) => {
+			dispatch(
+				setXyFlowEdges({
+					input: {
+						xyFlowEdges: applyEdgeChanges(changes, state.graph.xyFlow.edges),
+					},
+				}),
+			);
+			changes.map((change) => {
+				if (change.type === "remove") {
+					dispatch(
+						removeConnector({
+							input: {
+								connectorId: change.id as ConnectorId,
+							},
+						}),
+					);
+				}
+			});
+		},
+		[dispatch, state.graph.xyFlow.edges],
+	);
+
+	return { handleEdgesChange };
+}
 
 export const useGraphToReactFlowEffect = () => {
 	const { state, dispatch } = useGraph();
