@@ -1,21 +1,24 @@
 name: License Compliance
 
+# ## Summary
+#
+# This workflow runs the license_finder CLI only when it detects an update to files related to the License Finder.
+# It also updates $LICENSE_REPORT and git commit.
+#
+# When triggered by a PR from a forked repository, $LICENSE_REPORT is not updated.
+# When triggered by a push to the default branch, $LICENSE_REPORT is not updated either.
+
 on:
   push:
     branches:
       - main
   pull_request:
-  pull_request_target:
-    types: [labeled]
 
 ## hogehoge
 
 jobs:
   license_finder:
     runs-on: ubuntu-latest
-    if: |
-      github.event.pull_request.head.repo.fork == false
-      || contains(github.event.pull_request.labels.*.name, 'safe to test')
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
@@ -23,15 +26,25 @@ jobs:
     env:
       LICENSE_REPORT: docs/packages-license.md
     steps:
-      - uses: actions/create-github-app-token@v1
+      - name: Check if running in a fork
+        id: fork-check
+        run: echo "is_fork=${{ github.event.pull_request.head.repo.fork }}" >> "$GITHUB_OUTPUT"
+      - name: Create GitHub App Token for non-fork PRs
+        uses: actions/create-github-app-token@v1
+        if: steps.fork-check.outputs.is_fork != 'true'
         id: app-token
         with:
           app-id: ${{ vars.CI_TRIGGER_APP_ID }}
           private-key: ${{ secrets.CI_TRIGGER_APP_PRIVATE_KEY }}
-      - uses: actions/checkout@v4
+      - name: Checkout code for non-fork PRs
+        if: steps.fork-check.outputs.is_fork != 'true'
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           token: ${{ steps.app-token.outputs.token }}
+      - name: Checkout code for forked PRs
+        if: steps.fork-check.outputs.is_fork == 'true'
+        uses: actions/checkout@v4
       # To make the success of this job a prerequisite for merging into the main branch,
       # set a filter here instead of on: to determine whether or not to proceed to the next step.
       - name: Cache dependency files
@@ -73,12 +86,14 @@ jobs:
       # Commit the License Finder report as docs/packages-license.md
       - name: Generate license report
         if: |
-          steps.determine.outputs.files_changed == 'true'
+          steps.fork-check.outputs.is_fork != 'true'
+          && steps.determine.outputs.files_changed == 'true'
           && github.ref_name != github.event.repository.default_branch
         run: license_finder report --format=markdown | tail -n +2 > "$LICENSE_REPORT"
       - name: Commit license report and push
         if: |
-          steps.determine.outputs.files_changed == 'true'
+          steps.fork-check.outputs.is_fork != 'true'
+          && steps.determine.outputs.files_changed == 'true'
           && github.ref_name != github.event.repository.default_branch
         run: |
           git config user.name 'github-actions[bot]'
