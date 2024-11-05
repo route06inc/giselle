@@ -20,6 +20,9 @@ import {
 } from "./beta-proto/react-flow-adapter/types";
 import type { AgentId } from "./beta-proto/types";
 
+// 5 minutes
+export const maxDuration = 1000 * 60 * 5;
+
 function graphToReactFlow(grpah: Graph) {
 	const nodes: ReactFlowNode[] = grpah.nodes.map((node) => {
 		return {
