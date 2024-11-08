@@ -9,6 +9,8 @@
 </div>
 
 ## Introduction
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fgiselles-ai%2Fgiselle.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fgiselles-ai%2Fgiselle?ref=badge_shield)
+
 
 Giselle is an open source AI for agentic workflows, enabling seamless human-AI collaboration.
 
@@ -33,3 +35,6 @@ For more details, please see the [contributing guide](CONTRIBUTING.md).
 Giselle is licensed under the [Apache License Version 2.0](LICENSE).
 
 Licenses for third-party packages can be found in [docs/packages-license.md](docs/packages-license.md).
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fgiselles-ai%2Fgiselle.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fgiselles-ai%2Fgiselle?ref=badge_large)
