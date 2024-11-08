@@ -1,33 +1,43 @@
 # giselle
 
-As of November  5, 2024  8:23am. 824 total
+As of November  8, 2024  2:15am. 801 total
 
 ## Summary
-* 605 MIT
-* 107 Apache 2.0
+* 586 MIT
+* 104 Apache 2.0
 * 58 ISC
 * 23 New BSD
 * 12 Simplified BSD
 * 3 MIT OR Apache-2.0
 * 3 BlueOak-1.0.0
-* 2 LGPL-3.0-or-later
 * 2 BSD Zero Clause License
 * 2 The Unlicense
-* 1 (MIT AND Zlib)
-* 1 CC0 1.0 Universal
-* 1 unknown
+* 2 LGPL-3.0-or-later
+* 1 Apache 2.0, BSD Zero Clause License, ISC, MIT, Mozilla Public License 2.0, New BSD, Simplified BSD, The Unlicense, zlib/libpng license
+* 1 (AFL-2.1 OR BSD-3-Clause)
 * 1 CC-BY-4.0
 * 1 (MIT OR CC0-1.0)
-* 1 (AFL-2.1 OR BSD-3-Clause)
-* 1 Apache 2.0, BSD Zero Clause License, ISC, MIT, Mozilla Public License 2.0, New BSD, Simplified BSD, The Unlicense, zlib/libpng license
+* 1 CC0 1.0 Universal
+* 1 (MIT AND Zlib)
 
 
 
 ## Items
 
 
+<a name="@ai-sdk/anthropic"></a>
+### <a href="https://sdk.vercel.ai/docs">@ai-sdk/anthropic</a> v0.0.56 (dependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
+
+
+
 <a name="@ai-sdk/openai"></a>
-### <a href="https://sdk.vercel.ai/docs">@ai-sdk/openai</a> v0.0.62 (dependencies)
+### <a href="https://sdk.vercel.ai/docs">@ai-sdk/openai</a> v0.0.72 (dependencies)
 #### 
 
 ##### Paths
@@ -38,7 +48,7 @@ As of November  5, 2024  8:23am. 824 total
 
 
 <a name="@ai-sdk/provider"></a>
-### <a href="https://sdk.vercel.ai/docs">@ai-sdk/provider</a> v0.0.23 (dependencies)
+### <a href="https://sdk.vercel.ai/docs">@ai-sdk/provider</a> v0.0.26 (dependencies)
 #### 
 
 ##### Paths
@@ -49,7 +59,7 @@ As of November  5, 2024  8:23am. 824 total
 
 
 <a name="@ai-sdk/provider-utils"></a>
-### <a href="https://sdk.vercel.ai/docs">@ai-sdk/provider-utils</a> v1.0.19 (dependencies)
+### <a href="https://sdk.vercel.ai/docs">@ai-sdk/provider-utils</a> v1.0.22 (dependencies)
 #### 
 
 ##### Paths
@@ -60,7 +70,7 @@ As of November  5, 2024  8:23am. 824 total
 
 
 <a name="@ai-sdk/react"></a>
-### <a href="https://sdk.vercel.ai/docs">@ai-sdk/react</a> v0.0.60 (dependencies)
+### <a href="https://sdk.vercel.ai/docs">@ai-sdk/react</a> v0.0.70 (dependencies)
 #### 
 
 ##### Paths
@@ -71,7 +81,7 @@ As of November  5, 2024  8:23am. 824 total
 
 
 <a name="@ai-sdk/solid"></a>
-### <a href="https://sdk.vercel.ai/docs">@ai-sdk/solid</a> v0.0.47 (dependencies)
+### <a href="https://sdk.vercel.ai/docs">@ai-sdk/solid</a> v0.0.54 (dependencies)
 #### 
 
 ##### Paths
@@ -82,7 +92,7 @@ As of November  5, 2024  8:23am. 824 total
 
 
 <a name="@ai-sdk/svelte"></a>
-### <a href="https://sdk.vercel.ai/docs">@ai-sdk/svelte</a> v0.0.49 (dependencies)
+### <a href="https://sdk.vercel.ai/docs">@ai-sdk/svelte</a> v0.0.57 (dependencies)
 #### 
 
 ##### Paths
@@ -93,7 +103,7 @@ As of November  5, 2024  8:23am. 824 total
 
 
 <a name="@ai-sdk/ui-utils"></a>
-### <a href="https://sdk.vercel.ai/docs">@ai-sdk/ui-utils</a> v0.0.44 (dependencies)
+### <a href="https://sdk.vercel.ai/docs">@ai-sdk/ui-utils</a> v0.0.50 (dependencies)
 #### 
 
 ##### Paths
@@ -104,7 +114,7 @@ As of November  5, 2024  8:23am. 824 total
 
 
 <a name="@ai-sdk/vue"></a>
-### <a href="https://sdk.vercel.ai/docs">@ai-sdk/vue</a> v0.0.51 (dependencies)
+### <a href="https://sdk.vercel.ai/docs">@ai-sdk/vue</a> v0.0.59 (dependencies)
 #### 
 
 ##### Paths
@@ -301,17 +311,6 @@ Syntax highlight JavaScript strings for output in terminals.
 
 A JavaScript parser
 
-<a name="@babel/runtime"></a>
-### <a href="https://babel.dev/docs/en/next/babel-runtime">@babel/runtime</a> v7.25.0 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-babel's modular runtime helpers
-
 <a name="@babel/template"></a>
 ### <a href="https://babel.dev/docs/en/next/babel-template">@babel/template</a> v7.25.0 (dependencies)
 #### 
@@ -399,6 +398,17 @@ MIT OR Apache-2.0 permitted
 <a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
 
 
+
+<a name="@drizzle-team/brocli"></a>
+### <a href="https://github.com/drizzle-team/brocli">@drizzle-team/brocli</a> v0.10.2 (devDependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
+
+Modern type-safe way of building CLIs
 
 <a name="@emnapi/runtime"></a>
 ### <a href="https://github.com/toyobayashi/emnapi#readme">@emnapi/runtime</a> v1.2.0
@@ -533,7 +543,7 @@ gRPC Library for Node - pure JS implementation
 gRPC utility library for loading .proto files
 
 <a name="@icons-pack/react-simple-icons"></a>
-### <a href="https://github.com/icons-pack/react-simple-icons#readme">@icons-pack/react-simple-icons</a> v10.0.0 (dependencies)
+### <a href="https://github.com/icons-pack/react-simple-icons#readme">@icons-pack/react-simple-icons</a> v10.1.0 (dependencies)
 #### 
 
 ##### Paths
@@ -676,7 +686,7 @@ Trace the original position through a source map
 javascript standard data structure library which benchmark against C++ STL
 
 <a name="@mendable/firecrawl-js"></a>
-### <a href="https://github.com/mendableai/firecrawl#readme">@mendable/firecrawl-js</a> v1.6.1 (dependencies)
+### <a href="https://github.com/mendableai/firecrawl#readme">@mendable/firecrawl-js</a> v1.7.2 (dependencies)
 #### 
 
 ##### Paths
@@ -698,18 +708,7 @@ JavaScript SDK for Firecrawl API
 node-postgres for serverless environments from neon.tech
 
 <a name="@next/env"></a>
-### @next/env v14.2.5 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-Next.js dotenv file loading
-
-<a name="@next/env"></a>
-### @next/env v15.0.2 (dependencies)
+### @next/env v15.0.3 (dependencies)
 #### 
 
 ##### Paths
@@ -720,7 +719,7 @@ Next.js dotenv file loading
 Next.js dotenv file loading
 
 <a name="@next/swc-linux-x64-gnu"></a>
-### @next/swc-linux-x64-gnu v15.0.2 (dependencies)
+### @next/swc-linux-x64-gnu v15.0.3 (dependencies)
 #### 
 
 ##### Paths
@@ -731,7 +730,7 @@ Next.js dotenv file loading
 
 
 <a name="@next/swc-linux-x64-musl"></a>
-### @next/swc-linux-x64-musl v15.0.2 (dependencies)
+### @next/swc-linux-x64-musl v15.0.3 (dependencies)
 #### 
 
 ##### Paths
@@ -742,7 +741,7 @@ Next.js dotenv file loading
 
 
 <a name="@next/third-parties"></a>
-### @next/third-parties v14.2.13 (dependencies)
+### @next/third-parties v15.0.3 (dependencies)
 #### 
 
 ##### Paths
@@ -808,17 +807,6 @@ A library for efficiently walking a directory recursively
 Public API for OpenTelemetry
 
 <a name="@opentelemetry/api-logs"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/api-logs">@opentelemetry/api-logs</a> v0.51.1 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
-
-Public logs API for OpenTelemetry
-
-<a name="@opentelemetry/api-logs"></a>
 ### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/api-logs">@opentelemetry/api-logs</a> v0.52.1 (dependencies)
 #### 
 
@@ -840,8 +828,8 @@ Public logs API for OpenTelemetry
 
 Public logs API for OpenTelemetry
 
-<a name="@opentelemetry/context-async-hooks"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-context-async-hooks">@opentelemetry/context-async-hooks</a> v1.24.1 (dependencies)
+<a name="@opentelemetry/api-logs"></a>
+### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/api-logs">@opentelemetry/api-logs</a> v0.54.2 (dependencies)
 #### 
 
 ##### Paths
@@ -849,7 +837,7 @@ Public logs API for OpenTelemetry
 
 <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
 
-OpenTelemetry AsyncHooks-based Context Manager
+Public logs API for OpenTelemetry
 
 <a name="@opentelemetry/context-async-hooks"></a>
 ### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-context-async-hooks">@opentelemetry/context-async-hooks</a> v1.25.1 (dependencies)
@@ -862,8 +850,8 @@ OpenTelemetry AsyncHooks-based Context Manager
 
 OpenTelemetry AsyncHooks-based Context Manager
 
-<a name="@opentelemetry/core"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-core">@opentelemetry/core</a> v1.24.1 (dependencies)
+<a name="@opentelemetry/context-async-hooks"></a>
+### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-context-async-hooks">@opentelemetry/context-async-hooks</a> v1.27.0 (dependencies)
 #### 
 
 ##### Paths
@@ -871,7 +859,7 @@ OpenTelemetry AsyncHooks-based Context Manager
 
 <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
 
-OpenTelemetry Core provides constants and utilities shared by all OpenTelemetry SDK packages.
+OpenTelemetry AsyncHooks-based Context Manager
 
 <a name="@opentelemetry/core"></a>
 ### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-core">@opentelemetry/core</a> v1.25.1 (dependencies)
@@ -895,8 +883,52 @@ OpenTelemetry Core provides constants and utilities shared by all OpenTelemetry 
 
 OpenTelemetry Core provides constants and utilities shared by all OpenTelemetry SDK packages.
 
+<a name="@opentelemetry/core"></a>
+### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-core">@opentelemetry/core</a> v1.27.0 (dependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
+
+OpenTelemetry Core provides constants and utilities shared by all OpenTelemetry SDK packages.
+
+<a name="@opentelemetry/exporter-logs-otlp-grpc"></a>
+### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/exporter-logs-otlp-grpc">@opentelemetry/exporter-logs-otlp-grpc</a> v0.54.2 (dependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
+
+OpenTelemetry Collector Exporter allows user to send collected log records to the OpenTelemetry Collector
+
+<a name="@opentelemetry/exporter-logs-otlp-http"></a>
+### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/exporter-logs-otlp-http">@opentelemetry/exporter-logs-otlp-http</a> v0.54.2 (dependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
+
+OpenTelemetry Collector Logs Exporter allows user to send collected logs to the OpenTelemetry Collector
+
+<a name="@opentelemetry/exporter-logs-otlp-proto"></a>
+### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/exporter-logs-otlp-proto">@opentelemetry/exporter-logs-otlp-proto</a> v0.54.2 (dependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
+
+An OTLP exporter to send logs using protobuf over HTTP
+
 <a name="@opentelemetry/exporter-metrics-otlp-http"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-exporter-metrics-otlp-http">@opentelemetry/exporter-metrics-otlp-http</a> v0.52.1 (dependencies)
+### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-exporter-metrics-otlp-http">@opentelemetry/exporter-metrics-otlp-http</a> v0.54.2 (dependencies)
 #### 
 
 ##### Paths
@@ -907,7 +939,7 @@ OpenTelemetry Core provides constants and utilities shared by all OpenTelemetry 
 OpenTelemetry Collector Metrics Exporter allows user to send collected metrics to the OpenTelemetry Collector
 
 <a name="@opentelemetry/exporter-trace-otlp-grpc"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/exporter-trace-otlp-grpc">@opentelemetry/exporter-trace-otlp-grpc</a> v0.51.1 (dependencies)
+### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/exporter-trace-otlp-grpc">@opentelemetry/exporter-trace-otlp-grpc</a> v0.54.2 (dependencies)
 #### 
 
 ##### Paths
@@ -918,7 +950,7 @@ OpenTelemetry Collector Metrics Exporter allows user to send collected metrics t
 OpenTelemetry Collector Exporter allows user to send collected traces to the OpenTelemetry Collector
 
 <a name="@opentelemetry/exporter-trace-otlp-http"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/exporter-trace-otlp-http">@opentelemetry/exporter-trace-otlp-http</a> v0.51.1 (dependencies)
+### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/exporter-trace-otlp-http">@opentelemetry/exporter-trace-otlp-http</a> v0.54.2 (dependencies)
 #### 
 
 ##### Paths
@@ -929,7 +961,7 @@ OpenTelemetry Collector Exporter allows user to send collected traces to the Ope
 OpenTelemetry Collector Trace Exporter allows user to send collected traces to the OpenTelemetry Collector
 
 <a name="@opentelemetry/exporter-trace-otlp-proto"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/exporter-trace-otlp-proto">@opentelemetry/exporter-trace-otlp-proto</a> v0.51.1 (dependencies)
+### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/exporter-trace-otlp-proto">@opentelemetry/exporter-trace-otlp-proto</a> v0.54.2 (dependencies)
 #### 
 
 ##### Paths
@@ -940,7 +972,7 @@ OpenTelemetry Collector Trace Exporter allows user to send collected traces to t
 OpenTelemetry Collector Exporter allows user to send collected traces to the OpenTelemetry Collector using protobuf over HTTP
 
 <a name="@opentelemetry/exporter-zipkin"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-exporter-zipkin">@opentelemetry/exporter-zipkin</a> v1.24.1 (dependencies)
+### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-exporter-zipkin">@opentelemetry/exporter-zipkin</a> v1.27.0 (dependencies)
 #### 
 
 ##### Paths
@@ -949,17 +981,6 @@ OpenTelemetry Collector Exporter allows user to send collected traces to the Ope
 <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
 
 OpenTelemetry Zipkin Exporter allows the user to send collected traces to Zipkin.
-
-<a name="@opentelemetry/instrumentation"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-instrumentation">@opentelemetry/instrumentation</a> v0.51.1 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
-
-Base class for node which OpenTelemetry instrumentation modules extend
 
 <a name="@opentelemetry/instrumentation"></a>
 ### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-instrumentation">@opentelemetry/instrumentation</a> v0.52.1 (dependencies)
@@ -983,6 +1004,17 @@ Base class for node which OpenTelemetry instrumentation modules extend
 
 Base class for node which OpenTelemetry instrumentation modules extend
 
+<a name="@opentelemetry/instrumentation"></a>
+### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-instrumentation">@opentelemetry/instrumentation</a> v0.54.2 (dependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
+
+Base class for node which OpenTelemetry instrumentation modules extend
+
 <a name="@opentelemetry/instrumentation-amqplib"></a>
 ### <a href="https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/instrumentation-amqplib#readme">@opentelemetry/instrumentation-amqplib</a> v0.42.0 (dependencies)
 #### 
@@ -995,7 +1027,7 @@ Base class for node which OpenTelemetry instrumentation modules extend
 OpenTelemetry instrumentation for the `amqplib` messaging client for RabbitMQ
 
 <a name="@opentelemetry/instrumentation-connect"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/opentelemetry-instrumentation-connect#readme">@opentelemetry/instrumentation-connect</a> v0.39.0 (dependencies)
+### <a href="https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/opentelemetry-instrumentation-connect#readme">@opentelemetry/instrumentation-connect</a> v0.40.0 (dependencies)
 #### 
 
 ##### Paths
@@ -1017,7 +1049,7 @@ OpenTelemetry instrumentation for `connect` http middleware framework
 OpenTelemetry instrumentation for `dataloader` data fetching layer
 
 <a name="@opentelemetry/instrumentation-express"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/opentelemetry-instrumentation-express#readme">@opentelemetry/instrumentation-express</a> v0.42.0 (dependencies)
+### <a href="https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/opentelemetry-instrumentation-express#readme">@opentelemetry/instrumentation-express</a> v0.44.0 (dependencies)
 #### 
 
 ##### Paths
@@ -1028,7 +1060,7 @@ OpenTelemetry instrumentation for `dataloader` data fetching layer
 OpenTelemetry instrumentation for `express` http web application framework
 
 <a name="@opentelemetry/instrumentation-fastify"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/opentelemetry-instrumentation-fastify#readme">@opentelemetry/instrumentation-fastify</a> v0.39.0 (dependencies)
+### <a href="https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/opentelemetry-instrumentation-fastify#readme">@opentelemetry/instrumentation-fastify</a> v0.41.0 (dependencies)
 #### 
 
 ##### Paths
@@ -1039,7 +1071,7 @@ OpenTelemetry instrumentation for `express` http web application framework
 OpenTelemetry instrumentation for `fastify` http web application framework
 
 <a name="@opentelemetry/instrumentation-fs"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/instrumentation-fs#readme">@opentelemetry/instrumentation-fs</a> v0.15.0 (dependencies)
+### <a href="https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/instrumentation-fs#readme">@opentelemetry/instrumentation-fs</a> v0.16.0 (dependencies)
 #### 
 
 ##### Paths
@@ -1061,7 +1093,7 @@ OpenTelemetry instrumentation for `node:fs` file system interactions module
 OpenTelemetry instrumentation for `generic-pool` resource pool for managing expensive resources
 
 <a name="@opentelemetry/instrumentation-graphql"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/opentelemetry-instrumentation-graphql#readme">@opentelemetry/instrumentation-graphql</a> v0.43.0 (dependencies)
+### <a href="https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/opentelemetry-instrumentation-graphql#readme">@opentelemetry/instrumentation-graphql</a> v0.44.0 (dependencies)
 #### 
 
 ##### Paths
@@ -1105,7 +1137,7 @@ OpenTelemetry instrumentation for `node:http` and `node:https` http client and s
 OpenTelemetry instrumentation for `ioredis` database redis client for Redis
 
 <a name="@opentelemetry/instrumentation-kafkajs"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/instrumentation-kafkajs#readme">@opentelemetry/instrumentation-kafkajs</a> v0.3.0 (dependencies)
+### <a href="https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/instrumentation-kafkajs#readme">@opentelemetry/instrumentation-kafkajs</a> v0.4.0 (dependencies)
 #### 
 
 ##### Paths
@@ -1138,7 +1170,7 @@ OpenTelemetry instrumentation for `koa` http web application framework
 OpenTelemetry instrumentation for `lru-memoizer` function memoization using lru-cache
 
 <a name="@opentelemetry/instrumentation-mongodb"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/opentelemetry-instrumentation-mongodb#readme">@opentelemetry/instrumentation-mongodb</a> v0.47.0 (dependencies)
+### <a href="https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/opentelemetry-instrumentation-mongodb#readme">@opentelemetry/instrumentation-mongodb</a> v0.48.0 (dependencies)
 #### 
 
 ##### Paths
@@ -1226,18 +1258,7 @@ OpenTelemetry instrumentation for `redis` v4 database client for Redis
 OpenTelemetry instrumentation for `undici` http client and Node.js fetch()
 
 <a name="@opentelemetry/otlp-exporter-base"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/otlp-exporter-base">@opentelemetry/otlp-exporter-base</a> v0.51.1 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
-
-OpenTelemetry OTLP Exporter base (for internal use only)
-
-<a name="@opentelemetry/otlp-exporter-base"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/otlp-exporter-base">@opentelemetry/otlp-exporter-base</a> v0.52.1 (dependencies)
+### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/otlp-exporter-base">@opentelemetry/otlp-exporter-base</a> v0.54.2 (dependencies)
 #### 
 
 ##### Paths
@@ -1248,7 +1269,7 @@ OpenTelemetry OTLP Exporter base (for internal use only)
 OpenTelemetry OTLP Exporter base (for internal use only)
 
 <a name="@opentelemetry/otlp-grpc-exporter-base"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/otlp-grpc-exporter-base">@opentelemetry/otlp-grpc-exporter-base</a> v0.51.1 (dependencies)
+### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/otlp-grpc-exporter-base">@opentelemetry/otlp-grpc-exporter-base</a> v0.54.2 (dependencies)
 #### 
 
 ##### Paths
@@ -1258,30 +1279,8 @@ OpenTelemetry OTLP Exporter base (for internal use only)
 
 OpenTelemetry OTLP-gRPC Exporter base (for internal use only)
 
-<a name="@opentelemetry/otlp-proto-exporter-base"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/otlp-proto-exporter-base">@opentelemetry/otlp-proto-exporter-base</a> v0.51.1 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
-
-OpenTelemetry OTLP-HTTP-protobuf Exporter base (for internal use only)
-
 <a name="@opentelemetry/otlp-transformer"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/otlp-transformer">@opentelemetry/otlp-transformer</a> v0.51.1 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
-
-Transform OpenTelemetry SDK data into OTLP
-
-<a name="@opentelemetry/otlp-transformer"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/otlp-transformer">@opentelemetry/otlp-transformer</a> v0.52.1 (dependencies)
+### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/otlp-transformer">@opentelemetry/otlp-transformer</a> v0.54.2 (dependencies)
 #### 
 
 ##### Paths
@@ -1292,7 +1291,7 @@ Transform OpenTelemetry SDK data into OTLP
 Transform OpenTelemetry SDK data into OTLP
 
 <a name="@opentelemetry/propagator-b3"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-propagator-b3">@opentelemetry/propagator-b3</a> v1.24.1 (dependencies)
+### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-propagator-b3">@opentelemetry/propagator-b3</a> v1.27.0 (dependencies)
 #### 
 
 ##### Paths
@@ -1303,7 +1302,7 @@ Transform OpenTelemetry SDK data into OTLP
 OpenTelemetry B3 propagator provides context propagation for systems that are using the B3 header format
 
 <a name="@opentelemetry/propagator-jaeger"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-propagator-jaeger">@opentelemetry/propagator-jaeger</a> v1.24.1 (dependencies)
+### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-propagator-jaeger">@opentelemetry/propagator-jaeger</a> v1.27.0 (dependencies)
 #### 
 
 ##### Paths
@@ -1325,28 +1324,6 @@ OpenTelemetry Jaeger propagator provides HTTP header propagation for systems tha
 Redis utilities for redis instrumentations
 
 <a name="@opentelemetry/resources"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-resources">@opentelemetry/resources</a> v1.24.1 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
-
-OpenTelemetry SDK resources
-
-<a name="@opentelemetry/resources"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-resources">@opentelemetry/resources</a> v1.25.1 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
-
-OpenTelemetry SDK resources
-
-<a name="@opentelemetry/resources"></a>
 ### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-resources">@opentelemetry/resources</a> v1.26.0 (dependencies)
 #### 
 
@@ -1357,8 +1334,8 @@ OpenTelemetry SDK resources
 
 OpenTelemetry SDK resources
 
-<a name="@opentelemetry/sdk-logs"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/sdk-logs">@opentelemetry/sdk-logs</a> v0.51.1 (dependencies)
+<a name="@opentelemetry/resources"></a>
+### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-resources">@opentelemetry/resources</a> v1.27.0 (dependencies)
 #### 
 
 ##### Paths
@@ -1366,10 +1343,10 @@ OpenTelemetry SDK resources
 
 <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
 
-OpenTelemetry logs SDK
+OpenTelemetry SDK resources
 
 <a name="@opentelemetry/sdk-logs"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/sdk-logs">@opentelemetry/sdk-logs</a> v0.52.1 (dependencies)
+### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/sdk-logs">@opentelemetry/sdk-logs</a> v0.54.2 (dependencies)
 #### 
 
 ##### Paths
@@ -1380,18 +1357,7 @@ OpenTelemetry logs SDK
 OpenTelemetry logs SDK
 
 <a name="@opentelemetry/sdk-metrics"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/sdk-metrics">@opentelemetry/sdk-metrics</a> v1.24.1 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
-
-OpenTelemetry metrics SDK
-
-<a name="@opentelemetry/sdk-metrics"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/sdk-metrics">@opentelemetry/sdk-metrics</a> v1.25.1 (dependencies)
+### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/sdk-metrics">@opentelemetry/sdk-metrics</a> v1.27.0 (dependencies)
 #### 
 
 ##### Paths
@@ -1402,7 +1368,7 @@ OpenTelemetry metrics SDK
 OpenTelemetry metrics SDK
 
 <a name="@opentelemetry/sdk-node"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-sdk-node">@opentelemetry/sdk-node</a> v0.51.1 (dependencies)
+### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-sdk-node">@opentelemetry/sdk-node</a> v0.54.2 (dependencies)
 #### 
 
 ##### Paths
@@ -1411,28 +1377,6 @@ OpenTelemetry metrics SDK
 <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
 
 OpenTelemetry SDK for Node.js
-
-<a name="@opentelemetry/sdk-trace-base"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-sdk-trace-base">@opentelemetry/sdk-trace-base</a> v1.24.1 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
-
-OpenTelemetry Tracing
-
-<a name="@opentelemetry/sdk-trace-base"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-sdk-trace-base">@opentelemetry/sdk-trace-base</a> v1.25.1 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
-
-OpenTelemetry Tracing
 
 <a name="@opentelemetry/sdk-trace-base"></a>
 ### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-sdk-trace-base">@opentelemetry/sdk-trace-base</a> v1.26.0 (dependencies)
@@ -1445,8 +1389,19 @@ OpenTelemetry Tracing
 
 OpenTelemetry Tracing
 
+<a name="@opentelemetry/sdk-trace-base"></a>
+### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-sdk-trace-base">@opentelemetry/sdk-trace-base</a> v1.27.0 (dependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
+
+OpenTelemetry Tracing
+
 <a name="@opentelemetry/sdk-trace-node"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-sdk-trace-node">@opentelemetry/sdk-trace-node</a> v1.24.1 (dependencies)
+### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-sdk-trace-node">@opentelemetry/sdk-trace-node</a> v1.27.0 (dependencies)
 #### 
 
 ##### Paths
@@ -1455,17 +1410,6 @@ OpenTelemetry Tracing
 <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
 
 OpenTelemetry Node SDK provides automatic telemetry (tracing, metrics, etc) for Node.js applications
-
-<a name="@opentelemetry/semantic-conventions"></a>
-### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-semantic-conventions">@opentelemetry/semantic-conventions</a> v1.24.1 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
-
-OpenTelemetry semantic conventions
 
 <a name="@opentelemetry/semantic-conventions"></a>
 ### <a href="https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-semantic-conventions">@opentelemetry/semantic-conventions</a> v1.25.1 (dependencies)
@@ -1688,17 +1632,6 @@ A minimal UTF8 implementation for number arrays.
 
 
 <a name="@radix-ui/primitive"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/primitive</a> v1.0.1 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-
-
-<a name="@radix-ui/primitive"></a>
 ### <a href="https://radix-ui.com/primitives">@radix-ui/primitive</a> v1.1.0 (dependencies)
 #### 
 
@@ -1710,7 +1643,7 @@ A minimal UTF8 implementation for number arrays.
 
 
 <a name="@radix-ui/react-accordion"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-accordion</a> v1.2.0 (dependencies)
+### <a href="https://radix-ui.com/primitives">@radix-ui/react-accordion</a> v1.2.1 (dependencies)
 #### 
 
 ##### Paths
@@ -1732,7 +1665,7 @@ A minimal UTF8 implementation for number arrays.
 
 
 <a name="@radix-ui/react-collapsible"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-collapsible</a> v1.1.0 (dependencies)
+### <a href="https://radix-ui.com/primitives">@radix-ui/react-collapsible</a> v1.1.1 (dependencies)
 #### 
 
 ##### Paths
@@ -1754,29 +1687,7 @@ A minimal UTF8 implementation for number arrays.
 
 
 <a name="@radix-ui/react-compose-refs"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-compose-refs</a> v1.0.1 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-
-
-<a name="@radix-ui/react-compose-refs"></a>
 ### <a href="https://radix-ui.com/primitives">@radix-ui/react-compose-refs</a> v1.1.0 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-
-
-<a name="@radix-ui/react-context"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-context</a> v1.0.1 (dependencies)
 #### 
 
 ##### Paths
@@ -1797,8 +1708,8 @@ A minimal UTF8 implementation for number arrays.
 
 
 
-<a name="@radix-ui/react-dialog"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-dialog</a> v1.0.5 (dependencies)
+<a name="@radix-ui/react-context"></a>
+### <a href="https://radix-ui.com/primitives">@radix-ui/react-context</a> v1.1.1 (dependencies)
 #### 
 
 ##### Paths
@@ -1809,7 +1720,7 @@ A minimal UTF8 implementation for number arrays.
 
 
 <a name="@radix-ui/react-dialog"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-dialog</a> v1.1.1 (dependencies)
+### <a href="https://radix-ui.com/primitives">@radix-ui/react-dialog</a> v1.1.2 (dependencies)
 #### 
 
 ##### Paths
@@ -1831,18 +1742,7 @@ A minimal UTF8 implementation for number arrays.
 
 
 <a name="@radix-ui/react-dismissable-layer"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-dismissable-layer</a> v1.0.5 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-
-
-<a name="@radix-ui/react-dismissable-layer"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-dismissable-layer</a> v1.1.0 (dependencies)
+### <a href="https://radix-ui.com/primitives">@radix-ui/react-dismissable-layer</a> v1.1.1 (dependencies)
 #### 
 
 ##### Paths
@@ -1853,7 +1753,7 @@ A minimal UTF8 implementation for number arrays.
 
 
 <a name="@radix-ui/react-dropdown-menu"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-dropdown-menu</a> v2.1.1 (dependencies)
+### <a href="https://radix-ui.com/primitives">@radix-ui/react-dropdown-menu</a> v2.1.2 (dependencies)
 #### 
 
 ##### Paths
@@ -1864,29 +1764,7 @@ A minimal UTF8 implementation for number arrays.
 
 
 <a name="@radix-ui/react-focus-guards"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-focus-guards</a> v1.0.1 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-
-
-<a name="@radix-ui/react-focus-guards"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-focus-guards</a> v1.1.0 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-
-
-<a name="@radix-ui/react-focus-scope"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-focus-scope</a> v1.0.4 (dependencies)
+### <a href="https://radix-ui.com/primitives">@radix-ui/react-focus-guards</a> v1.1.1 (dependencies)
 #### 
 
 ##### Paths
@@ -1908,7 +1786,7 @@ A minimal UTF8 implementation for number arrays.
 
 
 <a name="@radix-ui/react-icons"></a>
-### @radix-ui/react-icons v1.3.0 (dependencies)
+### @radix-ui/react-icons v1.3.1 (dependencies)
 #### 
 
 ##### Paths
@@ -1917,17 +1795,6 @@ A minimal UTF8 implementation for number arrays.
 <a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
 
 Radix UI React Icon Set
-
-<a name="@radix-ui/react-id"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-id</a> v1.0.1 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-
 
 <a name="@radix-ui/react-id"></a>
 ### <a href="https://radix-ui.com/primitives">@radix-ui/react-id</a> v1.1.0 (dependencies)
@@ -1952,7 +1819,7 @@ Radix UI React Icon Set
 
 
 <a name="@radix-ui/react-menu"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-menu</a> v2.1.1 (dependencies)
+### <a href="https://radix-ui.com/primitives">@radix-ui/react-menu</a> v2.1.2 (dependencies)
 #### 
 
 ##### Paths
@@ -1963,7 +1830,7 @@ Radix UI React Icon Set
 
 
 <a name="@radix-ui/react-popover"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-popover</a> v1.1.1 (dependencies)
+### <a href="https://radix-ui.com/primitives">@radix-ui/react-popover</a> v1.1.2 (dependencies)
 #### 
 
 ##### Paths
@@ -1985,18 +1852,7 @@ Radix UI React Icon Set
 
 
 <a name="@radix-ui/react-portal"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-portal</a> v1.0.4 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-
-
-<a name="@radix-ui/react-portal"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-portal</a> v1.1.1 (dependencies)
+### <a href="https://radix-ui.com/primitives">@radix-ui/react-portal</a> v1.1.2 (dependencies)
 #### 
 
 ##### Paths
@@ -2007,29 +1863,7 @@ Radix UI React Icon Set
 
 
 <a name="@radix-ui/react-presence"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-presence</a> v1.0.1 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-
-
-<a name="@radix-ui/react-presence"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-presence</a> v1.1.0 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-
-
-<a name="@radix-ui/react-primitive"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-primitive</a> v1.0.3 (dependencies)
+### <a href="https://radix-ui.com/primitives">@radix-ui/react-presence</a> v1.1.1 (dependencies)
 #### 
 
 ##### Paths
@@ -2062,18 +1896,7 @@ Radix UI React Icon Set
 
 
 <a name="@radix-ui/react-select"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-select</a> v2.1.1 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-
-
-<a name="@radix-ui/react-slot"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-slot</a> v1.0.2 (dependencies)
+### <a href="https://radix-ui.com/primitives">@radix-ui/react-select</a> v2.1.2 (dependencies)
 #### 
 
 ##### Paths
@@ -2095,7 +1918,7 @@ Radix UI React Icon Set
 
 
 <a name="@radix-ui/react-tabs"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-tabs</a> v1.1.0 (dependencies)
+### <a href="https://radix-ui.com/primitives">@radix-ui/react-tabs</a> v1.1.1 (dependencies)
 #### 
 
 ##### Paths
@@ -2106,18 +1929,7 @@ Radix UI React Icon Set
 
 
 <a name="@radix-ui/react-tooltip"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-tooltip</a> v1.1.2 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-
-
-<a name="@radix-ui/react-use-callback-ref"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-use-callback-ref</a> v1.0.1 (dependencies)
+### <a href="https://radix-ui.com/primitives">@radix-ui/react-tooltip</a> v1.1.3 (dependencies)
 #### 
 
 ##### Paths
@@ -2139,17 +1951,6 @@ Radix UI React Icon Set
 
 
 <a name="@radix-ui/react-use-controllable-state"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-use-controllable-state</a> v1.0.1 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-
-
-<a name="@radix-ui/react-use-controllable-state"></a>
 ### <a href="https://radix-ui.com/primitives">@radix-ui/react-use-controllable-state</a> v1.1.0 (dependencies)
 #### 
 
@@ -2161,29 +1962,7 @@ Radix UI React Icon Set
 
 
 <a name="@radix-ui/react-use-escape-keydown"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-use-escape-keydown</a> v1.0.3 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-
-
-<a name="@radix-ui/react-use-escape-keydown"></a>
 ### <a href="https://radix-ui.com/primitives">@radix-ui/react-use-escape-keydown</a> v1.1.0 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-
-
-<a name="@radix-ui/react-use-layout-effect"></a>
-### <a href="https://radix-ui.com/primitives">@radix-ui/react-use-layout-effect</a> v1.0.1 (dependencies)
 #### 
 
 ##### Paths
@@ -2281,19 +2060,8 @@ Convert CommonJS modules to ES2015
 
 A set of utility functions commonly used by Rollup plugins
 
-<a name="@rollup/rollup-linux-x64-gnu"></a>
-### <a href="https://rollupjs.org/">@rollup/rollup-linux-x64-gnu</a> v4.20.0 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-Native bindings for Rollup
-
 <a name="@sentry-internal/browser-utils"></a>
-### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/browser-utils">@sentry-internal/browser-utils</a> v8.34.0 (dependencies)
+### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/browser-utils">@sentry-internal/browser-utils</a> v8.37.1 (dependencies)
 #### 
 
 ##### Paths
@@ -2304,7 +2072,7 @@ Native bindings for Rollup
 Browser Utilities for all Sentry JavaScript SDKs
 
 <a name="@sentry-internal/feedback"></a>
-### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/feedback">@sentry-internal/feedback</a> v8.34.0 (dependencies)
+### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/feedback">@sentry-internal/feedback</a> v8.37.1 (dependencies)
 #### 
 
 ##### Paths
@@ -2315,7 +2083,7 @@ Browser Utilities for all Sentry JavaScript SDKs
 Sentry SDK integration for user feedback
 
 <a name="@sentry-internal/replay"></a>
-### <a href="https://docs.sentry.io/platforms/javascript/session-replay/">@sentry-internal/replay</a> v8.34.0 (dependencies)
+### <a href="https://docs.sentry.io/platforms/javascript/session-replay/">@sentry-internal/replay</a> v8.37.1 (dependencies)
 #### 
 
 ##### Paths
@@ -2326,7 +2094,7 @@ Sentry SDK integration for user feedback
 User replays for Sentry
 
 <a name="@sentry-internal/replay-canvas"></a>
-### <a href="https://docs.sentry.io/platforms/javascript/session-replay/">@sentry-internal/replay-canvas</a> v8.34.0 (dependencies)
+### <a href="https://docs.sentry.io/platforms/javascript/session-replay/">@sentry-internal/replay-canvas</a> v8.37.1 (dependencies)
 #### 
 
 ##### Paths
@@ -2337,7 +2105,7 @@ User replays for Sentry
 Replay canvas integration
 
 <a name="@sentry-internal/tracing"></a>
-### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/tracing-internal">@sentry-internal/tracing</a> v7.119.0 (dependencies)
+### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/tracing-internal">@sentry-internal/tracing</a> v7.119.2 (dependencies)
 #### 
 
 ##### Paths
@@ -2348,7 +2116,7 @@ Replay canvas integration
 Sentry Internal Tracing Package
 
 <a name="@sentry/babel-plugin-component-annotate"></a>
-### <a href="https://github.com/getsentry/sentry-javascript-bundler-plugins/tree/main/packages/babel-plugin-component-annotate">@sentry/babel-plugin-component-annotate</a> v2.22.3 (dependencies)
+### <a href="https://github.com/getsentry/sentry-javascript-bundler-plugins/tree/main/packages/babel-plugin-component-annotate">@sentry/babel-plugin-component-annotate</a> v2.22.6 (dependencies)
 #### 
 
 ##### Paths
@@ -2359,7 +2127,7 @@ Sentry Internal Tracing Package
 A Babel plugin that annotates frontend components with additional data to enrich the experience in Sentry
 
 <a name="@sentry/browser"></a>
-### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/browser">@sentry/browser</a> v8.34.0 (dependencies)
+### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/browser">@sentry/browser</a> v8.37.1 (dependencies)
 #### 
 
 ##### Paths
@@ -2370,7 +2138,7 @@ A Babel plugin that annotates frontend components with additional data to enrich
 Official Sentry SDK for browsers
 
 <a name="@sentry/bundler-plugin-core"></a>
-### <a href="https://github.com/getsentry/sentry-javascript-bundler-plugins/tree/main/packages/bundler-plugin-core">@sentry/bundler-plugin-core</a> v2.22.3 (dependencies)
+### <a href="https://github.com/getsentry/sentry-javascript-bundler-plugins/tree/main/packages/bundler-plugin-core">@sentry/bundler-plugin-core</a> v2.22.6 (dependencies)
 #### 
 
 ##### Paths
@@ -2392,7 +2160,7 @@ Sentry Bundler Plugin Core
 A command line utility to work with Sentry. https://docs.sentry.io/hosted/learn/cli/
 
 <a name="@sentry/cli"></a>
-### <a href="https://docs.sentry.io/hosted/learn/cli/">@sentry/cli</a> v2.33.1 (dependencies)
+### <a href="https://docs.sentry.io/hosted/learn/cli/">@sentry/cli</a> v2.38.2 (dependencies)
 #### 
 
 ##### Paths
@@ -2403,7 +2171,7 @@ A command line utility to work with Sentry. https://docs.sentry.io/hosted/learn/
 A command line utility to work with Sentry. https://docs.sentry.io/hosted/learn/cli/
 
 <a name="@sentry/cli-linux-x64"></a>
-### @sentry/cli-linux-x64 v2.33.1 (dependencies)
+### @sentry/cli-linux-x64 v2.38.2 (dependencies)
 #### 
 
 ##### Paths
@@ -2414,7 +2182,7 @@ A command line utility to work with Sentry. https://docs.sentry.io/hosted/learn/
 The linux x64 distribution of the Sentry CLI binary.
 
 <a name="@sentry/core"></a>
-### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/core">@sentry/core</a> v7.119.0 (dependencies)
+### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/core">@sentry/core</a> v7.119.2 (dependencies)
 #### 
 
 ##### Paths
@@ -2425,7 +2193,7 @@ The linux x64 distribution of the Sentry CLI binary.
 Base implementation for all Sentry JavaScript SDKs
 
 <a name="@sentry/core"></a>
-### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/core">@sentry/core</a> v8.34.0 (dependencies)
+### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/core">@sentry/core</a> v8.37.1 (dependencies)
 #### 
 
 ##### Paths
@@ -2436,7 +2204,7 @@ Base implementation for all Sentry JavaScript SDKs
 Base implementation for all Sentry JavaScript SDKs
 
 <a name="@sentry/integrations"></a>
-### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/integrations">@sentry/integrations</a> v7.119.0 (dependencies)
+### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/integrations">@sentry/integrations</a> v7.119.2 (dependencies)
 #### 
 
 ##### Paths
@@ -2447,7 +2215,7 @@ Base implementation for all Sentry JavaScript SDKs
 Pluggable integrations that can be used to enhance JS SDKs
 
 <a name="@sentry/nextjs"></a>
-### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/nextjs">@sentry/nextjs</a> v8.34.0 (dependencies)
+### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/nextjs">@sentry/nextjs</a> v8.37.1 (dependencies)
 #### 
 
 ##### Paths
@@ -2458,7 +2226,7 @@ Pluggable integrations that can be used to enhance JS SDKs
 Official Sentry SDK for Next.js
 
 <a name="@sentry/node"></a>
-### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/node">@sentry/node</a> v7.119.0 (dependencies)
+### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/node">@sentry/node</a> v7.119.2 (dependencies)
 #### 
 
 ##### Paths
@@ -2469,7 +2237,7 @@ Official Sentry SDK for Next.js
 Official Sentry SDK for Node.js
 
 <a name="@sentry/node"></a>
-### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/node">@sentry/node</a> v8.34.0 (dependencies)
+### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/node">@sentry/node</a> v8.37.1 (dependencies)
 #### 
 
 ##### Paths
@@ -2480,7 +2248,7 @@ Official Sentry SDK for Node.js
 Sentry Node SDK using OpenTelemetry for performance instrumentation
 
 <a name="@sentry/opentelemetry"></a>
-### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/opentelemetry">@sentry/opentelemetry</a> v8.34.0 (dependencies)
+### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/opentelemetry">@sentry/opentelemetry</a> v8.37.1 (dependencies)
 #### 
 
 ##### Paths
@@ -2491,7 +2259,7 @@ Sentry Node SDK using OpenTelemetry for performance instrumentation
 Official Sentry utilities for OpenTelemetry
 
 <a name="@sentry/react"></a>
-### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/react">@sentry/react</a> v8.34.0 (dependencies)
+### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/react">@sentry/react</a> v8.37.1 (dependencies)
 #### 
 
 ##### Paths
@@ -2502,7 +2270,7 @@ Official Sentry utilities for OpenTelemetry
 Official Sentry SDK for React.js
 
 <a name="@sentry/types"></a>
-### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/types">@sentry/types</a> v7.119.0 (dependencies)
+### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/types">@sentry/types</a> v7.119.2 (dependencies)
 #### 
 
 ##### Paths
@@ -2513,7 +2281,7 @@ Official Sentry SDK for React.js
 Types for all Sentry JavaScript SDKs
 
 <a name="@sentry/types"></a>
-### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/types">@sentry/types</a> v8.34.0 (dependencies)
+### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/types">@sentry/types</a> v8.37.1 (dependencies)
 #### 
 
 ##### Paths
@@ -2524,7 +2292,7 @@ Types for all Sentry JavaScript SDKs
 Types for all Sentry JavaScript SDKs
 
 <a name="@sentry/utils"></a>
-### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/utils">@sentry/utils</a> v7.119.0 (dependencies)
+### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/utils">@sentry/utils</a> v7.119.2 (dependencies)
 #### 
 
 ##### Paths
@@ -2535,7 +2303,7 @@ Types for all Sentry JavaScript SDKs
 Utilities for all Sentry JavaScript SDKs
 
 <a name="@sentry/utils"></a>
-### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/utils">@sentry/utils</a> v8.34.0 (dependencies)
+### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/utils">@sentry/utils</a> v8.37.1 (dependencies)
 #### 
 
 ##### Paths
@@ -2546,7 +2314,7 @@ Utilities for all Sentry JavaScript SDKs
 Utilities for all Sentry JavaScript SDKs
 
 <a name="@sentry/vercel-edge"></a>
-### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/vercel-edge">@sentry/vercel-edge</a> v8.34.0 (dependencies)
+### <a href="https://github.com/getsentry/sentry-javascript/tree/master/packages/vercel-edge">@sentry/vercel-edge</a> v8.37.1 (dependencies)
 #### 
 
 ##### Paths
@@ -2554,10 +2322,10 @@ Utilities for all Sentry JavaScript SDKs
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
 
-Offical Sentry SDK for the Vercel Edge Runtime
+Official Sentry SDK for the Vercel Edge Runtime
 
 <a name="@sentry/webpack-plugin"></a>
-### <a href="https://github.com/getsentry/sentry-javascript-bundler-plugins/tree/main/packages/webpack-plugin">@sentry/webpack-plugin</a> v2.22.3 (dependencies)
+### <a href="https://github.com/getsentry/sentry-javascript-bundler-plugins/tree/main/packages/webpack-plugin">@sentry/webpack-plugin</a> v2.22.6 (dependencies)
 #### 
 
 ##### Paths
@@ -2568,7 +2336,7 @@ Offical Sentry SDK for the Vercel Edge Runtime
 Official Sentry Webpack plugin
 
 <a name="@sentry/wizard"></a>
-### <a href="https://github.com/getsentry/sentry-wizard">@sentry/wizard</a> v3.26.0 (dependencies)
+### <a href="https://github.com/getsentry/sentry-wizard">@sentry/wizard</a> v3.34.4 (dependencies)
 #### 
 
 ##### Paths
@@ -2579,7 +2347,7 @@ Official Sentry Webpack plugin
 Sentry wizard helping you to configure your project
 
 <a name="@supabase/auth-js"></a>
-### <a href="https://github.com/supabase/auth-js">@supabase/auth-js</a> v2.64.4 (dependencies)
+### <a href="https://github.com/supabase/auth-js">@supabase/auth-js</a> v2.65.1 (dependencies)
 #### 
 
 ##### Paths
@@ -2590,7 +2358,7 @@ Sentry wizard helping you to configure your project
 Official client library for Supabase Auth
 
 <a name="@supabase/functions-js"></a>
-### <a href="https://github.com/supabase/functions-js#readme">@supabase/functions-js</a> v2.4.1 (dependencies)
+### <a href="https://github.com/supabase/functions-js#readme">@supabase/functions-js</a> v2.4.3 (dependencies)
 #### 
 
 ##### Paths
@@ -2612,7 +2380,7 @@ JS Client library to interact with Supabase Functions.
 A light-weight module that brings window.fetch to node.js
 
 <a name="@supabase/postgrest-js"></a>
-### <a href="https://github.com/supabase/postgrest-js">@supabase/postgrest-js</a> v1.15.8 (dependencies)
+### <a href="https://github.com/supabase/postgrest-js">@supabase/postgrest-js</a> v1.16.3 (dependencies)
 #### 
 
 ##### Paths
@@ -2623,7 +2391,7 @@ A light-weight module that brings window.fetch to node.js
 Isomorphic PostgREST client
 
 <a name="@supabase/realtime-js"></a>
-### <a href="https://github.com/supabase/realtime-js">@supabase/realtime-js</a> v2.10.2 (dependencies)
+### <a href="https://github.com/supabase/realtime-js">@supabase/realtime-js</a> v2.10.7 (dependencies)
 #### 
 
 ##### Paths
@@ -2634,7 +2402,7 @@ Isomorphic PostgREST client
 Listen to realtime updates to your PostgreSQL database
 
 <a name="@supabase/ssr"></a>
-### <a href="https://github.com/supabase/ssr#readme">@supabase/ssr</a> v0.4.0 (dependencies)
+### <a href="https://github.com/supabase/ssr#readme">@supabase/ssr</a> v0.5.1 (dependencies)
 #### 
 
 ##### Paths
@@ -2645,7 +2413,7 @@ Listen to realtime updates to your PostgreSQL database
 Use the Supabase JavaScript library in popular server-side rendering (SSR) frameworks.
 
 <a name="@supabase/storage-js"></a>
-### <a href="https://github.com/supabase/storage-js">@supabase/storage-js</a> v2.6.0 (dependencies)
+### <a href="https://github.com/supabase/storage-js">@supabase/storage-js</a> v2.7.1 (dependencies)
 #### 
 
 ##### Paths
@@ -2656,7 +2424,7 @@ Use the Supabase JavaScript library in popular server-side rendering (SSR) frame
 Isomorphic storage client for Supabase.
 
 <a name="@supabase/supabase-js"></a>
-### <a href="https://github.com/supabase/supabase-js">@supabase/supabase-js</a> v2.45.0 (dependencies)
+### <a href="https://github.com/supabase/supabase-js">@supabase/supabase-js</a> v2.46.1 (dependencies)
 #### 
 
 ##### Paths
@@ -3019,7 +2787,7 @@ TypeScript definitions for ws
 A structuredClone polyfill
 
 <a name="@vercel/blob"></a>
-### <a href="https://vercel.com/storage/blob">@vercel/blob</a> v0.23.4 (dependencies)
+### <a href="https://vercel.com/storage/blob">@vercel/blob</a> v0.26.0 (dependencies)
 #### 
 
 ##### Paths
@@ -3030,13 +2798,13 @@ A structuredClone polyfill
 The Vercel Blob JavaScript API client
 
 <a name="@vercel/flags"></a>
-### @vercel/flags v2.6.1 (dependencies)
+### @vercel/flags v2.6.3 (dependencies)
 #### 
 
 ##### Paths
 * /home/runner/work/giselle/giselle
 
-unknown manually approved
+<a href="http://opensource.org/licenses/mit-license">MIT</a> manually approved
 
 >The license is none. Check https://github.com/route06inc/giselle/issues/12 later
 
@@ -3056,7 +2824,7 @@ Make the Vercel Toolbar aware of your feature flags and read overrides set by it
 Vercel wrapper around OpenTelemetry APIs
 
 <a name="@vercel/postgres"></a>
-### <a href="https://vercel.com">@vercel/postgres</a> v0.9.0 (dependencies)
+### <a href="https://vercel.com">@vercel/postgres</a> v0.10.0 (dependencies)
 #### 
 
 ##### Paths
@@ -3067,7 +2835,7 @@ Vercel wrapper around OpenTelemetry APIs
 Connect to Vercel Postgres databases on the Edge
 
 <a name="@vercel/speed-insights"></a>
-### @vercel/speed-insights v1.0.12 (dependencies)
+### @vercel/speed-insights v1.1.0 (dependencies)
 #### 
 
 ##### Paths
@@ -3375,7 +3143,7 @@ Read/write IEEE754 floating point numbers from/to a Buffer or array-like object
 A Long class for representing a 64-bit two's-complement integer value.
 
 <a name="@xyflow/react"></a>
-### @xyflow/react v12.0.3 (dependencies)
+### <a href="https://reactflow.dev">@xyflow/react</a> v12.3.4 (dependencies)
 #### 
 
 ##### Paths
@@ -3386,7 +3154,7 @@ A Long class for representing a 64-bit two's-complement integer value.
 React Flow - A highly customizable React library for building node-based editors and interactive flow charts.
 
 <a name="@xyflow/system"></a>
-### @xyflow/system v0.0.37 (dependencies)
+### @xyflow/system v0.0.45 (dependencies)
 #### 
 
 ##### Paths
@@ -3452,7 +3220,7 @@ Turn a function into an `http.Agent` instance
 Missing keepalive http.Agent
 
 <a name="ai"></a>
-### <a href="https://sdk.vercel.ai/docs">ai</a> v3.4.3 (dependencies)
+### <a href="https://sdk.vercel.ai/docs">ai</a> v3.4.33 (dependencies)
 #### 
 
 ##### Paths
@@ -3672,7 +3440,7 @@ Retrying made simple, easy and async
 Minimal async jobs utility library, with streams support
 
 <a name="axios"></a>
-### <a href="https://axios-http.com">axios</a> v1.6.0 (dependencies)
+### <a href="https://axios-http.com">axios</a> v1.7.4 (dependencies)
 #### 
 
 ##### Paths
@@ -3760,7 +3528,7 @@ An arbitrary length integer library for Javascript
 List of binary file extensions
 
 <a name="boring-avatars"></a>
-### <a href="https://boringavatars.com/">boring-avatars</a> v1.11.1 (dependencies)
+### <a href="https://boringavatars.com/">boring-avatars</a> v1.11.2 (dependencies)
 #### 
 
 ##### Paths
@@ -4145,7 +3913,7 @@ A tiny (234B) utility for constructing className strings conditionally.
 A tiny (239B) utility for constructing className strings conditionally.
 
 <a name="cmdk"></a>
-### cmdk v1.0.0 (dependencies)
+### <a href="https://github.com/pacocoursey/cmdk#readme">cmdk</a> v1.0.4 (dependencies)
 #### 
 
 ##### Paths
@@ -4596,7 +4364,7 @@ Safely get a dot-notated property within an object.
 Loads environment variables from .env file
 
 <a name="drizzle-kit"></a>
-### drizzle-kit v0.23.0 (devDependencies)
+### <a href="https://orm.drizzle.team">drizzle-kit</a> v0.28.0 (devDependencies)
 #### 
 
 ##### Paths
@@ -4607,7 +4375,7 @@ Loads environment variables from .env file
 
 
 <a name="drizzle-orm"></a>
-### <a href="https://orm.drizzle.team">drizzle-orm</a> v0.32.1 (dependencies)
+### <a href="https://orm.drizzle.team">drizzle-orm</a> v0.36.1 (dependencies)
 #### 
 
 ##### Paths
@@ -5399,7 +5167,7 @@ A cross browser microtask library
 Intercept imports in Node.js
 
 <a name="import-in-the-middle"></a>
-### <a href="https://github.com/DataDog/import-in-the-middle#readme">import-in-the-middle</a> v1.7.4 (dependencies)
+### <a href="https://github.com/nodejs/import-in-the-middle#readme">import-in-the-middle</a> v1.11.2 (dependencies)
 #### 
 
 ##### Paths
@@ -5432,7 +5200,7 @@ Add callbacks to requests in flight to avoid async duplication
 Browser-friendly inheritance fully compatible with standard node.js inherits()
 
 <a name="input-otp"></a>
-### <a href="https://input-otp.rodz.dev/">input-otp</a> v1.2.4 (dependencies)
+### <a href="https://input-otp.rodz.dev/">input-otp</a> v1.4.1 (dependencies)
 #### 
 
 ##### Paths
@@ -5552,6 +5320,17 @@ Check if the character represented by a given Unicode code point is fullwidth
 
 Returns `true` if the given string looks like a glob pattern or an extglob pattern. This makes it easy to create code that only uses external modules like node-glob when necessary, resulting in much faster code execution and initialization time, and a better user experience.
 
+<a name="is-node-process"></a>
+### is-node-process v1.2.0 (dependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
+
+Reliably determines if the code is running in Node.js
+
 <a name="is-number"></a>
 ### <a href="https://github.com/jonschlinkert/is-number">is-number</a> v7.0.0 (dependencies, devDependencies)
 #### 
@@ -5573,17 +5352,6 @@ Returns true if a number or string value is a finite number. Useful for regex ma
 <a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
 
 Check if a value is a plain object
-
-<a name="is-plain-object"></a>
-### <a href="https://github.com/jonschlinkert/is-plain-object">is-plain-object</a> v5.0.0 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-Returns true if an object was created by the `Object` constructor, or Object.create(null).
 
 <a name="is-reference"></a>
 ### <a href="https://github.com/Rich-Harris/is-reference#readme">is-reference</a> v1.2.1 (dependencies)
@@ -5806,7 +5574,7 @@ JSON for Humans
 Diff & Patch for Javascript objects
 
 <a name="langfuse"></a>
-### langfuse v3.26.0 (dependencies)
+### langfuse v3.29.1 (dependencies)
 #### 
 
 ##### Paths
@@ -5817,7 +5585,7 @@ Diff & Patch for Javascript objects
 
 
 <a name="langfuse-core"></a>
-### langfuse-core v3.26.0 (dependencies)
+### langfuse-core v3.29.1 (dependencies)
 #### 
 
 ##### Paths
@@ -5960,7 +5728,7 @@ The lodash method `_.castArray` exported as a module.
 The lodash method `_.isPlainObject` exported as a module.
 
 <a name="lodash.merge"></a>
-### <a href="https://lodash.com/">lodash.merge</a> v4.6.2 (dependencies, devDependencies)
+### <a href="https://lodash.com/">lodash.merge</a> v4.6.2 (devDependencies)
 #### 
 
 ##### Paths
@@ -6026,7 +5794,7 @@ A cache object that deletes the least-recently-used items.
 A cache object that deletes the least-recently-used items.
 
 <a name="lucide-react"></a>
-### <a href="https://lucide.dev">lucide-react</a> v0.417.0 (dependencies)
+### <a href="https://lucide.dev">lucide-react</a> v0.454.0 (dependencies)
 #### 
 
 ##### Paths
@@ -6565,17 +6333,6 @@ Bytes go in, but they don't come out (when muted).
 modernize node.js to current ECMAScript standards
 
 <a name="nanoid"></a>
-### nanoid v3.3.6 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-A tiny (116 bytes), secure URL-friendly unique string ID generator
-
-<a name="nanoid"></a>
 ### nanoid v3.3.7 (dependencies, devDependencies)
 #### 
 
@@ -6598,7 +6355,7 @@ A tiny (116 bytes), secure URL-friendly unique string ID generator
 Neo-Async is a drop-in replacement for Async, it almost fully covers its functionality and runs faster 
 
 <a name="next"></a>
-### <a href="https://nextjs.org">next</a> v15.0.2 (dependencies)
+### <a href="https://nextjs.org">next</a> v15.0.3 (dependencies)
 #### 
 
 ##### Paths
@@ -6620,7 +6377,7 @@ The React Framework
 Authentication for Next.js
 
 <a name="next-themes"></a>
-### next-themes v0.3.0 (dependencies)
+### next-themes v0.4.3 (dependencies)
 #### 
 
 ##### Paths
@@ -6763,7 +6520,7 @@ Run a function exactly one time
 Ensure a function is only called once
 
 <a name="openai"></a>
-### openai v4.64.0 (dependencies)
+### openai v4.71.1 (dependencies)
 #### 
 
 ##### Paths
@@ -7401,18 +7158,7 @@ React package for working with the DOM.
 Brand checking of React Elements.
 
 <a name="react-remove-scroll"></a>
-### react-remove-scroll v2.5.5 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-Disables scroll outside of `children` node.
-
-<a name="react-remove-scroll"></a>
-### react-remove-scroll v2.5.7 (dependencies)
+### react-remove-scroll v2.6.0 (dependencies)
 #### 
 
 ##### Paths
@@ -7487,17 +7233,6 @@ Recursive version of fs.readdir with streaming API.
 <a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
 
 JavaScript syntax tree transformer, nondestructive pretty-printer, and automatic source map generator
-
-<a name="regenerator-runtime"></a>
-### regenerator-runtime v0.14.1 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-Runtime for Regenerator-compiled generator and async functions.
 
 <a name="remark"></a>
 ### <a href="https://remark.js.org">remark</a> v15.0.1 (dependencies)
@@ -8072,7 +7807,7 @@ Strip ANSI escape codes from a string
 Strip ANSI escape codes from a string
 
 <a name="stripe"></a>
-### <a href="https://github.com/stripe/stripe-node">stripe</a> v16.10.0 (dependencies)
+### <a href="https://github.com/stripe/stripe-node">stripe</a> v17.3.1 (dependencies)
 #### 
 
 ##### Paths
@@ -8193,7 +7928,7 @@ Framework agnostic stale while revalidate (SWR) data fetching strategy
 
 
 <a name="tailwind-merge"></a>
-### <a href="https://github.com/dcastil/tailwind-merge">tailwind-merge</a> v2.5.2 (dependencies)
+### <a href="https://github.com/dcastil/tailwind-merge">tailwind-merge</a> v2.5.4 (dependencies)
 #### 
 
 ##### Paths
@@ -8204,7 +7939,7 @@ Framework agnostic stale while revalidate (SWR) data fetching strategy
 Merge Tailwind CSS classes without style conflicts
 
 <a name="tailwindcss"></a>
-### <a href="https://tailwindcss.com">tailwindcss</a> v3.4.10 (dependencies, devDependencies)
+### <a href="https://tailwindcss.com">tailwindcss</a> v3.4.14 (dependencies, devDependencies)
 #### 
 
 ##### Paths
@@ -8290,6 +8025,17 @@ Promisifies all the selected functions in an object
 <a href="http://en.wikipedia.org/wiki/ISC_license">ISC</a> permitted
 
 
+
+<a name="throttleit"></a>
+### throttleit v2.1.0 (dependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
+
+Throttle a function to limit its execution rate
 
 <a name="through"></a>
 ### <a href="https://github.com/dominictarr/through">through</a> v2.3.8 (dependencies)
@@ -8391,7 +8137,7 @@ Remove spaces and tabs around line-breaks
 Runtime library to validate data against TypeScript interfaces
 
 <a name="ts-pattern"></a>
-### <a href="https://github.com/gvergnaud/ts-pattern#readme">ts-pattern</a> v5.2.0 (dependencies)
+### <a href="https://github.com/gvergnaud/ts-pattern#readme">ts-pattern</a> v5.5.0 (dependencies)
 #### 
 
 ##### Paths
@@ -8424,7 +8170,7 @@ Runtime library for TypeScript helper functions
 Runtime library for TypeScript helper functions
 
 <a name="turbo"></a>
-### <a href="https://turbo.build/repo">turbo</a> v2.0.9 (devDependencies)
+### <a href="https://turbo.build/repo">turbo</a> v2.2.3 (devDependencies)
 #### 
 
 ##### Paths
@@ -8435,7 +8181,7 @@ Runtime library for TypeScript helper functions
 Turborepo is a high-performance build system for JavaScript and TypeScript codebases.
 
 <a name="turbo-linux-64"></a>
-### <a href="https://turbo.build/repo">turbo-linux-64</a> v2.0.9 (devDependencies)
+### <a href="https://turbo.build/repo">turbo-linux-64</a> v2.2.3 (devDependencies)
 #### 
 
 ##### Paths
@@ -8490,7 +8236,7 @@ Convert a typed array to a Buffer without a copy
 
 
 <a name="typescript"></a>
-### <a href="https://www.typescriptlang.org/">typescript</a> v5.6.2 (dependencies, devDependencies)
+### <a href="https://www.typescriptlang.org/">typescript</a> v5.6.3 (dependencies, devDependencies)
 #### 
 
 ##### Paths
@@ -8622,7 +8368,7 @@ unist utility to recursively walk over nodes, with ancestral information
 Unified plugin system for build tools
 
 <a name="unstructured-client"></a>
-### unstructured-client v0.18.1 (dependencies)
+### unstructured-client v0.18.2 (dependencies)
 #### 
 
 ##### Paths
@@ -8732,7 +8478,7 @@ RFC4122 (v1, v4, and v5) UUIDs
 RFC4122 (v1, v4, and v5) UUIDs
 
 <a name="valibot"></a>
-### <a href="https://valibot.dev">valibot</a> v0.37.0 (dependencies)
+### <a href="https://valibot.dev">valibot</a> v0.42.1 (dependencies)
 #### 
 
 ##### Paths
@@ -9062,7 +8808,7 @@ Tiny queue data structure
 TypeScript-first schema declaration and validation library with static type inference
 
 <a name="zod-to-json-schema"></a>
-### zod-to-json-schema v3.23.2 (dependencies)
+### zod-to-json-schema v3.23.5 (dependencies)
 #### 
 
 ##### Paths
