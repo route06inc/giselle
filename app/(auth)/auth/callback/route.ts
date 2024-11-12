@@ -84,6 +84,9 @@ async function storeProviderTokens(user: User, session: Session) {
 	if (provider_token.startsWith("ghu_")) {
 		provider = "github";
 	}
+	if (session.user.app_metadata.providers.includes("google")) {
+		provider = "google";
+	}
 	// TODO: add another logic for other providers
 	if (provider === "") {
 		throw new Error("No provider found");

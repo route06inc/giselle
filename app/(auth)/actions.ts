@@ -22,3 +22,23 @@ export async function authorizeGitHub() {
 		redirect(data.url);
 	}
 }
+
+export async function authorizeGoogle() {
+	const supabase = await createClient();
+
+	const { data, error } = await supabase.auth.signInWithOAuth({
+		provider: "google",
+		options: {
+			redirectTo: getAuthCallbackUrl(),
+		},
+	});
+
+	if (error != null) {
+		const { code, message, name, status } = error;
+		throw new Error(`${name} occurred: ${code} (${status}): ${message}`);
+	}
+
+	if (data.url) {
+		redirect(data.url);
+	}
+}
