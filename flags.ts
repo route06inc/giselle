@@ -70,7 +70,7 @@ export const chooseModelFlag = flag<boolean>({
 		return takeLocalEnv("CHOOSE_MODEL_FLAG");
 	},
 	description: "Enable choose model",
-	defaultValue: false,
+	defaultValue: true,
 	options: [
 		{ value: false, label: "disable" },
 		{ value: true, label: "Enable" },
@@ -83,7 +83,7 @@ export const anthropicFlag = flag<boolean>({
 		return takeLocalEnv("ANTHROPIC_FLAG");
 	},
 	description: "Enable anthropic",
-	defaultValue: false,
+	defaultValue: true,
 	options: [
 		{ value: false, label: "disable" },
 		{ value: true, label: "Enable" },
