@@ -31,7 +31,7 @@ export const webSearchNodeFlag = flag<boolean>({
 		return takeLocalEnv("WEB_SEARCH_NODE_FLAG");
 	},
 	description: "User can use a web search node",
-	defaultValue: false,
+	defaultValue: true,
 	options: [
 		{ value: false, label: "disable" },
 		{ value: true, label: "Enable" },
