@@ -18,7 +18,7 @@ export const uploadFileToPromptNodeFlag = flag<boolean>({
 		return takeLocalEnv("UPLOAD_FILE_TO_PROMPT_NODE_FLAG");
 	},
 	description: "User can upload a file to the prompt node",
-	defaultValue: false,
+	defaultValue: true,
 	options: [
 		{ value: false, label: "disable" },
 		{ value: true, label: "Enable" },
