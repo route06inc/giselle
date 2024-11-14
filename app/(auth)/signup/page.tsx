@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ClickableText } from "@/components/ui/clicable-text";
 import { MailIcon } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
 import { ActionPrompt } from "../components/action-prompt";
 import { Divider } from "../components/divider";
 import { LegalConsent } from "../components/legal-consent";
@@ -24,7 +25,9 @@ export default function SignupPage() {
 			</div>
 			<div className="mt-8 space-y-6 w-[320px]">
 				<PageHeader title="Get Started" />
-				<OAuthProviders labelPrefix="Sign up" />
+				<Suspense fallback={<div>Loading...</div>}>
+					<OAuthProviders labelPrefix="Continue" />
+				</Suspense>
 				<Divider label="or" />
 				<Button asChild>
 					<Link href="/signup/email">

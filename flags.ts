@@ -51,3 +51,16 @@ export const githubIntegrationFlag = flag<boolean>({
 		{ value: true, label: "Enable" },
 	],
 });
+
+export const googleOauthFlag = flag<boolean>({
+	key: "google-oauth",
+	async decide() {
+		return takeLocalEnv("GOOGLE_OAUTH_FLAG");
+	},
+	description: "Enable Google OAuth",
+	defaultValue: false,
+	options: [
+		{ value: false, label: "disable" },
+		{ value: true, label: "Enable" },
+	],
+});

@@ -1,5 +1,6 @@
 import { ClickableText } from "@/components/ui/clicable-text";
 import Link from "next/link";
+import { Suspense } from "react";
 import { ActionPrompt } from "../components/action-prompt";
 import { Divider } from "../components/divider";
 import { OAuthProviders } from "../components/oauth-providers";
@@ -13,7 +14,9 @@ export default function Page() {
 				<div className="mx-auto grid w-[350px] gap-[24px]">
 					<PageTitle>Log in to Giselle</PageTitle>
 					<div className="grid gap-[16px]">
-						<OAuthProviders labelPrefix="Continue" />
+						<Suspense fallback={<div>Loading...</div>}>
+							<OAuthProviders labelPrefix="Continue" />
+						</Suspense>
 						<Divider />
 						<LoginForm />
 
