@@ -5,56 +5,31 @@ import {
 	BackgroundVariant,
 	Panel,
 	ReactFlow,
-	ReactFlowProvider,
 	SelectionMode,
 	useReactFlow,
 	useUpdateNodeInternals,
 } from "@xyflow/react";
 import bg from "./bg.png";
 import "@xyflow/react/dist/style.css";
-import { useEffect, useMemo, useState } from "react";
-import { GraphContextProvider, useGraph } from "../contexts/graph";
-import {
-	MousePositionProvider,
-	useMousePosition,
-} from "../contexts/mouse-position";
-import {
-	PropertiesPanelProvider,
-	usePropertiesPanel,
-} from "../contexts/properties-panel";
-import { ToolbarContextProvider, useToolbar } from "../contexts/toolbar";
-import type { Graph, NodeId, Position, Tool } from "../types";
-import { createNodeId } from "../utils";
+import { useEffect } from "react";
+import { useGraph } from "../contexts/graph";
+import { useMousePosition } from "../contexts/mouse-position";
+import { usePropertiesPanel } from "../contexts/properties-panel";
+import { useToolbar } from "../contexts/toolbar";
+import type { ConnectionId, NodeId, Tool } from "../types";
+import { createNodeId, isTextGeneration } from "../utils";
 import { Edge } from "./edge";
 import { Node, PreviewNode } from "./node";
 import { PropertiesPanel } from "./properties-panel";
 import { Toolbar } from "./toolbar";
 
-interface EditorProps {
-	graph: Graph;
-}
-export function Editor(props: EditorProps) {
-	return (
-		<GraphContextProvider defaultGraph={props.graph}>
-			<PropertiesPanelProvider>
-				<ReactFlowProvider>
-					<ToolbarContextProvider>
-						<MousePositionProvider>
-							<EditorInner />
-						</MousePositionProvider>
-					</ToolbarContextProvider>
-				</ReactFlowProvider>
-			</PropertiesPanelProvider>
-		</GraphContextProvider>
-	);
-}
 const nodeTypes = {
 	giselleNode: Node,
 };
 const edgeTypes = {
 	giselleEdge: Edge,
 };
-function EditorInner() {
+export function Editor() {
 	const { graph, dispatch } = useGraph();
 	const { selectedTool, reset } = useToolbar();
 	const reactFlowInstance = useReactFlow<Node, Edge>();
@@ -99,15 +74,15 @@ function EditorInner() {
 						source: connection.sourceNodeId,
 						target: connection.targetNodeId,
 						targetHandle: connection.targetNodeHandleId,
-						selectable: selectedTool.category === "move",
-						deletable: selectedTool.category === "move",
+						selectable: false,
+						deletable: false,
 						data: {
 							connection,
 						},
 					}) satisfies Edge,
 			),
 		);
-	}, [graph.connections, reactFlowInstance.setEdges, selectedTool]);
+	}, [graph.connections, reactFlowInstance.setEdges]);
 	const { setTab } = usePropertiesPanel();
 	return (
 		<div className="w-full h-screen">
@@ -155,16 +130,69 @@ function EditorInner() {
 								break;
 							}
 							case "remove": {
-								console.log(nodeChange);
+								const removeNode = graph.nodes.find(
+									(node) => node.id === nodeChange.id,
+								);
+								if (removeNode === undefined) {
+									return;
+								}
+								const incomingConnections = graph.connections.filter(
+									(connection) => connection.sourceNodeId === removeNode.id,
+								);
+								incomingConnections.map((incomingConnection) => {
+									dispatch({
+										type: "removeConnection",
+										input: {
+											connectionId: incomingConnection.id,
+										},
+									});
+								});
+								const dependentNodes = graph.nodes.filter((node) =>
+									incomingConnections.some(
+										(conn) => conn.targetNodeId === node.id,
+									),
+								);
+								dependentNodes.map((dependentNode) => {
+									const handleIds = incomingConnections
+										.filter(
+											(incomingConnection) =>
+												incomingConnection.targetNodeId === dependentNode.id,
+										)
+										.map(
+											(incomingConnection) =>
+												incomingConnection.targetNodeHandleId,
+										);
+									if (isTextGeneration(dependentNode)) {
+										dispatch({
+											type: "updateNode",
+											input: {
+												nodeId: dependentNode.id,
+												node: {
+													...dependentNode,
+													content: {
+														...dependentNode.content,
+														requirement: handleIds.includes(
+															dependentNode.content.requirement?.id,
+														)
+															? undefined
+															: dependentNode.content.requirement,
+														sources: dependentNode.content.sources.filter(
+															(source) => !handleIds.includes(source.id),
+														),
+													},
+												},
+											},
+										});
+									}
+								});
+								dispatch({
+									type: "removeNode",
+									input: {
+										nodeId: removeNode.id,
+									},
+								});
 								break;
 							}
-						}
-					});
-				}}
-				onEdgesChange={(edgesChange) => {
-					edgesChange.map((edgeChange) => {
-						if (edgeChange.type === "remove") {
-							console.log(edgeChange);
 						}
 					});
 				}}

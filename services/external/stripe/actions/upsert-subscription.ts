@@ -2,6 +2,7 @@ import { db, subscriptions, teamMemberships, teams } from "@/drizzle";
 import {
 	DRAFT_TEAM_NAME_METADATA_KEY,
 	DRAFT_TEAM_USER_DB_ID_METADATA_KEY,
+	UPGRADING_TEAM_DB_ID_KEY,
 } from "@/services/teams/constants";
 import { eq } from "drizzle-orm";
 import type Stripe from "stripe";
@@ -25,27 +26,62 @@ export const upsertSubscription = async (subscriptionId: string) => {
 };
 
 async function activateProTeamSubscription(subscription: Stripe.Subscription) {
-	// TODO: handle the case of upgrading.
-	if (
-		!(DRAFT_TEAM_NAME_METADATA_KEY in subscription.metadata) ||
-		!(DRAFT_TEAM_USER_DB_ID_METADATA_KEY in subscription.metadata)
-	) {
-		throw new Error(
-			"Draft team information is not found in subscription metadata",
+	const upgradingTeamDbIdKey = UPGRADING_TEAM_DB_ID_KEY;
+	if (upgradingTeamDbIdKey in subscription.metadata) {
+		const teamDbId = Number.parseInt(
+			subscription.metadata[upgradingTeamDbIdKey],
+			10,
 		);
+		await upgradeExistingTeam(subscription, teamDbId);
+		return;
 	}
 
-	const userDbId = Number.parseInt(
-		subscription.metadata[DRAFT_TEAM_USER_DB_ID_METADATA_KEY],
-		10,
-	);
-	const teamName = subscription.metadata[DRAFT_TEAM_NAME_METADATA_KEY];
+	const draftTeamNameKey = DRAFT_TEAM_NAME_METADATA_KEY;
+	const draftTeamUserDbIdKey = DRAFT_TEAM_USER_DB_ID_METADATA_KEY;
+	if (
+		draftTeamNameKey in subscription.metadata &&
+		draftTeamUserDbIdKey in subscription.metadata
+	) {
+		const teamName = subscription.metadata[draftTeamNameKey];
+		const userDbId = Number.parseInt(
+			subscription.metadata[draftTeamUserDbIdKey],
+			10,
+		);
+		await createNewProTeam(subscription, userDbId, teamName);
+		return;
+	}
 
+	throw new Error("Invalid subscription metadata");
+}
+
+async function createNewProTeam(
+	subscription: Stripe.Subscription,
+	userDbId: number,
+	teamName: string,
+) {
 	// wrap operations in a transaction to prevent duplicate team and membership creation
 	await db.transaction(async (tx) => {
 		const teamDbId = await createTeam(tx, userDbId, teamName);
 		// if the race condition happens, inserting subscription will successfully raise because of the unique constraint.
 		await insertSubscription(tx, subscription, teamDbId);
+	});
+}
+
+async function upgradeExistingTeam(
+	subscription: Stripe.Subscription,
+	teamDbId: number,
+) {
+	await db.transaction(async (tx) => {
+		const result = await tx
+			.select({ dbId: teams.dbId })
+			.from(teams)
+			.for("update")
+			.where(eq(teams.dbId, teamDbId));
+		if (result.length !== 1) {
+			throw new Error("Team not found");
+		}
+		const team = result[0];
+		await insertSubscription(tx, subscription, team.dbId);
 	});
 }
 

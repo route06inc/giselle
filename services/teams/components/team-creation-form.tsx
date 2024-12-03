@@ -36,9 +36,13 @@ function Submit({
 
 interface TeamCreationFormProps {
 	canCreateFreeTeam: boolean;
+	proPlanPrice: string;
 }
 
-export function TeamCreationForm({ canCreateFreeTeam }: TeamCreationFormProps) {
+export function TeamCreationForm({
+	canCreateFreeTeam,
+	proPlanPrice,
+}: TeamCreationFormProps) {
 	const [teamName, setTeamName] = useState("");
 	const [selectedPlan, setSelectedPlan] = useState("");
 
@@ -105,7 +109,7 @@ export function TeamCreationForm({ canCreateFreeTeam }: TeamCreationFormProps) {
 									className="text-blue-500"
 								/>
 								<Label htmlFor="pro" className="ml-2 text-gray-300">
-									$29/month
+									{proPlanPrice}/month
 								</Label>
 							</CardContent>
 						</label>

@@ -15,8 +15,10 @@ import {
 import { proTeamPlanFlag } from "@/flags";
 import { getUser } from "@/lib/supabase";
 import { isEmailFromRoute06 } from "@/lib/utils";
+import { formatStripePrice, stripe } from "@/services/external/stripe";
 import { and, eq } from "drizzle-orm";
 import Link from "next/link";
+import invariant from "tiny-invariant";
 import { TeamCreationForm } from "./team-creation-form";
 
 async function fetchTeams(supabaseUserId: string) {
@@ -59,6 +61,10 @@ export default async function TeamCreationModal() {
 	const hasExistingFreeTeam = teams.some(
 		(team) => team.teamType === "customer" && !team.activeSubscription,
 	);
+	const proPlanPriceId = process.env.STRIPE_PRO_PLAN_PRICE_ID;
+	invariant(proPlanPriceId, "STRIPE_PRO_PLAN_PRICE_ID is not set");
+	const proPlan = await stripe.prices.retrieve(proPlanPriceId);
+	const proPlanPrice = formatStripePrice(proPlan);
 
 	return (
 		<Dialog>
@@ -78,6 +84,7 @@ export default async function TeamCreationModal() {
 				</DialogHeader>
 				<TeamCreationForm
 					canCreateFreeTeam={!isInternalUser && !hasExistingFreeTeam}
+					proPlanPrice={proPlanPrice}
 				/>
 			</DialogContent>
 		</Dialog>

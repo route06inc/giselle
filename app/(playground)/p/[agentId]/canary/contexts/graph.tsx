@@ -1,3 +1,5 @@
+"use client";
+
 import {
 	type ReactNode,
 	createContext,
@@ -75,6 +77,13 @@ interface AddNodeAction {
 	type: "addNode";
 	input: AddNodeActionInput;
 }
+interface RemoveNoeActionInput {
+	nodeId: NodeId;
+}
+interface RemoveNodeAction {
+	type: "removeNode";
+	input: RemoveNoeActionInput;
+}
 type GraphAction =
 	| UpsertArtifactAction
 	| UpdateNodeAction
@@ -82,7 +91,8 @@ type GraphAction =
 	| RemoveConnectionAction
 	| UpdateNodePositionAction
 	| UpdateNodeSelectionAction
-	| AddNodeAction;
+	| AddNodeAction
+	| RemoveNodeAction;
 
 export function upsertArtifact(
 	input: UpsertArtifactActionInput,
@@ -111,7 +121,13 @@ function applyActions(
 
 interface GraphContextValue {
 	graph: Graph;
+	graphUrl: string;
 	dispatch: (action: GraphActionOrActions) => void;
+	/**
+	 * Persists the current graph state to the server immediately.
+	 * Returns the new graph URL.
+	 */
+	flush: () => Promise<string>;
 }
 const GraphContext = createContext<GraphContextValue | undefined>(undefined);
 
@@ -169,6 +185,12 @@ function graphReducer(graph: Graph, action: GraphAction): Graph {
 				...graph,
 				nodes: [...graph.nodes, action.input.node],
 			};
+
+		case "removeNode":
+			return {
+				...graph,
+				nodes: graph.nodes.filter((node) => node.id !== action.input.nodeId),
+			};
 		default:
 			return graph;
 	}
@@ -177,18 +199,60 @@ function graphReducer(graph: Graph, action: GraphAction): Graph {
 export function GraphContextProvider({
 	children,
 	defaultGraph,
+	defaultGraphUrl,
+	onPersistAction,
 }: {
 	children: ReactNode;
 	defaultGraph: Graph;
+	defaultGraphUrl: string;
+	/**
+	 * Persists the graph to the server.
+	 * Returns the new graph URL.
+	 */
+	onPersistAction: (graph: Graph) => Promise<string>;
 }) {
 	const graphRef = useRef(defaultGraph);
 	const [graph, setGraph] = useState(graphRef.current);
-	const dispatch = useCallback((actionOrActions: GraphActionOrActions) => {
-		graphRef.current = applyActions(graphRef.current, actionOrActions);
-		setGraph(graphRef.current);
-	}, []);
+	const [graphUrl, setGraphUrl] = useState(defaultGraphUrl);
+	const persistTimeoutRef = useRef<Timer | null>(null);
+	const isPendingPersistRef = useRef(false);
+	const persist = useCallback(async () => {
+		isPendingPersistRef.current = false;
+		try {
+			const newGraphUrl = await onPersistAction(graphRef.current);
+			setGraphUrl(newGraphUrl);
+			return newGraphUrl;
+		} catch (error) {
+			console.error("Failed to persist graph:", error);
+			return graphUrl;
+		}
+	}, [onPersistAction, graphUrl]);
+
+	const flush = useCallback(async () => {
+		if (persistTimeoutRef.current) {
+			clearTimeout(persistTimeoutRef.current);
+			persistTimeoutRef.current = null;
+		}
+		return await persist();
+	}, [persist]);
+
+	const dispatch = useCallback(
+		(actionOrActions: GraphActionOrActions) => {
+			graphRef.current = applyActions(graphRef.current, actionOrActions);
+			setGraph(graphRef.current);
+
+			isPendingPersistRef.current = true;
+
+			if (persistTimeoutRef.current) {
+				clearTimeout(persistTimeoutRef.current);
+			}
+
+			persistTimeoutRef.current = setTimeout(persist, 500);
+		},
+		[persist],
+	);
 	return (
-		<GraphContext.Provider value={{ graph, dispatch }}>
+		<GraphContext.Provider value={{ graph, dispatch, flush, graphUrl }}>
 			{children}
 		</GraphContext.Provider>
 	);

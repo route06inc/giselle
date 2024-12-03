@@ -1,3 +1,5 @@
+"use client";
+
 import { type ReactNode, createContext, useContext, useState } from "react";
 import type { Tool } from "../types";
 

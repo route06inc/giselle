@@ -22,6 +22,7 @@ import {
 import { DocumentIcon } from "../../beta-proto/components/icons/document";
 import { PanelCloseIcon } from "../../beta-proto/components/icons/panel-close";
 import { PanelOpenIcon } from "../../beta-proto/components/icons/panel-open";
+import { WilliIcon } from "../../beta-proto/components/icons/willi";
 import { action, parse } from "../actions";
 import { vercelBlobFileFolder } from "../constants";
 import {
@@ -260,7 +261,7 @@ function DialogFooter(props: HTMLAttributes<HTMLDivElement>) {
 DialogFooter.displayName = "DialogHeader";
 
 export function PropertiesPanel() {
-	const { graph, dispatch } = useGraph();
+	const { graph, dispatch, flush } = useGraph();
 	const selectedNode = useSelectedNode();
 	const { open, setOpen, tab, setTab } = usePropertiesPanel();
 	return (
@@ -350,8 +351,10 @@ export function PropertiesPanel() {
 												},
 											});
 											setTab("Result");
+											const latestGraphUrl = await flush();
+											console.log(latestGraphUrl);
 											const stream = await action(
-												"https://aj9qps90wwygtg5h.public.blob.vercel-storage.com/canary/mockData-sf23dFVJkNoaXv3Di56N40Pt83JBSr.json",
+												latestGraphUrl,
 												selectedNode.id,
 											);
 
@@ -1355,6 +1358,14 @@ function TabContentGenerateTextResult({
 				</Dialog>
 			)}
 			<div>{artifact.object.messages.description}</div>
+
+			{artifact.type === "streamArtifact" && (
+				<div className="flex gap-[12px]">
+					<WilliIcon className="w-[20px] h-[20px] fill-black-40 animate-[pop-pop_1.8s_steps(1)_infinite]" />
+					<WilliIcon className="w-[20px] h-[20px] fill-black-40 animate-[pop-pop_1.8s_steps(1)_0.6s_infinite]" />
+					<WilliIcon className="w-[20px] h-[20px] fill-black-40 animate-[pop-pop_1.8s_steps(1)_1.2s_infinite]" />
+				</div>
+			)}
 
 			{artifact.type === "generatedArtifact" && (
 				<div>

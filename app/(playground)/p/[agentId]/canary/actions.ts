@@ -8,7 +8,7 @@ import HandleBars from "handlebars";
 import { UnstructuredClient } from "unstructured-client";
 import { Strategy } from "unstructured-client/sdk/models/shared";
 import * as v from "valibot";
-import { vercelBlobFileFolder } from "./constants";
+import { vercelBlobFileFolder, vercelBlobGraphFolder } from "./constants";
 import { textGenerationPrompt } from "./prompts";
 import type {
 	FileId,
@@ -20,7 +20,12 @@ import type {
 	TextArtifactObject,
 	TextGenerateActionContent,
 } from "./types";
-import { elementsToMarkdown, pathJoin, resolveLanguageModel } from "./utils";
+import {
+	buildGraphPath,
+	elementsToMarkdown,
+	pathJoin,
+	resolveLanguageModel,
+} from "./utils";
 
 const artifactSchema = v.object({
 	plan: v.pipe(
@@ -256,4 +261,10 @@ export async function parse(id: FileId, name: string, blobUrl: string) {
 	);
 
 	return vercelBlob;
+}
+
+export async function putGraph(graph: Graph) {
+	return await put(buildGraphPath(graph.id), JSON.stringify(graph), {
+		access: "public",
+	});
 }

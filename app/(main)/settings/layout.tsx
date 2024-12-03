@@ -1,4 +1,4 @@
-import { freePlanFlag, githubIntegrationFlag } from "@/flags";
+import { freePlanFlag, githubIntegrationFlag, proTeamPlanFlag } from "@/flags";
 import { CreditCardIcon, UserIcon, UsersIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { IntegrationIcon } from "./components/integration-icon";
@@ -9,6 +9,7 @@ export default async function SettingLayout({
 }: { children: ReactNode }) {
 	const displayGitHubIntegration = await githubIntegrationFlag();
 	const displayFreePlan = await freePlanFlag();
+	const displayProTeamPlan = await proTeamPlanFlag();
 
 	return (
 		<div className="flex divide-x divide-black-80 h-full">
@@ -31,12 +32,14 @@ export default async function SettingLayout({
 							Integration
 						</MenuLink>
 					)}
-					<MenuLink
-						href="/settings/billing"
-						icon={<CreditCardIcon className="w-4 h-4" />}
-					>
-						Billing
-					</MenuLink>
+					{!displayProTeamPlan && (
+						<MenuLink
+							href="/settings/billing"
+							icon={<CreditCardIcon className="w-4 h-4" />}
+						>
+							Billing
+						</MenuLink>
+					)}
 					{displayFreePlan && (
 						<MenuLink
 							href="/settings/team"

@@ -1,4 +1,5 @@
 import { getCurrentTeam } from "@/app/(auth)/lib";
+import { putGraph } from "@/app/(playground)/p/[agentId]/canary/actions";
 import { Button } from "@/components/ui/button";
 import { agents, db, supabaseUserMappings, teamMemberships } from "@/drizzle";
 import { getUser } from "@/lib/supabase";
@@ -9,6 +10,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { vercelBlobGraphFolder } from "../../(playground)/p/[agentId]/canary/constants";
 import {
+	buildGraphPath,
 	initGraph,
 	pathJoin,
 } from "../../(playground)/p/[agentId]/canary/utils";
@@ -67,13 +69,7 @@ export async function AgentListV2() {
 
 		const graph = initGraph();
 		const agentId = `agnt_${createId()}` as const;
-		const { url } = await put(
-			pathJoin(vercelBlobGraphFolder, `${graph.id}.json`),
-			JSON.stringify(graph),
-			{
-				access: "public",
-			},
-		);
+		const { url } = await putGraph(graph);
 		const team = await getCurrentTeam();
 		await db.insert(agents).values({
 			id: agentId,
