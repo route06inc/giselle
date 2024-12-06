@@ -102,7 +102,7 @@ export const stripeUserMappings = pgTable("stripe_user_mappings", {
 	stripeCustomerId: text("stripe_customer_id").notNull().unique(),
 });
 
-type TeamRole = "admin" | "member";
+export type TeamRole = "admin" | "member";
 export const teamMemberships = pgTable(
 	"team_memberships",
 	{

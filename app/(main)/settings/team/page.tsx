@@ -1,6 +1,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense } from "react";
 import BillingSection from "./billing-section";
+import { TeamMembers } from "./team-members";
 import { TeamName } from "./team-name";
 
 export default function TeamPage() {
@@ -12,7 +13,6 @@ export default function TeamPage() {
 			>
 				Team
 			</h3>
-
 			<Suspense
 				fallback={
 					<div className="w-full h-24">
@@ -22,7 +22,7 @@ export default function TeamPage() {
 			>
 				<TeamName />
 			</Suspense>
-
+			<TeamMembers />
 			<BillingSection />
 		</div>
 	);
