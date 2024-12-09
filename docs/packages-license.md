@@ -1,9 +1,9 @@
 # giselle
 
-As of December  5, 2024  6:53am. 920 total
+As of December  9, 2024  7:38am. 924 total
 
 ## Summary
-* 675 MIT
+* 679 MIT
 * 127 Apache 2.0
 * 62 ISC
 * 24 New BSD
@@ -2050,6 +2050,17 @@ A minimal UTF8 implementation for number arrays.
 
 
 
+<a name="@radix-ui/react-alert-dialog"></a>
+### <a href="https://radix-ui.com/primitives">@radix-ui/react-alert-dialog</a> v1.1.2 (dependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
+
+
+
 <a name="@radix-ui/react-arrow"></a>
 ### <a href="https://radix-ui.com/primitives">@radix-ui/react-arrow</a> v1.1.0 (dependencies, devDependencies)
 #### 
@@ -2160,6 +2171,17 @@ A minimal UTF8 implementation for number arrays.
 
 
 
+<a name="@radix-ui/react-dialog"></a>
+### <a href="https://radix-ui.com/primitives">@radix-ui/react-dialog</a> v1.1.2 (dependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
+
+
+
 <a name="@radix-ui/react-direction"></a>
 ### <a href="https://radix-ui.com/primitives">@radix-ui/react-direction</a> v1.1.0 (dependencies)
 #### 
@@ -2228,6 +2250,17 @@ A minimal UTF8 implementation for number arrays.
 
 <a name="@radix-ui/react-focus-guards"></a>
 ### <a href="https://radix-ui.com/primitives">@radix-ui/react-focus-guards</a> v1.1.0 (dependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
+
+
+
+<a name="@radix-ui/react-focus-guards"></a>
+### <a href="https://radix-ui.com/primitives">@radix-ui/react-focus-guards</a> v1.1.1 (dependencies)
 #### 
 
 ##### Paths
@@ -8311,6 +8344,17 @@ Disables scroll outside of `children` node.
 
 <a name="react-remove-scroll"></a>
 ### react-remove-scroll v2.5.7 (dependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
+
+Disables scroll outside of `children` node.
+
+<a name="react-remove-scroll"></a>
+### react-remove-scroll v2.6.0 (dependencies)
 #### 
 
 ##### Paths
