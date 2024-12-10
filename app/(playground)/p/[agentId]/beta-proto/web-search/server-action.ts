@@ -3,6 +3,7 @@
 import { getCurrentMeasurementScope, isRoute06User } from "@/app/(auth)/lib";
 import { langfuseModel } from "@/lib/llm";
 import { createLogger, withMeasurement } from "@/lib/opentelemetry";
+import { fetchCurrentUser } from "@/services/accounts/fetch-current-user";
 import { openai } from "@ai-sdk/openai";
 import FirecrawlApp from "@mendable/firecrawl-js";
 import { createId } from "@paralleldrive/cuid2";
@@ -37,8 +38,10 @@ export async function generateWebSearchStream(
 ) {
 	const startTime = performance.now();
 	const lf = new Langfuse();
+	const currentUser = await fetchCurrentUser();
 	const trace = lf.trace({
 		id: `giselle-${Date.now()}`,
+		userId: currentUser.dbId.toString(),
 	});
 
 	const logger = createLogger("web-search");

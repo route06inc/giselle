@@ -6,6 +6,7 @@ import { createStreamableValue } from "ai/rsc";
 import { getCurrentMeasurementScope, isRoute06User } from "@/app/(auth)/lib";
 import { langfuseModel } from "@/lib/llm";
 import { createLogger } from "@/lib/opentelemetry";
+import { fetchCurrentUser } from "@/services/accounts/fetch-current-user";
 import { waitUntil } from "@vercel/functions";
 import { Langfuse } from "langfuse";
 import { schema as artifactSchema } from "../artifact/schema";
@@ -26,8 +27,10 @@ export async function generateArtifactStream(
 ) {
 	const startTime = performance.now();
 	const lf = new Langfuse();
+	const currentUser = await fetchCurrentUser();
 	const trace = lf.trace({
 		id: `giselle-${Date.now()}`,
+		userId: currentUser.dbId.toString(),
 	});
 	const logger = createLogger("generate-artifact");
 	const sources = await sourceIndexesToSources({
