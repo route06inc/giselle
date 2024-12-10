@@ -1,7 +1,12 @@
 "use server";
 
 import { langfuseModel } from "@/lib/llm";
-import { ExternalServiceName, createLogger, withCountMeasurement, withTokenMeasurement } from "@/lib/opentelemetry";
+import {
+	ExternalServiceName,
+	createLogger,
+	withCountMeasurement,
+	withTokenMeasurement,
+} from "@/lib/opentelemetry";
 import { openai } from "@ai-sdk/openai";
 import FirecrawlApp from "@mendable/firecrawl-js";
 import { createId } from "@paralleldrive/cuid2";
@@ -189,14 +194,15 @@ ${sourcesToText(sources)}
 			chunkedArray.map(async (webSearchItems) => {
 				for (const webSearchItem of webSearchItems) {
 					try {
-						const scrapeResponse = await withCountMeasurement<FirecrawlResponse>(
-							logger,
-							() =>
-								app.scrapeUrl(webSearchItem.url, {
-									formats: ["markdown"],
-								}),
-							ExternalServiceName.Firecrawl,
-						);
+						const scrapeResponse =
+							await withCountMeasurement<FirecrawlResponse>(
+								logger,
+								() =>
+									app.scrapeUrl(webSearchItem.url, {
+										formats: ["markdown"],
+									}),
+								ExternalServiceName.Firecrawl,
+							);
 
 						if (scrapeResponse.success) {
 							const blob = await put(
