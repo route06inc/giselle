@@ -1,8 +1,7 @@
 "use server";
 
-import { getCurrentMeasurementScope, isRoute06User } from "@/app/(auth)/lib";
 import { langfuseModel } from "@/lib/llm";
-import { ExternalServiceName, createLogger, withCountMeasurement } from "@/lib/opentelemetry";
+import { ExternalServiceName, createLogger, withCountMeasurement, withTokenMeasurement } from "@/lib/opentelemetry";
 import { openai } from "@ai-sdk/openai";
 import FirecrawlApp from "@mendable/firecrawl-js";
 import { createId } from "@paralleldrive/cuid2";
@@ -82,23 +81,24 @@ ${sourcesToText(sources)}
 			prompt: inputs.userPrompt,
 			schema: webSearchSchema,
 			onFinish: async (result) => {
-				const duration = performance.now() - startTime;
-				const measurementScope = await getCurrentMeasurementScope();
-				const isR06User = await isRoute06User();
-				generation.end({
-					output: result,
-				});
-
-				logger.info(
-					{
-						externalServiceName: "openai",
-						tokenConsumedInput: result.usage.promptTokens,
-						tokenConsumedOutput: result.usage.completionTokens,
-						duration,
-						measurementScope,
-						isR06User,
+				await withTokenMeasurement(
+					logger,
+					async () => {
+						generation.end({ output: result });
+						await lf.shutdownAsync();
+						waitUntil(
+							new Promise((resolve) =>
+								setTimeout(
+									resolve,
+									Number.parseInt(
+										process.env.OTEL_EXPORT_INTERVAL_MILLIS ?? "1000",
+									),
+								),
+							),
+						); // wait until telemetry sent
+						return result;
 					},
-					"[openai] search keywords generated",
+					startTime,
 				);
 			},
 		});

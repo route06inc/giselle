@@ -1,4 +1,5 @@
 import { getCurrentMeasurementScope, isRoute06User } from "@/app/(auth)/lib";
+import type { LanguageModelUsage } from "ai";
 import type { Strategy } from "unstructured-client/sdk/models/shared";
 import { captureError } from "./log";
 import type { LogSchema, OtelLoggerWrapper } from "./types";
@@ -125,4 +126,26 @@ export function withCountMeasurement<T>(
 	};
 
 	return withMeasurement(logger, operation, measurement, measurementStartTime);
+}
+
+export function withTokenMeasurement<T extends { usage: LanguageModelUsage }>(
+	logger: OtelLoggerWrapper,
+	operation: () => Promise<T>,
+	measurementStartTime?: number,
+): Promise<T> {
+	const measurements: MeasurementSchema<T> = (
+		result,
+		duration,
+		measurementScope,
+		isR06User,
+	): TokenConsumedSchema => ({
+		externalServiceName: TokenBasedService.OpenAI,
+		tokenConsumedInput: result.usage.promptTokens,
+		tokenConsumedOutput: result.usage.completionTokens,
+		duration,
+		measurementScope,
+		isR06User,
+	});
+
+	return withMeasurement(logger, operation, measurements, measurementStartTime);
 }
