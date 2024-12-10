@@ -5,7 +5,6 @@ import { createStreamableValue } from "ai/rsc";
 
 import { langfuseModel } from "@/lib/llm";
 import { createLogger, withTokenMeasurement } from "@/lib/opentelemetry";
-import { waitUntil } from "@vercel/functions";
 import { Langfuse } from "langfuse";
 import { schema as artifactSchema } from "../artifact/schema";
 import { buildLanguageModel } from "../flow/server-actions/generate-text";
@@ -75,16 +74,6 @@ ${sourcesToText(sources)}
 						async () => {
 							generation.end({ output: result });
 							await lf.shutdownAsync();
-							waitUntil(
-								new Promise((resolve) =>
-									setTimeout(
-										resolve,
-										Number.parseInt(
-											process.env.OTEL_EXPORT_INTERVAL_MILLIS ?? "1000",
-										),
-									),
-								),
-							); // wait until telemetry sent
 							return result;
 						},
 						startTime,

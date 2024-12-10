@@ -6,7 +6,6 @@ import {
 	withCountMeasurement,
 } from "@/lib/opentelemetry";
 import { put } from "@vercel/blob";
-import { waitUntil } from "@vercel/functions";
 import { UnstructuredClient } from "unstructured-client";
 import { Strategy } from "unstructured-client/sdk/models/shared";
 import { elementsToMarkdown } from "../utils/unstructured";
@@ -69,15 +68,6 @@ export async function parseFile(args: ParseFileInput) {
 		console.error(partitionResponse.rawResponse);
 		throw new Error(`Failed to parse file: ${partitionResponse.statusCode}`);
 	}
-
-	waitUntil(
-		new Promise((resolve) =>
-			setTimeout(
-				resolve,
-				Number.parseInt(process.env.OTEL_EXPORT_INTERVAL_MILLIS ?? "1000"),
-			),
-		),
-	); // wait until telemetry sent
 
 	const jsonString = JSON.stringify(partitionResponse.elements, null, 2);
 	const blob = new Blob([jsonString], { type: "application/json" });

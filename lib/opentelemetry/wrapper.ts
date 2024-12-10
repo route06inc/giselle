@@ -3,6 +3,7 @@ import type { LanguageModelUsage } from "ai";
 import type { Strategy } from "unstructured-client/sdk/models/shared";
 import { captureError } from "./log";
 import type { LogSchema, OtelLoggerWrapper } from "./types";
+import { waitUntil } from "@vercel/functions";
 import {
 	ExternalServiceName,
 	type RequestCountSchema,
@@ -42,6 +43,15 @@ async function withMeasurement<T>(
 						metrics,
 						`[${metrics.externalServiceName}] response obtained`,
 					);
+
+					waitUntil(
+						new Promise((resolve) =>
+							setTimeout(
+								resolve,
+								Number.parseInt(process.env.OTEL_EXPORT_INTERVAL_MILLIS ?? "1000"),
+							),
+						),
+					); // wait until telemetry sent
 				})
 				.catch((getMetricsTagError) => {
 					captureError(

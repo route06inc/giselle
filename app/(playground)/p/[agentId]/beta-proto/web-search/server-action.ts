@@ -11,7 +11,6 @@ import { openai } from "@ai-sdk/openai";
 import FirecrawlApp from "@mendable/firecrawl-js";
 import { createId } from "@paralleldrive/cuid2";
 import { put } from "@vercel/blob";
-import { waitUntil } from "@vercel/functions";
 import { streamObject } from "ai";
 import { createStreamableValue } from "ai/rsc";
 import Langfuse from "langfuse";
@@ -91,16 +90,6 @@ ${sourcesToText(sources)}
 					async () => {
 						generation.end({ output: result });
 						await lf.shutdownAsync();
-						waitUntil(
-							new Promise((resolve) =>
-								setTimeout(
-									resolve,
-									Number.parseInt(
-										process.env.OTEL_EXPORT_INTERVAL_MILLIS ?? "1000",
-									),
-								),
-							),
-						); // wait until telemetry sent
 						return result;
 					},
 					startTime,
@@ -272,13 +261,5 @@ ${sourcesToText(sources)}
 		stream.done();
 	})();
 
-	waitUntil(
-		new Promise((resolve) =>
-			setTimeout(
-				resolve,
-				Number.parseInt(process.env.OTEL_EXPORT_INTERVAL_MILLIS ?? "1000"),
-			),
-		),
-	); // wait until telemetry sent
 	return { object: stream.value };
 }
