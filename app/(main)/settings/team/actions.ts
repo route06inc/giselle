@@ -2,6 +2,7 @@
 
 import {
 	type TeamRole,
+	type UserId,
 	db,
 	supabaseUserMappings,
 	teamMemberships,
@@ -10,8 +11,12 @@ import {
 } from "@/drizzle";
 import { getUser } from "@/lib/supabase";
 import { fetchCurrentTeam, isProPlan } from "@/services/teams";
-import { and, asc, eq } from "drizzle-orm";
+import { and, asc, count, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+
+function isUserId(value: string): value is UserId {
+	return value.startsWith("usr_");
+}
 
 function isTeamRole(role: string): role is TeamRole {
 	return role === "admin" || role === "member";
@@ -176,6 +181,117 @@ export async function addTeamMember(formData: FormData) {
 			success: false,
 			error:
 				error instanceof Error ? error.message : "Failed to add team member",
+		};
+	}
+}
+
+export async function updateTeamMemberRole(formData: FormData) {
+	try {
+		const userId = formData.get("userId") as string;
+		const role = formData.get("role") as string;
+
+		if (!isUserId(userId)) {
+			throw new Error("Invalid user ID");
+		}
+
+		if (!isTeamRole(role)) {
+			throw new Error("Invalid role");
+		}
+
+		// 1. Get current user info and verify admin permission
+		const currentUserRoleResult = await getCurrentUserRole();
+		if (
+			!currentUserRoleResult.success ||
+			currentUserRoleResult.data !== "admin"
+		) {
+			throw new Error("Only admin users can update member roles");
+		}
+
+		const supabaseUser = await getUser();
+		const currentUser = await db
+			.select({ id: users.id })
+			.from(users)
+			.innerJoin(
+				supabaseUserMappings,
+				eq(users.dbId, supabaseUserMappings.userDbId),
+			)
+			.where(eq(supabaseUserMappings.supabaseUserId, supabaseUser.id))
+			.limit(1);
+
+		const isUpdatingSelf = currentUser[0].id === userId;
+
+		// 2. Get current team
+		const currentTeam = await fetchCurrentTeam();
+
+		// 3. Get target user's dbId from users table
+		const user = await db
+			.select({ dbId: users.dbId })
+			.from(users)
+			.where(eq(users.id, userId))
+			.limit(1);
+
+		if (user.length === 0) {
+			throw new Error("User not found");
+		}
+
+		// 4. If changing from admin to member, check if this is the last admin
+		if (role === "member") {
+			const adminCount = await db
+				.select({
+					count: count(),
+				})
+				.from(teamMemberships)
+				.where(
+					and(
+						eq(teamMemberships.teamDbId, currentTeam.dbId),
+						eq(teamMemberships.role, "admin"),
+					),
+				);
+
+			// Check if the user being updated is currently an admin
+			const targetUserRole = await db
+				.select({ role: teamMemberships.role })
+				.from(teamMemberships)
+				.where(
+					and(
+						eq(teamMemberships.teamDbId, currentTeam.dbId),
+						eq(teamMemberships.userDbId, user[0].dbId),
+					),
+				)
+				.limit(1);
+
+			if (targetUserRole[0].role === "admin" && adminCount[0].count === 1) {
+				throw new Error("Cannot remove the last admin from the team");
+			}
+		}
+
+		// 5. Update team membership role
+		await db
+			.update(teamMemberships)
+			.set({ role })
+			.where(
+				and(
+					eq(teamMemberships.teamDbId, currentTeam.dbId),
+					eq(teamMemberships.userDbId, user[0].dbId),
+				),
+			);
+
+		revalidatePath("/settings/team");
+
+		return {
+			success: true,
+			isUpdatingSelf,
+		};
+	} catch (error) {
+		console.error("Failed to update team member role:", error);
+
+		return {
+			success: false,
+			error:
+				error instanceof Error
+					? error.message
+					: "Failed to update team member role",
+			isUpdatingSelf: false,
 		};
 	}
 }

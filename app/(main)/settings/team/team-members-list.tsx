@@ -1,17 +1,24 @@
-import { getTeamMembers } from "./actions";
+"use client";
 
-export async function TeamMembersList() {
-	const result = await getTeamMembers();
+import type { TeamRole } from "@/drizzle";
+import { useState } from "react";
+import { TeamMemberListItem } from "./team-members-list-item";
 
-	if (!result.success || !result.data) {
-		return (
-			<div className="text-sm text-destructive">
-				Failed to load team members
-			</div>
-		);
-	}
+type TeamMembersListProps = {
+	members: {
+		userId: string;
+		displayName: string | null;
+		email: string | null;
+		role: TeamRole;
+	}[];
+	currentUserRole: TeamRole;
+};
 
-	const members = result.data;
+export function TeamMembersList({
+	members,
+	currentUserRole,
+}: TeamMembersListProps) {
+	const currentUserRoleState = useState(currentUserRole);
 
 	return (
 		<div className="font-avenir rounded-[16px]">
@@ -22,16 +29,14 @@ export async function TeamMembersList() {
 			</div>
 			<div className="divide-y divide-zinc-800">
 				{members.map((member) => (
-					<div
+					<TeamMemberListItem
 						key={member.userId}
-						className="grid grid-cols-[1fr_1fr_200px] gap-4 p-4 items-center text-zinc-200"
-					>
-						<div className="text-zinc-400">
-							{member.displayName || "No display name"}
-						</div>
-						<div className="text-zinc-400">{member.email || "No email"}</div>
-						<div className="text-zinc-400 capitalize">{member.role}</div>
-					</div>
+						userId={member.userId}
+						displayName={member.displayName}
+						email={member.email}
+						role={member.role}
+						currentUserRoleState={currentUserRoleState}
+					/>
 				))}
 			</div>
 		</div>
