@@ -123,33 +123,39 @@ export const teamMemberships = pgTable(
 	}),
 );
 
-export const agents = pgTable("agents", {
-	id: text("id").$type<AgentId>().notNull().unique(),
-	dbId: serial("db_id").primaryKey(),
-	teamDbId: integer("team_db_id")
-		.notNull()
-		.references(() => teams.dbId, { onDelete: "cascade" }),
-	name: text("name"),
-	graphUrl: text("graph_url"), // // TODO: add notNull constrain when new architecture released
-	graphv2: jsonb("graphv2").$type<Graph>().notNull(),
-	graph: jsonb("graph")
-		.$type<PlaygroundGraph>()
-		.notNull()
-		.default({
-			nodes: [],
-			edges: [],
-			viewport: { x: 0, y: 0, zoom: 1 },
-		}),
-	graphHash: text("graph_hash").unique(),
-	createdAt: timestamp("created_at").defaultNow().notNull(),
-	updatedAt: timestamp("updated_at")
-		.defaultNow()
-		.notNull()
-		.$onUpdate(() => new Date()),
-	creatorDbId: integer("creator_db_id")
-		.notNull()
-		.references(() => users.dbId),
-});
+export const agents = pgTable(
+	"agents",
+	{
+		id: text("id").$type<AgentId>().notNull().unique(),
+		dbId: serial("db_id").primaryKey(),
+		teamDbId: integer("team_db_id")
+			.notNull()
+			.references(() => teams.dbId, { onDelete: "cascade" }),
+		name: text("name"),
+		graphUrl: text("graph_url"), // // TODO: add notNull constrain when new architecture released
+		graphv2: jsonb("graphv2").$type<Graph>().notNull(),
+		graph: jsonb("graph")
+			.$type<PlaygroundGraph>()
+			.notNull()
+			.default({
+				nodes: [],
+				edges: [],
+				viewport: { x: 0, y: 0, zoom: 1 },
+			}),
+		graphHash: text("graph_hash").unique(),
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at")
+			.defaultNow()
+			.notNull()
+			.$onUpdate(() => new Date()),
+		creatorDbId: integer("creator_db_id")
+			.notNull()
+			.references(() => users.dbId),
+	},
+	(table) => ({
+		teamDbIdIdx: index().on(table.teamDbId),
+	}),
+);
 
 export const builds = pgTable("builds", {
 	id: text("id").$type<BuildId>().notNull().unique(),
@@ -474,5 +480,6 @@ export const agentActivities = pgTable(
 	},
 	(table) => ({
 		agentDbIdIdx: index().on(table.agentDbId),
+		endedAtIdx: index().on(table.endedAt),
 	}),
 );

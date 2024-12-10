@@ -113,6 +113,13 @@
 			"when": 1733719570344,
 			"tag": "0015_parched_talon",
 			"breakpoints": true
+		},
+		{
+			"idx": 16,
+			"version": "7",
+			"when": 1733811412858,
+			"tag": "0016_short_madelyne_pryor",
+			"breakpoints": true
 		}
 	]
 }
