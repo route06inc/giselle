@@ -334,6 +334,7 @@ type SetTextGenerationNodeOutputAction = {
 		node: {
 			id: GiselleNodeId;
 			output: PartialGeneratedObject;
+			traceId: string;
 		};
 	};
 };
@@ -342,6 +343,7 @@ type SetTextGenerationNodeOutputArgs = {
 	node: {
 		id: GiselleNodeId;
 		output: PartialGeneratedObject;
+		traceId: string;
 	};
 };
 const setTextGenerationNodeOutput = (
@@ -359,6 +361,7 @@ type UpdateNodeStateAction = {
 		node: {
 			id: GiselleNodeId;
 			state: GiselleNodeState;
+			traceId: string;
 		};
 	};
 };
@@ -366,6 +369,7 @@ type UpdateNodeStateArgs = {
 	node: {
 		id: GiselleNodeId;
 		state: GiselleNodeState;
+		traceId: string;
 	};
 };
 export const updateNodeState = (
@@ -439,6 +443,7 @@ export const generateText =
 				node: {
 					id: args.textGeneratorNode.id,
 					state: giselleNodeState.inProgress,
+					traceId: "",
 				},
 			}),
 		);
@@ -475,7 +480,7 @@ export const generateText =
 		const sourceIndexes = extractSourceIndexesFromNode(instructionNode);
 		switch (instructionConnector.targetNodeArcheType) {
 			case giselleNodeArchetypes.textGenerator: {
-				const { object } = await generateArtifactStream({
+				const { object, traceId } = await generateArtifactStream({
 					agentId: getState().graph.agentId,
 					userPrompt: instructionNode.output as string,
 					sourceIndexes,
@@ -493,6 +498,7 @@ export const generateText =
 								node: {
 									id: args.textGeneratorNode.id,
 									state: giselleNodeState.streaming,
+									traceId: traceId,
 								},
 							}),
 						);
@@ -502,6 +508,7 @@ export const generateText =
 									id: args.textGeneratorNode.id,
 									output:
 										streamContent as PartialGeneratedObject /** @todo type assertion */,
+									traceId: traceId,
 								},
 							}),
 						);
@@ -514,6 +521,7 @@ export const generateText =
 										thinking:
 											"Sorry, a temporary issue has occurred.\nPlease try again after a while.",
 									},
+									traceId: traceId,
 								},
 							}),
 						);
@@ -526,6 +534,7 @@ export const generateText =
 							node: {
 								id: args.textGeneratorNode.id,
 								state: giselleNodeState.completed,
+								traceId: traceId,
 							},
 						}),
 					);
@@ -544,6 +553,7 @@ export const generateText =
 									completed: true,
 								},
 							},
+							traceId: traceId,
 						},
 					}),
 				);
@@ -573,13 +583,14 @@ export const generateText =
 						node: {
 							id: args.textGeneratorNode.id,
 							state: giselleNodeState.completed,
+							traceId: traceId,
 						},
 					}),
 				);
 				break;
 			}
 			case giselleNodeArchetypes.webSearch: {
-				const { object } = await generateWebSearchStream({
+				const { object, traceId } = await generateWebSearchStream({
 					agentId: getState().graph.agentId,
 					userPrompt: instructionNode.output as string,
 					sourceIndexes,
@@ -596,6 +607,7 @@ export const generateText =
 								node: {
 									id: args.textGeneratorNode.id,
 									state: giselleNodeState.streaming,
+									traceId: traceId,
 								},
 							}),
 						);
@@ -606,6 +618,7 @@ export const generateText =
 								id: args.textGeneratorNode.id,
 								output:
 									streamContent as PartialGeneratedObject /** @todo type assertion */,
+								traceId: traceId,
 							},
 						}),
 					);
@@ -624,6 +637,7 @@ export const generateText =
 									completed: true,
 								},
 							},
+							traceId: traceId,
 						},
 					}),
 				);
@@ -633,6 +647,7 @@ export const generateText =
 						node: {
 							id: args.textGeneratorNode.id,
 							state: giselleNodeState.completed,
+							traceId: traceId,
 						},
 					}),
 				);

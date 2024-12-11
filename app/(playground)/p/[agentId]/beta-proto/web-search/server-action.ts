@@ -284,5 +284,5 @@ ${sourcesToText(sources)}
 			),
 		),
 	); // wait until telemetry sent
-	return { object: stream.value };
+	return { object: stream.value, traceId: trace.id };
 }
