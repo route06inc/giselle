@@ -285,6 +285,117 @@ export async function updateTeamMemberRole(formData: FormData) {
 	}
 }
 
+export async function deleteTeamMember(formData: FormData) {
+	try {
+		const userId = formData.get("userId") as string;
+		const role = formData.get("role") as string;
+
+		if (!isUserId(userId)) {
+			throw new Error("Invalid user ID");
+		}
+
+		if (!isTeamRole(role)) {
+			throw new Error("Invalid role");
+		}
+
+		// 1. Get current team and verify admin permission
+		const currentTeam = await fetchCurrentTeam();
+		const currentUserRoleResult = await getCurrentUserRole();
+
+		if (
+			!currentUserRoleResult.success ||
+			currentUserRoleResult.data !== "admin"
+		) {
+			throw new Error("Only admin users can remove team members");
+		}
+
+		// 2. Get current user info to check if deleting self
+		const supabaseUser = await getUser();
+		const currentUser = await db
+			.select({ id: users.id })
+			.from(users)
+			.innerJoin(
+				supabaseUserMappings,
+				eq(users.dbId, supabaseUserMappings.userDbId),
+			)
+			.where(eq(supabaseUserMappings.supabaseUserId, supabaseUser.id))
+			.limit(1);
+
+		const isDeletingSelf = currentUser[0].id === userId;
+
+		// 3. Get target user's dbId from users table
+		const user = await db
+			.select({ dbId: users.dbId })
+			.from(users)
+			.where(eq(users.id, userId))
+			.limit(1);
+
+		if (user.length === 0) {
+			throw new Error("User not found");
+		}
+
+		// 4. Check if user is an admin and if they are the last admin
+		if (role === "admin") {
+			const adminCount = await db
+				.select({
+					count: count(),
+				})
+				.from(teamMemberships)
+				.where(
+					and(
+						eq(teamMemberships.teamDbId, currentTeam.dbId),
+						eq(teamMemberships.role, "admin"),
+					),
+				);
+
+			if (adminCount[0].count === 1) {
+				throw new Error("Cannot remove the last admin from the team");
+			}
+		}
+
+		// 5. If deleting self, check if user has other teams
+		if (isDeletingSelf) {
+			const teamCount = await db
+				.select({
+					count: count(),
+				})
+				.from(teamMemberships)
+				.where(
+					and(
+						eq(teamMemberships.userDbId, user[0].dbId),
+						ne(teamMemberships.teamDbId, currentTeam.dbId), // Exclude current team
+					),
+				);
+
+			if (teamCount[0].count === 0) {
+				throw new Error("Cannot leave the team when it's your only team");
+			}
+		}
+
+		// 6. Delete team membership
+		await db
+			.delete(teamMemberships)
+			.where(
+				and(
+					eq(teamMemberships.teamDbId, currentTeam.dbId),
+					eq(teamMemberships.userDbId, user[0].dbId),
+				),
+			);
+
+		revalidatePath("/settings/team");
+
+		return { success: true };
+	} catch (error) {
+		console.error("Failed to delete team member:", error);
+
+		return {
+			success: false,
+			error:
+				error instanceof Error ? error.message : "Failed to delete team member",
+		};
+	}
+}
+
 export async function getCurrentUserRole() {
 	try {
 		const supabaseUser = await getUser();
