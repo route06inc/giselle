@@ -36,6 +36,7 @@ import {
 import { ArchetypeIcon } from "../archetype-icon";
 import { TabTrigger } from "../tabs";
 import { ArtifactBlock } from "./artifact-block";
+import { FeedbackBlock } from "./feedback-block";
 import { MarkdownRender } from "./markdown-render";
 import { TemperatureSlider } from "./temperature-slider";
 import { TopPSlider } from "./top-p-slider";
@@ -395,6 +396,9 @@ export const TextGeneratorPropertyPanel: FC<
 							</div>
 						)}
 						<div>{(node.output as PartialGeneratedObject).description}</div>
+						<div>
+							<FeedbackBlock traceId={node.traceId} />
+						</div>
 					</div>
 				</div>
 			)}

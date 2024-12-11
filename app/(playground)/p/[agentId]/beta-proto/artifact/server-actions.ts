@@ -117,5 +117,5 @@ ${sourcesToText(sources)}
 		stream.done();
 	})();
 
-	return { object: stream.value };
+	return { object: stream.value, traceId: trace.id };
 }

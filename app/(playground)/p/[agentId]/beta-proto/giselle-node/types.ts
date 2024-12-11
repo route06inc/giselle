@@ -66,6 +66,7 @@ export type GiselleNode = {
 	properties: Record<string, unknown>;
 	output: unknown;
 	isFinal: boolean;
+	traceId: string;
 };
 
 export type GiselleNodeArtifactElement = {
