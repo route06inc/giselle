@@ -132,6 +132,7 @@ export const graphReducer = (
 							node.id === action.payload.node.id
 								? action.payload.node.state
 								: node.state,
+						traceId: action.payload.node.traceId,
 					})),
 				},
 			};
@@ -148,6 +149,7 @@ export const graphReducer = (
 							: {
 									...node,
 									output: action.payload.node.output,
+									traceId: action.payload.node.traceId,
 								},
 					),
 				},
