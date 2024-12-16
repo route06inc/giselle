@@ -60,7 +60,7 @@ export default async function Page({
 		(res) => res.json() as unknown as Graph,
 	);
 
-	async function persistGraph(graph: Graph) {
+	async function persistGraph(agentId: AgentId, graph: Graph) {
 		"use server";
 		const { url } = await putGraph(graph);
 		await db
@@ -85,7 +85,7 @@ export default async function Page({
 	let graphUrl = agent.graphUrl;
 	if (!isLatestVersion(graph)) {
 		graph = migrateGraph(graph);
-		graphUrl = await persistGraph(graph);
+		graphUrl = await persistGraph(agentId, graph);
 	}
 
 	async function updateAgentName(agentName: string) {
@@ -131,6 +131,7 @@ export default async function Page({
 				defaultGraph={graph}
 				onPersistAction={persistGraph}
 				defaultGraphUrl={graphUrl}
+				agentId={agentId}
 			>
 				<PropertiesPanelProvider>
 					<ReactFlowProvider>

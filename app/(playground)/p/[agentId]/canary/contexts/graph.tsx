@@ -11,6 +11,7 @@ import {
 } from "react";
 import { deriveFlows } from "../lib/graph";
 import type {
+	AgentId,
 	Artifact,
 	Connection,
 	ConnectionId,
@@ -223,6 +224,7 @@ export function GraphContextProvider({
 	defaultGraph,
 	defaultGraphUrl,
 	onPersistAction,
+	agentId,
 }: {
 	children: ReactNode;
 	defaultGraph: Graph;
@@ -231,7 +233,8 @@ export function GraphContextProvider({
 	 * Persists the graph to the server.
 	 * Returns the new graph URL.
 	 */
-	onPersistAction: (graph: Graph) => Promise<string>;
+	onPersistAction: (agentId: AgentId, graph: Graph) => Promise<string>;
+	agentId: AgentId;
 }) {
 	const graphRef = useRef(defaultGraph);
 	const [graph, setGraph] = useState(graphRef.current);
@@ -241,14 +244,14 @@ export function GraphContextProvider({
 	const persist = useCallback(async () => {
 		isPendingPersistRef.current = false;
 		try {
-			const newGraphUrl = await onPersistAction(graphRef.current);
+			const newGraphUrl = await onPersistAction(agentId, graphRef.current);
 			setGraphUrl(newGraphUrl);
 			return newGraphUrl;
 		} catch (error) {
 			console.error("Failed to persist graph:", error);
 			return graphUrl;
 		}
-	}, [onPersistAction, graphUrl]);
+	}, [onPersistAction, graphUrl, agentId]);
 
 	const flush = useCallback(async () => {
 		if (persistTimeoutRef.current) {
