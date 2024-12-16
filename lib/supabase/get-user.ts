@@ -13,32 +13,32 @@ import { createClient } from "./server";
  * Make sure the user is logged in before calling this function.
  */
 const getUser = cache(async () => {
-  const supabase = await createClient();
+	const supabase = await createClient();
 
-  const getUserFunc = async () => {
-    const { data, error } = await supabase.auth.getUser();
+	const getUserFunc = async () => {
+		const { data, error } = await supabase.auth.getUser();
 
-    if (error != null) {
-      throw error;
-    }
-    if (data.user == null) {
-      throw new Error("No user returned");
-    }
-    return data.user;
-  };
+		if (error != null) {
+			throw error;
+		}
+		if (data.user == null) {
+			throw new Error("No user returned");
+		}
+		return data.user;
+	};
 
-  const user = await withRetry(getUserFunc, {
-    useExponentialBackoff: true,
-    onRetry: (retryCount, error) => {
-      console.error(`getUser failed, retrying (${retryCount})`, error);
-    },
-    shouldAbort: (error) => {
-      // retry if the error is a retryable fetch error
-      return !isAuthRetryableFetchError(error);
-    },
-  });
+	const user = await withRetry(getUserFunc, {
+		useExponentialBackoff: true,
+		onRetry: (retryCount, error) => {
+			console.error(`getUser failed, retrying (${retryCount})`, error);
+		},
+		shouldAbort: (error) => {
+			// retry if the error is a retryable fetch error
+			return !isAuthRetryableFetchError(error);
+		},
+	});
 
-  return user;
+	return user;
 });
 
 export { getUser };
