@@ -26,7 +26,11 @@ type TeamNameSchema = InferInput<typeof TeamNameSchema>;
 
 export function TeamNameForm({
 	name,
-}: { name: typeof teams.$inferSelect.name }) {
+	teamDbId,
+}: {
+	name: typeof teams.$inferSelect.name;
+	teamDbId: typeof teams.$inferSelect.dbId;
+}) {
 	const [isEditingName, setIsEditingName] = useState(false);
 	const [teamName, setTeamName] = useState(name);
 	const [tempTeamName, setTempTeamName] = useState(teamName);
@@ -43,8 +47,8 @@ export function TeamNameForm({
 
 			const formData = new FormData();
 			formData.append("name", validatedName);
-
-			const result = await updateTeamName(formData);
+			const formAction = updateTeamName.bind(null, teamDbId);
+			const result = await formAction(formData);
 
 			if (result.success) {
 				setTeamName(validatedName);

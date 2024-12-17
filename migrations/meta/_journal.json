@@ -99,6 +99,34 @@
 			"when": 1733117334658,
 			"tag": "0013_nosy_whiplash",
 			"breakpoints": true
+		},
+		{
+			"idx": 14,
+			"version": "7",
+			"when": 1733382854673,
+			"tag": "0014_lucky_sabretooth",
+			"breakpoints": true
+		},
+		{
+			"idx": 15,
+			"version": "7",
+			"when": 1733719570344,
+			"tag": "0015_parched_talon",
+			"breakpoints": true
+		},
+		{
+			"idx": 16,
+			"version": "7",
+			"when": 1733811412858,
+			"tag": "0016_short_madelyne_pryor",
+			"breakpoints": true
+		},
+		{
+			"idx": 17,
+			"version": "7",
+			"when": 1734079652838,
+			"tag": "0017_lying_dexter_bennett",
+			"breakpoints": true
 		}
 	]
 }

@@ -1,14 +1,22 @@
 "use server";
 
 import { agents, db } from "@/drizzle";
-import { openai } from "@ai-sdk/openai";
+import {
+	AgentActivity,
+	hasEnoughAgentTimeCharge,
+} from "@/services/agents/activities";
+import { stripe } from "@/services/external/stripe";
+import { fetchCurrentTeam, isProPlan } from "@/services/teams";
+import { processUnreportedActivities } from "@/services/usage-based-billing";
+import { AgentTimeUsageDAO } from "@/services/usage-based-billing/agent-time-usage-dao";
+import { captureException } from "@sentry/nextjs";
 import { put } from "@vercel/blob";
 import { createStreamableValue } from "ai/rsc";
 import { eq } from "drizzle-orm";
-import { giselleNodeArchetypes } from "../giselle-node/blueprints";
 import type { GiselleNodeId } from "../giselle-node/types";
 import type { AgentId } from "../types";
 import { type V2FlowAction, setFlow, updateStep } from "./action";
+import { saveAgentActivity } from "./save-agent-activity";
 import {
 	buildTextArtifact,
 	generateArtifactObject,
@@ -29,6 +37,13 @@ export async function executeFlow(
 	agentId: AgentId,
 	finalNodeId: GiselleNodeId,
 ) {
+	const canExecute = await hasEnoughAgentTimeCharge();
+	if (!canExecute) {
+		throw new Error(
+			"Your agent time has been depleted. Please upgrade your plan to continue using this feature.",
+		);
+	}
+	const agentActivity = new AgentActivity(agentId, new Date());
 	const stream = createStreamableValue<V2FlowAction>();
 	(async () => {
 		const agent = await db.query.agents.findFirst({
@@ -61,6 +76,8 @@ export async function executeFlow(
 		for (const job of flow.jobs) {
 			await Promise.all(
 				job.steps.map(async (step) => {
+					const startTime = new Date();
+
 					stream.update(
 						updateStep({
 							input: { stepId: step.id, status: stepStatuses.running },
@@ -164,6 +181,9 @@ export async function executeFlow(
 							break;
 						}
 					}
+
+					agentActivity.collectAction(step.action, startTime, new Date());
+
 					stream.update(
 						updateStep({
 							input: { stepId: step.id, status: stepStatuses.completed },
@@ -172,10 +192,37 @@ export async function executeFlow(
 				}),
 			);
 		}
+
 		stream.done();
-	})();
+		agentActivity.end();
+		await saveAgentActivity(agentActivity);
+		if (agentActivity.endedAt == null) {
+			throw new Error("Activity must be ended before reporting");
+		}
+		await reportActivityToStripe(agentActivity.endedAt);
+	})().catch((error) => {
+		console.error(error);
+		captureException(error);
+	});
 
 	return { streamableValue: stream.value };
+}
+
+async function reportActivityToStripe(targetDate: Date) {
+	const currentTeam = await fetchCurrentTeam();
+	if (!isProPlan(currentTeam)) {
+		return;
+	}
+	return processUnreportedActivities(
+		{
+			teamDbId: currentTeam.dbId,
+			targetDate: targetDate,
+		},
+		{
+			dao: new AgentTimeUsageDAO(db),
+			stripe: stripe,
+		},
+	);
 }
 
 interface PutFlowInput {

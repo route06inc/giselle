@@ -11,16 +11,21 @@ import {
 } from "@xyflow/react";
 import bg from "./bg.png";
 import "@xyflow/react/dist/style.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useGraph } from "../contexts/graph";
 import { useMousePosition } from "../contexts/mouse-position";
 import { usePropertiesPanel } from "../contexts/properties-panel";
+import { useToast } from "../contexts/toast";
 import { useToolbar } from "../contexts/toolbar";
-import type { ConnectionId, NodeId, Tool } from "../types";
-import { createNodeId, isTextGeneration } from "../utils";
+import { createNodeId, isTextGeneration } from "../lib/utils";
+import type { NodeId, Tool } from "../types";
 import { Edge } from "./edge";
+import { Header } from "./header";
+import { KeyboardShortcut } from "./keyboard-shortcut";
+import { NavigationPanel } from "./navigation-panel";
 import { Node, PreviewNode } from "./node";
 import { PropertiesPanel } from "./properties-panel";
+import { Toast } from "./toast";
 import { Toolbar } from "./toolbar";
 
 const nodeTypes = {
@@ -31,7 +36,7 @@ const edgeTypes = {
 };
 export function Editor() {
 	const { graph, dispatch } = useGraph();
-	const { selectedTool, reset } = useToolbar();
+	const { selectTool, selectedTool, reset } = useToolbar();
 	const reactFlowInstance = useReactFlow<Node, Edge>();
 	const updateNodeInternals = useUpdateNodeInternals();
 	useEffect(() => {
@@ -83,7 +88,8 @@ export function Editor() {
 			),
 		);
 	}, [graph.connections, reactFlowInstance.setEdges]);
-	const { setTab } = usePropertiesPanel();
+	const { setTab, setOpen } = usePropertiesPanel();
+	const { toasts } = useToast();
 	return (
 		<div className="w-full h-screen">
 			<ReactFlow<Node, Edge>
@@ -113,6 +119,7 @@ export function Editor() {
 									},
 								});
 								if (nodeChange.selected) {
+									setOpen(true);
 									switch (node.content.type) {
 										case "textGeneration":
 											setTab("Prompt");
@@ -247,7 +254,8 @@ export function Editor() {
 										selected: false,
 										type: "variable",
 										content: {
-											type: "file",
+											type: "files",
+											data: [],
 										},
 									},
 								},
@@ -290,16 +298,28 @@ export function Editor() {
 						backgroundSize: "cover",
 					}}
 				/>
+
+				<Panel position="top-left" className="!top-0 !left-0 !right-0 !m-0">
+					<Header />
+				</Panel>
 				<Panel position="top-right" className="!top-0 !bottom-0 !right-0 !m-0">
 					<PropertiesPanel />
 				</Panel>
 				<Panel position={"bottom-center"}>
 					<Toolbar />
 				</Panel>
+
+				<Panel position="top-left" className="!top-0 !bottom-0 !left-0 !m-0">
+					<NavigationPanel />
+				</Panel>
 				{selectedTool?.category === "edit" && (
 					<FloatingNodePreview tool={selectedTool} />
 				)}
 			</ReactFlow>
+			<KeyboardShortcut />
+			{toasts.map(({ id, ...props }) => (
+				<Toast key={id} {...props} />
+			))}
 		</div>
 	);
 }

@@ -3,7 +3,10 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { GoogleTagManager } from "@next/third-parties/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Suspense } from "react";
 import { rosart } from "./fonts";
+import { PostHogPageView } from "./posthog-page-view";
+import { PHProvider } from "./providers";
 
 const title = "Giselle";
 const description = "AI for Agentic Workflows. Human-AI Collaboration";
@@ -37,17 +40,21 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<GoogleTagManager gtmId={process.env.GTM_ID ?? ""} />
-
-			<body className={`${rosart.variable} font-sans`}>
-				<ThemeProvider
-					attribute="class"
-					defaultTheme="dark"
-					disableTransitionOnChange
-				>
-					{children}
-				</ThemeProvider>
-				<SpeedInsights />
-			</body>
+			<PHProvider>
+				<body className={`${rosart.variable} font-sans`}>
+					<ThemeProvider
+						attribute="class"
+						defaultTheme="dark"
+						disableTransitionOnChange
+					>
+						<Suspense>
+							<PostHogPageView />
+						</Suspense>
+						{children}
+					</ThemeProvider>
+					<SpeedInsights />
+				</body>
+			</PHProvider>
 		</html>
 	);
 }

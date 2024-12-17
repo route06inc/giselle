@@ -32,8 +32,8 @@ jobs:
         if: steps.fork-check.outputs.is_fork != 'true'
         id: app-token
         with:
-          app-id: ${{ vars.CI_TRIGGER_APP_ID }}
-          private-key: ${{ secrets.CI_TRIGGER_APP_PRIVATE_KEY }}
+          app-id: ${{ vars.LICENSE_CI_TRIGGER_APP_ID }}
+          private-key: ${{ secrets.LICENSE_CI_TRIGGER_APP_PRIVATE_KEY }}
       - name: Checkout code for non-fork PRs
         if: steps.fork-check.outputs.is_fork != 'true'
         uses: actions/checkout@v4
@@ -87,13 +87,21 @@ jobs:
           steps.fork-check.outputs.is_fork != 'true'
           && steps.determine.outputs.files_changed == 'true'
           && github.ref_name != github.event.repository.default_branch
-        run: license_finder report --format=markdown | tail -n +2 > "$LICENSE_REPORT"
+        run: |
+          mkdir -p "$(dirname "$LICENSE_REPORT")"
+          license_finder report --format=markdown | tail -n +2 > "$LICENSE_REPORT"
+          # Delete the timestamp line because there will be a difference even if there is no change in licenses
+          sed -e '/^As of /d' -i "$LICENSE_REPORT"
       - name: Commit license report and push
         if: |
           steps.fork-check.outputs.is_fork != 'true'
           && steps.determine.outputs.files_changed == 'true'
           && github.ref_name != github.event.repository.default_branch
         run: |
+          if git diff --quiet; then
+            echo 'No changes to commit'
+            exit 0
+          fi
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           git add "$LICENSE_REPORT"

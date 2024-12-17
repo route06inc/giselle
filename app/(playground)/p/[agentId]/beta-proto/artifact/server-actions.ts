@@ -3,10 +3,13 @@
 import { streamObject } from "ai";
 import { createStreamableValue } from "ai/rsc";
 
-import { getCurrentMeasurementScope, isRoute06User } from "@/app/(auth)/lib";
 import { langfuseModel } from "@/lib/llm";
-import { createLogger } from "@/lib/opentelemetry";
-import { waitUntil } from "@vercel/functions";
+import {
+	createLogger,
+	waitForTelemetryExport,
+	withTokenMeasurement,
+} from "@/lib/opentelemetry";
+import { fetchCurrentUser } from "@/services/accounts/fetch-current-user";
 import { Langfuse } from "langfuse";
 import { schema as artifactSchema } from "../artifact/schema";
 import { buildLanguageModel } from "../flow/server-actions/generate-text";
@@ -26,8 +29,10 @@ export async function generateArtifactStream(
 ) {
 	const startTime = performance.now();
 	const lf = new Langfuse();
+	const currentUser = await fetchCurrentUser();
 	const trace = lf.trace({
 		id: `giselle-${Date.now()}`,
+		userId: currentUser.dbId.toString(),
 	});
 	const logger = createLogger("generate-artifact");
 	const sources = await sourceIndexesToSources({
@@ -71,35 +76,17 @@ ${sourcesToText(sources)}
 				prompt: params.userPrompt,
 				schema: artifactSchema,
 				onFinish: async (result) => {
-					const duration = performance.now() - startTime;
-					const measurementScope = await getCurrentMeasurementScope();
-					const isR06User = await isRoute06User();
-					generation.end({
-						output: result,
-					});
-
-					logger.info(
-						{
-							externalServiceName: "openai",
-							tokenConsumed: result.usage.totalTokens,
-							duration,
-							measurementScope,
-							isR06User,
+					await withTokenMeasurement(
+						logger,
+						async () => {
+							generation.end({ output: result });
+							await lf.shutdownAsync();
+							waitForTelemetryExport();
+							return result;
 						},
-						"response obtained",
+						model,
+						startTime,
 					);
-
-					await lf.shutdownAsync();
-					waitUntil(
-						new Promise((resolve) =>
-							setTimeout(
-								resolve,
-								Number.parseInt(
-									process.env.OTEL_EXPORT_INTERVAL_MILLIS ?? "1000",
-								),
-							),
-						),
-					); // wait until telemetry sent
 				},
 			});
 

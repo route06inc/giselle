@@ -1,26 +1,23 @@
 # giselle
 
-As of December  3, 2024 12:49am. 914 total
 
 ## Summary
-* 669 MIT
-* 126 Apache 2.0
-* 62 ISC
-* 24 New BSD
-* 13 Simplified BSD
+* 660 MIT
+* 122 Apache 2.0
+* 61 ISC
+* 23 New BSD
+* 12 Simplified BSD
 * 3 MIT OR Apache-2.0
 * 3 BlueOak-1.0.0
-* 2 LGPL-3.0-or-later
 * 2 BSD Zero Clause License
 * 2 The Unlicense
-* 1 (MIT AND Zlib)
-* 1 BSD
-* 1 CC0 1.0 Universal
-* 1 unknown
-* 1 CC-BY-4.0
-* 1 (MIT OR CC0-1.0)
-* 1 (AFL-2.1 OR BSD-3-Clause)
+* 2 LGPL-3.0-or-later
 * 1 Apache 2.0, BSD Zero Clause License, ISC, MIT, Mozilla Public License 2.0, New BSD, Simplified BSD, The Unlicense, zlib/libpng license
+* 1 (AFL-2.1 OR BSD-3-Clause)
+* 1 (MIT OR CC0-1.0)
+* 1 CC-BY-4.0
+* 1 BSD
+* 1 (MIT AND Zlib)
 
 
 
@@ -28,7 +25,18 @@ As of December  3, 2024 12:49am. 914 total
 
 
 <a name="@ai-sdk/anthropic"></a>
-### <a href="https://sdk.vercel.ai/docs">@ai-sdk/anthropic</a> v0.0.56 (dependencies)
+### <a href="https://sdk.vercel.ai/docs">@ai-sdk/anthropic</a> v1.0.5 (dependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
+
+
+
+<a name="@ai-sdk/google"></a>
+### <a href="https://sdk.vercel.ai/docs">@ai-sdk/google</a> v1.0.10 (dependencies)
 #### 
 
 ##### Paths
@@ -39,7 +47,7 @@ As of December  3, 2024 12:49am. 914 total
 
 
 <a name="@ai-sdk/openai"></a>
-### <a href="https://sdk.vercel.ai/docs">@ai-sdk/openai</a> v0.0.72 (dependencies)
+### <a href="https://sdk.vercel.ai/docs">@ai-sdk/openai</a> v1.0.8 (dependencies)
 #### 
 
 ##### Paths
@@ -50,7 +58,7 @@ As of December  3, 2024 12:49am. 914 total
 
 
 <a name="@ai-sdk/provider"></a>
-### <a href="https://sdk.vercel.ai/docs">@ai-sdk/provider</a> v0.0.26 (dependencies)
+### <a href="https://sdk.vercel.ai/docs">@ai-sdk/provider</a> v1.0.2 (dependencies)
 #### 
 
 ##### Paths
@@ -61,7 +69,7 @@ As of December  3, 2024 12:49am. 914 total
 
 
 <a name="@ai-sdk/provider-utils"></a>
-### <a href="https://sdk.vercel.ai/docs">@ai-sdk/provider-utils</a> v1.0.22 (dependencies)
+### <a href="https://sdk.vercel.ai/docs">@ai-sdk/provider-utils</a> v2.0.4 (dependencies)
 #### 
 
 ##### Paths
@@ -72,29 +80,7 @@ As of December  3, 2024 12:49am. 914 total
 
 
 <a name="@ai-sdk/react"></a>
-### <a href="https://sdk.vercel.ai/docs">@ai-sdk/react</a> v0.0.70 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
-
-
-
-<a name="@ai-sdk/solid"></a>
-### <a href="https://sdk.vercel.ai/docs">@ai-sdk/solid</a> v0.0.54 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
-
-
-
-<a name="@ai-sdk/svelte"></a>
-### <a href="https://sdk.vercel.ai/docs">@ai-sdk/svelte</a> v0.0.57 (dependencies)
+### <a href="https://sdk.vercel.ai/docs">@ai-sdk/react</a> v1.0.6 (dependencies)
 #### 
 
 ##### Paths
@@ -105,18 +91,7 @@ As of December  3, 2024 12:49am. 914 total
 
 
 <a name="@ai-sdk/ui-utils"></a>
-### <a href="https://sdk.vercel.ai/docs">@ai-sdk/ui-utils</a> v0.0.50 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
-
-
-
-<a name="@ai-sdk/vue"></a>
-### <a href="https://sdk.vercel.ai/docs">@ai-sdk/vue</a> v0.0.59 (dependencies)
+### <a href="https://sdk.vercel.ai/docs">@ai-sdk/ui-utils</a> v1.0.5 (dependencies)
 #### 
 
 ##### Paths
@@ -2051,6 +2026,17 @@ A minimal UTF8 implementation for number arrays.
 
 
 
+<a name="@radix-ui/react-alert-dialog"></a>
+### <a href="https://radix-ui.com/primitives">@radix-ui/react-alert-dialog</a> v1.1.2 (dependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
+
+
+
 <a name="@radix-ui/react-arrow"></a>
 ### <a href="https://radix-ui.com/primitives">@radix-ui/react-arrow</a> v1.1.0 (dependencies, devDependencies)
 #### 
@@ -2161,6 +2147,17 @@ A minimal UTF8 implementation for number arrays.
 
 
 
+<a name="@radix-ui/react-dialog"></a>
+### <a href="https://radix-ui.com/primitives">@radix-ui/react-dialog</a> v1.1.2 (dependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
+
+
+
 <a name="@radix-ui/react-direction"></a>
 ### <a href="https://radix-ui.com/primitives">@radix-ui/react-direction</a> v1.1.0 (dependencies)
 #### 
@@ -2229,6 +2226,17 @@ A minimal UTF8 implementation for number arrays.
 
 <a name="@radix-ui/react-focus-guards"></a>
 ### <a href="https://radix-ui.com/primitives">@radix-ui/react-focus-guards</a> v1.1.0 (dependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
+
+
+
+<a name="@radix-ui/react-focus-guards"></a>
+### <a href="https://radix-ui.com/primitives">@radix-ui/react-focus-guards</a> v1.1.1 (dependencies)
 #### 
 
 ##### Paths
@@ -2504,6 +2512,17 @@ Radix UI React Icon Set
 
 <a name="@radix-ui/react-tabs"></a>
 ### <a href="https://radix-ui.com/primitives">@radix-ui/react-tabs</a> v1.1.0 (dependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
+
+
+
+<a name="@radix-ui/react-toast"></a>
+### <a href="https://radix-ui.com/primitives">@radix-ui/react-toast</a> v1.2.2 (dependencies)
 #### 
 
 ##### Paths
@@ -3493,17 +3512,13 @@ The official JSON schema converter for Valibot
 The Vercel Blob JavaScript API client
 
 <a name="@vercel/flags"></a>
-### @vercel/flags v2.6.1 (dependencies)
+### @vercel/flags v2.6.3 (dependencies)
 #### 
 
 ##### Paths
 * /home/runner/work/giselle/giselle
 
-unknown manually approved
-
->The license is none. Check https://github.com/giselles-ai/giselle/issues/12 later
-
-><cite>  2024-10-08</cite>
+<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
 
 Make the Vercel Toolbar aware of your feature flags and read overrides set by it
 
@@ -3550,105 +3565,6 @@ Connect to Vercel Postgres databases on the Edge
 <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
 
 Speed Insights is a tool for measuring web performance and providing suggestions for improvement.
-
-<a name="@vue/compiler-core"></a>
-### <a href="https://github.com/vuejs/core/tree/main/packages/compiler-core#readme">@vue/compiler-core</a> v3.5.8 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-@vue/compiler-core
-
-<a name="@vue/compiler-dom"></a>
-### <a href="https://github.com/vuejs/core/tree/main/packages/compiler-dom#readme">@vue/compiler-dom</a> v3.5.8 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-@vue/compiler-dom
-
-<a name="@vue/compiler-sfc"></a>
-### <a href="https://github.com/vuejs/core/tree/main/packages/compiler-sfc#readme">@vue/compiler-sfc</a> v3.5.8 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-@vue/compiler-sfc
-
-<a name="@vue/compiler-ssr"></a>
-### <a href="https://github.com/vuejs/core/tree/main/packages/compiler-ssr#readme">@vue/compiler-ssr</a> v3.5.8 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-@vue/compiler-ssr
-
-<a name="@vue/reactivity"></a>
-### <a href="https://github.com/vuejs/core/tree/main/packages/reactivity#readme">@vue/reactivity</a> v3.5.8 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-@vue/reactivity
-
-<a name="@vue/runtime-core"></a>
-### <a href="https://github.com/vuejs/core/tree/main/packages/runtime-core#readme">@vue/runtime-core</a> v3.5.8 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-@vue/runtime-core
-
-<a name="@vue/runtime-dom"></a>
-### <a href="https://github.com/vuejs/core/tree/main/packages/runtime-dom#readme">@vue/runtime-dom</a> v3.5.8 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-@vue/runtime-dom
-
-<a name="@vue/server-renderer"></a>
-### <a href="https://github.com/vuejs/core/tree/main/packages/server-renderer#readme">@vue/server-renderer</a> v3.5.8 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-@vue/server-renderer
-
-<a name="@vue/shared"></a>
-### <a href="https://github.com/vuejs/core/tree/main/packages/shared#readme">@vue/shared</a> v3.5.8 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-internal utils shared across @vue packages
 
 <a name="@webassemblyjs/ast"></a>
 ### @webassemblyjs/ast v1.12.1 (dependencies)
@@ -3937,7 +3853,7 @@ Turn a function into an `http.Agent` instance
 Missing keepalive http.Agent
 
 <a name="ai"></a>
-### <a href="https://sdk.vercel.ai/docs">ai</a> v3.4.33 (dependencies)
+### <a href="https://sdk.vercel.ai/docs">ai</a> v4.0.16 (dependencies)
 #### 
 
 ##### Paths
@@ -4101,17 +4017,6 @@ Unopinionated, no-frills CLI argument parser
 
 Cast aria-hidden to everything, except...
 
-<a name="aria-query"></a>
-### <a href="https://github.com/A11yance/aria-query#readme">aria-query</a> v5.3.2 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
-
-Programmatic access to the ARIA specification
-
 <a name="ast-types"></a>
 ### <a href="http://github.com/benjamn/ast-types">ast-types</a> v0.16.1 (dependencies)
 #### 
@@ -4188,17 +4093,6 @@ Promise based HTTP client for the browser and node.js
 <a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
 
 Promise based HTTP client for the browser and node.js
-
-<a name="axobject-query"></a>
-### <a href="https://github.com/A11yance/axobject-query#readme">axobject-query</a> v4.1.0 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
-
-Programmatic access to information about the AXObject Model
 
 <a name="bail"></a>
 ### bail v2.0.2 (dependencies)
@@ -4695,17 +4589,6 @@ A tiny (239B) utility for constructing className strings conditionally.
 
 
 
-<a name="code-red"></a>
-### code-red v1.0.4 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-code-red
-
 <a name="color"></a>
 ### color v4.2.3 (dependencies)
 #### 
@@ -4860,6 +4743,17 @@ Converts a source-map from/to  different formats and allows adding/changing prop
 
 HTTP server cookie parsing and serialization
 
+<a name="core-js"></a>
+### core-js v3.39.0 (dependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
+
+Standard library
+
 <a name="cross-spawn"></a>
 ### <a href="https://github.com/moxystudio/node-cross-spawn">cross-spawn</a> v7.0.3 (dependencies, devDependencies)
 #### 
@@ -4870,17 +4764,6 @@ HTTP server cookie parsing and serialization
 <a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
 
 Cross platform child_process#spawn and child_process#spawnSync
-
-<a name="css-tree"></a>
-### css-tree v2.3.1 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-A tool set for CSS: fast detailed parser (CSS → AST), walker (AST traversal), generator (AST → CSS) and lexer (validation and matching) based on specs and browser implementations
 
 <a name="cssesc"></a>
 ### <a href="https://mths.be/cssesc">cssesc</a> v3.0.0 (dependencies, devDependencies)
@@ -5256,17 +5139,6 @@ Call a callback when a readable/writable/duplex stream has completed or failed.
 
 Offers a async require.resolve function. It's highly configurable.
 
-<a name="entities"></a>
-### entities v4.5.0 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/bsd-license">Simplified BSD</a> permitted
-
-Encode & decode XML and HTML entities with ease & speed
-
 <a name="es-define-property"></a>
 ### <a href="https://github.com/ljharb/es-define-property#readme">es-define-property</a> v1.0.0 (dependencies)
 #### 
@@ -5421,17 +5293,6 @@ ECMAScript JS AST traversal functions
 
 Traverse an ESTree-compliant AST
 
-<a name="estree-walker"></a>
-### estree-walker v3.0.3 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-Traverse an ESTree-compliant AST
-
 <a name="event-target-shim"></a>
 ### <a href="https://github.com/mysticatea/event-target-shim">event-target-shim</a> v5.0.1 (dependencies)
 #### 
@@ -5455,7 +5316,7 @@ An implementation of WHATWG EventTarget interface.
 Node's event emitter for all engines.
 
 <a name="eventsource-parser"></a>
-### <a href="https://github.com/rexxars/eventsource-parser#readme">eventsource-parser</a> v1.1.2 (dependencies)
+### <a href="https://github.com/rexxars/eventsource-parser#readme">eventsource-parser</a> v3.0.0 (dependencies)
 #### 
 
 ##### Paths
@@ -5563,6 +5424,17 @@ Safely and quickly serialize JavaScript objects
 <a href="http://en.wikipedia.org/wiki/ISC_license">ISC</a> permitted
 
 Fast, in memory work queue
+
+<a name="fflate"></a>
+### <a href="https://101arrowz.github.io/fflate">fflate</a> v0.4.8 (dependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
+
+High performance (de)compression in an 8kB package
 
 <a name="figures"></a>
 ### figures v2.0.0 (dependencies)
@@ -6312,17 +6184,6 @@ Returns true if an object was created by the `Object` constructor, or Object.cre
 
 Determine whether an AST node is a reference
 
-<a name="is-reference"></a>
-### <a href="https://github.com/Rich-Harris/is-reference#readme">is-reference</a> v3.0.2 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-Determine whether an AST node is a reference
-
 <a name="is-stream"></a>
 ### is-stream v2.0.1 (dependencies)
 #### 
@@ -6664,17 +6525,6 @@ Runs (webpack) loaders
 
 Offline storage, improved.
 
-<a name="locate-character"></a>
-### <a href="https://gitlab.com/Rich-Harris/locate-character#README">locate-character</a> v3.0.0 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-Get the line and column number of a specific character in a string
-
 <a name="locate-path"></a>
 ### locate-path v6.0.0 (dependencies)
 #### 
@@ -6894,17 +6744,6 @@ mdast utility to serialize markdown
 <a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
 
 mdast utility to get the plain text content of a node
-
-<a name="mdn-data"></a>
-### <a href="https://developer.mozilla.org">mdn-data</a> v2.0.30 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://creativecommons.org/publicdomain/zero/1.0">CC0 1.0 Universal</a> permitted
-
-Open Web data by the Mozilla Developer Network
 
 <a name="merge-stream"></a>
 ### merge-stream v2.0.0 (dependencies)
@@ -7346,6 +7185,17 @@ modernize node.js to current ECMAScript standards
 
 A tiny (116 bytes), secure URL-friendly unique string ID generator
 
+<a name="nanoid"></a>
+### nanoid v3.3.8 (dependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
+
+A tiny (116 bytes), secure URL-friendly unique string ID generator
+
 <a name="neo-async"></a>
 ### <a href="https://github.com/suguru03/neo-async">neo-async</a> v2.6.2 (dependencies)
 #### 
@@ -7665,17 +7515,6 @@ walk paths fast and efficiently
 
 Create and modify PDF files with JavaScript
 
-<a name="periscopic"></a>
-### periscopic v3.1.0 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-periscopic
-
 <a name="pg-int8"></a>
 ### pg-int8 v1.0.1 (dependencies)
 #### 
@@ -7733,17 +7572,6 @@ Query result type converters for node-postgres
 
 <a name="picocolors"></a>
 ### picocolors v1.0.1 (dependencies, devDependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://en.wikipedia.org/wiki/ISC_license">ISC</a> permitted
-
-The tiniest and the fastest library for terminal output formatting with ANSI colors
-
-<a name="picocolors"></a>
-### picocolors v1.1.0 (dependencies, devDependencies)
 #### 
 
 ##### Paths
@@ -7854,17 +7682,6 @@ Tool for transforming styles with JS plugins
 
 <a name="postcss"></a>
 ### <a href="https://postcss.org/">postcss</a> v8.4.41 (dependencies, devDependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-Tool for transforming styles with JS plugins
-
-<a name="postcss"></a>
-### <a href="https://postcss.org/">postcss</a> v8.4.47 (dependencies, devDependencies)
 #### 
 
 ##### Paths
@@ -8050,8 +7867,30 @@ Parse Postgres interval columns
 
 Range data type parser and serializer for PostgreSQL
 
+<a name="posthog-js"></a>
+### posthog-js v1.194.2 (dependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
+
+Posthog-js allows you to automatically capture usage and send events to PostHog.
+
 <a name="preact"></a>
 ### <a href="https://preactjs.com">preact</a> v10.11.3 (dependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
+
+Fast 3kb React-compatible Virtual DOM library.
+
+<a name="preact"></a>
+### <a href="https://preactjs.com">preact</a> v10.25.1 (dependencies)
 #### 
 
 ##### Paths
@@ -8261,6 +8100,17 @@ Disables scroll outside of `children` node.
 
 <a name="react-remove-scroll"></a>
 ### react-remove-scroll v2.5.7 (dependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
+
+Disables scroll outside of `children` node.
+
+<a name="react-remove-scroll"></a>
+### react-remove-scroll v2.6.0 (dependencies)
 #### 
 
 ##### Paths
@@ -8787,17 +8637,6 @@ Generates and consumes source maps
 
 Generates and consumes source maps
 
-<a name="source-map-js"></a>
-### <a href="https://github.com/7rulnik/source-map-js">source-map-js</a> v1.2.1 (dependencies, devDependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/BSD-3-Clause">New BSD</a> permitted
-
-Generates and consumes source maps
-
 <a name="source-map-support"></a>
 ### source-map-support v0.5.21 (dependencies, devDependencies)
 #### 
@@ -8830,17 +8669,6 @@ Parse and stringify space separated tokens
 <a href="http://en.wikipedia.org/wiki/ISC_license">ISC</a> permitted
 
 split a Text Stream into a Line Stream, using Stream 3
-
-<a name="sswr"></a>
-### sswr v2.1.0 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-Svelte stale while revalidate (SWR) data fetching strategy
 
 <a name="stacktrace-parser"></a>
 ### <a href="https://github.com/errwischt/stacktrace-parser">stacktrace-parser</a> v0.1.10 (dependencies)
@@ -8975,7 +8803,7 @@ Strip ANSI escape codes from a string
 Strip comments from JSON. Lets you use comments in your JSON files!
 
 <a name="stripe"></a>
-### <a href="https://github.com/stripe/stripe-node">stripe</a> v16.10.0 (dependencies)
+### <a href="https://github.com/stripe/stripe-node">stripe</a> v17.4.0 (dependencies)
 #### 
 
 ##### Paths
@@ -9051,17 +8879,6 @@ Detect whether a terminal supports color
 
 Determine if the current node version supports the `--preserve-symlinks` flag.
 
-<a name="svelte"></a>
-### <a href="https://svelte.dev">svelte</a> v4.2.19 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-Cybernetically enhanced web apps
-
 <a name="swr"></a>
 ### <a href="https://swr.vercel.app">swr</a> v2.2.5 (dependencies)
 #### 
@@ -9072,28 +8889,6 @@ Cybernetically enhanced web apps
 <a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
 
 React Hooks library for remote data fetching
-
-<a name="swrev"></a>
-### swrev v4.0.0 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-Framework agnostic stale while revalidate (SWR) data fetching strategy
-
-<a name="swrv"></a>
-### swrv v1.0.4 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
-
-
 
 <a name="tailwind-merge"></a>
 ### <a href="https://github.com/dcastil/tailwind-merge">tailwind-merge</a> v2.5.2 (dependencies)
@@ -9737,17 +9532,6 @@ Virtual file format for text processing
 
 vfile utility to create a virtual message
 
-<a name="vue"></a>
-### <a href="https://github.com/vuejs/core/tree/main/packages/vue#readme">vue</a> v3.5.8 (dependencies)
-#### 
-
-##### Paths
-* /home/runner/work/giselle/giselle
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
-
-The progressive JavaScript framework for building modern web UI.
-
 <a name="watchpack"></a>
 ### <a href="https://github.com/webpack/watchpack">watchpack</a> v2.4.2 (dependencies)
 #### 
@@ -9780,6 +9564,17 @@ The progressive JavaScript framework for building modern web UI.
 <a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
 
 Web Streams, based on the WHATWG spec reference implementation
+
+<a name="web-vitals"></a>
+### web-vitals v4.2.4 (dependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> permitted
+
+Easily measure performance metrics in JavaScript
 
 <a name="webidl-conversions"></a>
 ### webidl-conversions v3.0.1 (dependencies)

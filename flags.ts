@@ -103,3 +103,29 @@ export const proTeamPlanFlag = flag<boolean>({
 		{ value: true, label: "Enable" },
 	],
 });
+
+export const teamCreationFlag = flag<boolean>({
+	key: "team-creation",
+	async decide() {
+		return takeLocalEnv("TEAM_CREATION_FLAG");
+	},
+	description: "Enable Team Creation",
+	defaultValue: false,
+	options: [
+		{ value: false, label: "disable" },
+		{ value: true, label: "Enable" },
+	],
+});
+
+export const developerFlag = flag<boolean>({
+	key: "developer",
+	async decide() {
+		return takeLocalEnv("DEVELOPER_FLAG");
+	},
+	description: "Enable Developer",
+	defaultValue: false,
+	options: [
+		{ value: false, label: "disable" },
+		{ value: true, label: "Enable" },
+	],
+});

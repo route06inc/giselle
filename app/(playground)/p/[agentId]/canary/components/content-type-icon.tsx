@@ -21,5 +21,7 @@ export function ContentTypeIcon({
 			return <PromptIcon {...props} />;
 		case "file":
 			return <DocumentIcon {...props} />;
+		case "files":
+			return <DocumentIcon {...props} />;
 	}
 }

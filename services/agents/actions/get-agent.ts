@@ -1,19 +1,19 @@
 "use server";
 
-import { agents, db, supabaseUserMappings, teamMemberships } from "@/drizzle";
+import { agents, db } from "@/drizzle";
 import { eq } from "drizzle-orm";
 import { revalidateTag, unstable_cache } from "next/cache";
 import type { AgentId } from "../types";
 
 type GetAgentsArgs = {
-	userId: string;
+	teamDbId: number;
 };
 
 type TagParams = {
-	userId: string;
+	teamDbId: number;
 };
 
-const getAgentsTag = (params: TagParams) => `${params.userId}.getAgents`;
+const getAgentsTag = (params: TagParams) => `${params.teamDbId}.getAgents`;
 
 export const getAgents = async (args: GetAgentsArgs) => {
 	const cachedAgents = unstable_cache(
@@ -21,19 +21,11 @@ export const getAgents = async (args: GetAgentsArgs) => {
 			const result = await db
 				.select({ agents })
 				.from(agents)
-				.innerJoin(
-					teamMemberships,
-					eq(agents.teamDbId, teamMemberships.teamDbId),
-				)
-				.innerJoin(
-					supabaseUserMappings,
-					eq(teamMemberships.userDbId, supabaseUserMappings.userDbId),
-				)
-				.where(eq(supabaseUserMappings.supabaseUserId, args.userId));
+				.where(eq(agents.teamDbId, args.teamDbId));
 
 			return result.map((row) => row.agents);
 		},
-		[args.userId],
+		[args.teamDbId.toString()],
 		{ tags: [getAgentsTag(args)] },
 	);
 	return await cachedAgents();

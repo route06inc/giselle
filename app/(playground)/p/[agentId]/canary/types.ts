@@ -26,6 +26,7 @@ export interface TextGenerateActionContent extends ActionContentBase {
 	topP: number;
 	instruction: string;
 	requirement?: NodeHandle;
+	system?: string;
 	sources: NodeHandle[];
 }
 export interface TextGeneration extends Action {
@@ -77,20 +78,36 @@ interface CompletedFileData extends FileDataBase {
 	processedAt: number;
 	textDataUrl: string;
 }
+interface FailedFileData extends FileDataBase {
+	status: "failed";
+}
 
-type FileData = UploadingFileData | ProcessingFileData | CompletedFileData;
+export type FileData =
+	| UploadingFileData
+	| ProcessingFileData
+	| CompletedFileData
+	| FailedFileData;
+
+/** @deprecated */
 export interface FileContent extends VariableContentBase {
 	type: "file";
 	data?: FileData | null | undefined;
 }
+export interface FilesContent extends VariableContentBase {
+	type: "files";
+	data: FileData[];
+}
 
-type VariableContent = TextContent | FileContent;
+type VariableContent = TextContent | FileContent | FilesContent;
 
 export interface Text extends Variable {
 	content: TextContent;
 }
 export interface File extends Variable {
 	content: FileContent;
+}
+export interface Files extends Variable {
+	content: FilesContent;
 }
 
 export type NodeHandleId = `ndh_${string}`;
@@ -139,6 +156,11 @@ export interface TextArtifactObject extends ArtifactObjectBase {
 		plan: string;
 		description: string;
 	};
+	usage?: {
+		// unavailable until generation is completed
+		promptTokens: number;
+		completionTokens: number;
+	};
 }
 interface TextArtifact extends GeneratedArtifact {
 	object: TextArtifactObject;
@@ -149,11 +171,21 @@ interface TextStreamArtifact extends StreamAtrifact {
 export type Artifact = TextArtifact | TextStreamArtifact;
 
 export type GraphId = `grph_${string}`;
+type GraphVersion =
+	| "2024-12-09"
+	| "2024-12-10"
+	| "2024-12-11"
+	| "20241212"
+	| "20241213";
+export type LatestGraphVersion = "20241213";
 export interface Graph {
 	id: GraphId;
 	nodes: Node[];
 	connections: Connection[];
 	artifacts: Artifact[];
+	version: GraphVersion;
+	flows: Flow[];
+	executionIndexes: ExecutionIndex[];
 }
 
 interface ToolBase {
@@ -182,3 +214,106 @@ export type Tool =
 	| AddFileNodeTool
 	| AddTextGenerationNodeTool
 	| MoveTool;
+
+export type FlowId = `flw_${string}`;
+
+export type StepId = `stp_${string}`;
+export interface Step {
+	id: StepId;
+	nodeId: NodeId;
+	variableNodeIds: NodeId[];
+}
+export type JobId = `jb_${string}`;
+export interface Job {
+	id: JobId;
+	steps: Step[];
+}
+export interface Flow {
+	id: FlowId;
+	name: string;
+	jobs: Job[];
+	nodes: NodeId[];
+	connections: ConnectionId[];
+}
+
+export type AgentId = `agnt_${string}`;
+
+export type StepExecutionId = `stex_${string}`;
+interface StepExecutionBase {
+	id: StepExecutionId;
+	stepId: StepId;
+	nodeId: NodeId;
+	status: string;
+}
+interface PendingStepExecution extends StepExecutionBase {
+	status: "pending";
+}
+
+interface RunningStepExecution extends StepExecutionBase {
+	status: "running";
+	runStartedAt: number;
+}
+
+interface CompletedStepExecution extends StepExecutionBase {
+	status: "completed";
+	runStartedAt: number;
+	durationMs: number;
+}
+export type StepExecution =
+	| PendingStepExecution
+	| RunningStepExecution
+	| CompletedStepExecution;
+
+export type JobExecutionId = `jbex_${string}`;
+interface JobExecutionBase {
+	id: JobExecutionId;
+	jobId: JobId;
+	stepExecutions: StepExecution[];
+	status: string;
+}
+interface PendingJobExecution extends JobExecutionBase {
+	status: "pending";
+}
+interface RunningJobExecution extends JobExecutionBase {
+	status: "running";
+	runStartedAt: number;
+}
+interface CompletedJobExecution extends JobExecutionBase {
+	status: "completed";
+	runStartedAt: number;
+	durationMs: number;
+}
+export type JobExecution =
+	| PendingJobExecution
+	| RunningJobExecution
+	| CompletedJobExecution;
+export type ExecutionId = `exct_${string}`;
+interface ExecutionBase {
+	id: ExecutionId;
+	flowId?: FlowId;
+	jobExecutions: JobExecution[];
+	artifacts: Artifact[];
+}
+interface PendingExecution extends ExecutionBase {
+	status: "pending";
+}
+interface RunningExecution extends ExecutionBase {
+	status: "running";
+	runStartedAt: number;
+}
+interface CompletedExecution extends ExecutionBase {
+	status: "completed";
+	runStartedAt: number;
+	durationMs: number;
+	resultArtifact: Artifact;
+}
+export type Execution =
+	| PendingExecution
+	| RunningExecution
+	| CompletedExecution;
+
+export interface ExecutionIndex {
+	executionId: ExecutionId;
+	blobUrl: string;
+	completedAt: number;
+}

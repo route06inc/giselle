@@ -11,8 +11,9 @@ import { and, eq } from "drizzle-orm";
 export const retrieveActiveStripeSubscriptionBySupabaseUserId = async (
 	supabaseUserId: string,
 ) => {
-	// TODO: When team plans are released, a user may belong to multiple teams, so we need to handle that case.
+	// ~TODO~: When team plans are released, a user may belong to multiple teams, so we need to handle that case.
 	// One supabase user can have multiple teams which have pro plan subscription.
+	// WON'T FIX: This method will be deprecated after pro plan is released.
 	const [subscription] = await db
 		.selectDistinct({ id: subscriptions.id })
 		.from(subscriptions)

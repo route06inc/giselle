@@ -16,6 +16,7 @@ import { TextGenerationIcon } from "../../beta-proto/components/icons/text-gener
 import { useGraph } from "../contexts/graph";
 import type {
 	File,
+	Files,
 	Node as NodeType,
 	Text,
 	TextGeneration,
@@ -26,9 +27,15 @@ import { ContentTypeIcon } from "./content-type-icon";
 
 type TextNode = XYFlowNode<{ node: Text }>;
 type FileNode = XYFlowNode<{ node: File }>;
+type FilesNode = XYFlowNode<{ node: Files }>;
 type TextGenerationNode = XYFlowNode<{ node: TextGeneration }>;
 type WebSearchNode = XYFlowNode<{ node: WebSearch }>;
-export type Node = TextNode | FileNode | TextGenerationNode | WebSearchNode;
+export type Node =
+	| TextNode
+	| FileNode
+	| TextGenerationNode
+	| WebSearchNode
+	| FilesNode;
 
 export function PreviewNode({ tool }: { tool: Tool }) {
 	switch (tool.action) {
@@ -273,6 +280,9 @@ export function Node({
 					<NodeHeader name="Text" contentType="text" />
 				)}
 				{data.node.content.type === "file" && (
+					<NodeHeader name="File" contentType="file" />
+				)}
+				{data.node.content.type === "files" && (
 					<NodeHeader name="File" contentType="file" />
 				)}
 			</div>

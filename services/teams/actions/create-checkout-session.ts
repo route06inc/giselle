@@ -43,5 +43,5 @@ export async function createCheckoutSession(
 		throw new Error("checkoutSession.url is null");
 	}
 
-	return checkoutSession.url;
+	return { id: checkoutSession.id, url: checkoutSession.url };
 }

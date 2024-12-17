@@ -1,4 +1,4 @@
-import { getCurrentTeam } from "./get-current-team";
+import { fetchCurrentTeam } from "@/services/teams";
 
 /**
  * Get the current measurement scope.
@@ -6,6 +6,6 @@ import { getCurrentTeam } from "./get-current-team";
  * @returns The current measurement scope.
  */
 export async function getCurrentMeasurementScope() {
-	const currentTeam = await getCurrentTeam();
+	const currentTeam = await fetchCurrentTeam();
 	return currentTeam.dbId;
 }

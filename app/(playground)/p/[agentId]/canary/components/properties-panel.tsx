@@ -1,30 +1,43 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import * as HoverCardPrimitive from "@radix-ui/react-hover-card";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
+import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { upload } from "@vercel/blob/client";
 import { readStreamableValue } from "ai/rsc";
 import clsx from "clsx/lite";
 import {
 	ArrowUpFromLineIcon,
+	CheckCircle,
+	CheckIcon,
 	ChevronsUpDownIcon,
+	CornerDownRightIcon,
+	FileIcon,
+	FileXIcon,
+	FingerprintIcon,
 	Minimize2Icon,
 	TrashIcon,
+	UndoIcon,
 } from "lucide-react";
 import {
 	type ComponentProps,
+	type DetailedHTMLProps,
 	type FC,
 	type HTMLAttributes,
 	type ReactNode,
 	useCallback,
+	useId,
 	useMemo,
 	useState,
 } from "react";
 import { DocumentIcon } from "../../beta-proto/components/icons/document";
 import { PanelCloseIcon } from "../../beta-proto/components/icons/panel-close";
 import { PanelOpenIcon } from "../../beta-proto/components/icons/panel-open";
+import { SpinnerIcon } from "../../beta-proto/components/icons/spinner";
 import { WilliIcon } from "../../beta-proto/components/icons/willi";
-import { action, parse } from "../actions";
+import { action, parse, remove } from "../actions";
 import { vercelBlobFileFolder } from "../constants";
+import { useDeveloperMode } from "../contexts/developer-mode";
+import { useExecution } from "../contexts/execution";
 import {
 	useArtifact,
 	useGraph,
@@ -32,8 +45,27 @@ import {
 	useSelectedNode,
 } from "../contexts/graph";
 import { usePropertiesPanel } from "../contexts/properties-panel";
+import { useToast } from "../contexts/toast";
+import { textGenerationPrompt } from "../lib/prompts";
+import {
+	createArtifactId,
+	createConnectionId,
+	createFileId,
+	createNodeHandleId,
+	createNodeId,
+	formatTimestamp,
+	isFile,
+	isFiles,
+	isText,
+	isTextGeneration,
+	pathJoin,
+	toErrorWithMessage,
+} from "../lib/utils";
 import type {
 	FileContent,
+	FileData,
+	FileId,
+	FilesContent,
 	Node,
 	NodeHandle,
 	NodeId,
@@ -42,17 +74,8 @@ import type {
 	TextContent,
 	TextGenerateActionContent,
 } from "../types";
-import {
-	createArtifactId,
-	createConnectionId,
-	createFileId,
-	createNodeHandleId,
-	isFile,
-	isText,
-	isTextGeneration,
-	pathJoin,
-} from "../utils";
 import { Block } from "./block";
+import ClipboardButton from "./clipboard-button";
 import { ContentTypeIcon } from "./content-type-icon";
 import {
 	DropdownMenu,
@@ -63,6 +86,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "./dropdown-menu";
+import { Markdown } from "./markdown";
 import {
 	Select,
 	SelectContent,
@@ -73,6 +97,7 @@ import {
 	SelectValue,
 } from "./select";
 import { Slider } from "./slider";
+import { Tooltip } from "./tooltip";
 
 function PropertiesPanelContentBox({
 	children,
@@ -87,11 +112,13 @@ interface PropertiesPanelCollapsible {
 	title: string;
 	glanceLabel?: string;
 	children: ReactNode;
+	expandedClassName?: string;
 }
 
 function PropertiesPanelCollapsible({
 	title,
 	glanceLabel,
+	expandedClassName,
 	children,
 }: PropertiesPanelCollapsible) {
 	const [isExpanded, setIsExpanded] = useState(false);
@@ -99,7 +126,12 @@ function PropertiesPanelCollapsible({
 	return (
 		<>
 			{isExpanded ? (
-				<PropertiesPanelContentBox className="text-black-30 grid gap-2">
+				<PropertiesPanelContentBox
+					className={clsx(
+						"text-black-30 flex flex-col gap-2",
+						expandedClassName,
+					)}
+				>
 					<div className="flex justify-between items-center">
 						<p className="font-rosart">{title}</p>
 						<button type="button" onClick={() => setIsExpanded(false)}>
@@ -188,14 +220,6 @@ const TabsContent: FC<ComponentProps<typeof TabsPrimitive.Content>> = ({
 );
 TabsContent.displayName = TabsPrimitive.Content.displayName;
 
-const Dialog = DialogPrimitive.Root;
-
-const DialogTrigger = DialogPrimitive.Trigger;
-
-const DialogPortal = DialogPrimitive.Portal;
-
-const DialogClose = DialogPrimitive.Close;
-
 function DialogOverlay(props: ComponentProps<typeof DialogPrimitive.Overlay>) {
 	return (
 		<DialogPrimitive.Overlay
@@ -211,22 +235,22 @@ function DialogContent({
 	...props
 }: ComponentProps<typeof DialogPrimitive.Content>) {
 	return (
-		<DialogPortal>
+		<DialogPrimitive.DialogPortal>
 			<DialogOverlay />
 			<DialogPrimitive.Content
 				className={clsx(
 					"fixed left-[50%] top-[50%] z-50",
 					"w-[800px] h-[90%] overflow-hidden translate-x-[-50%] translate-y-[-50%]",
-					"px-[32px] py-[32px] flex",
+					"px-[32px] py-[24px] flex",
 					"font-rosart bg-black-100 rounded-[16px] shadow-[0px_0px_3px_0px_hsla(0,_0%,_100%,_0.25)_inset,0px_0px_8px_0px_hsla(0,_0%,_100%,_0.2)]",
 					"duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]",
 				)}
 				{...props}
 			>
-				<div className="relative z-10 flex flex-col">{children}</div>
+				<div className="relative z-10 flex flex-col w-full">{children}</div>
 				<div className="absolute z-0 rounded-[16px] inset-0 border mask-fill bg-gradient-to-br bg-origin-border bg-clip-boarder border-transparent from-[hsla(233,4%,37%,1)] to-[hsla(233,62%,22%,1)]" />
 			</DialogPrimitive.Content>
-		</DialogPortal>
+		</DialogPrimitive.DialogPortal>
 	);
 }
 DialogContent.displayName = DialogPrimitive.Content.displayName;
@@ -264,6 +288,7 @@ export function PropertiesPanel() {
 	const { graph, dispatch, flush } = useGraph();
 	const selectedNode = useSelectedNode();
 	const { open, setOpen, tab, setTab } = usePropertiesPanel();
+	const { execute } = useExecution();
 	return (
 		<div
 			className={clsx(
@@ -304,8 +329,8 @@ export function PropertiesPanel() {
 					</div>
 
 					{selectedNode && (
-						<div className="bg-black-80 px-[24px] py-[8px] flex items-center justify-between">
-							<div className="flex items-center gap-[8px]">
+						<div className="bg-black-80 px-[24px] h-[36px] flex items-center justify-between">
+							<div className="flex items-center gap-[10px]">
 								<div
 									data-type={selectedNode.type}
 									className={clsx(
@@ -320,90 +345,15 @@ export function PropertiesPanel() {
 									/>
 								</div>
 								<div className="font-avenir text-[16px] text-black-30">
-									{selectedNode.content.type}
+									{selectedNode.name}
 								</div>
 							</div>
 							{selectedNode.content.type === "textGeneration" && (
 								<div className="">
 									<button
 										type="button"
-										className="relative z-10 rounded-[8px] shadow-[0px_0px_3px_0px_#FFFFFF40_inset] py-[4px] px-[8px] bg-black-80 text-black-30 font-rosart text-[14px] disabled:bg-black-40"
-										onClick={async () => {
-											const artifactId = createArtifactId();
-											dispatch({
-												type: "upsertArtifact",
-												input: {
-													nodeId: selectedNode.id,
-													artifact: {
-														id: artifactId,
-														type: "streamArtifact",
-														creatorNodeId: selectedNode.id,
-														object: {
-															type: "text",
-															title: "",
-															content: "",
-															messages: {
-																plan: "",
-																description: "",
-															},
-														},
-													},
-												},
-											});
-											setTab("Result");
-											const latestGraphUrl = await flush();
-											console.log(latestGraphUrl);
-											const stream = await action(
-												latestGraphUrl,
-												selectedNode.id,
-											);
-
-											let textArtifactObject: TextArtifactObject = {
-												type: "text",
-												title: "",
-												content: "",
-												messages: {
-													plan: "",
-													description: "",
-												},
-											};
-											for await (const streamContent of readStreamableValue(
-												stream,
-											)) {
-												if (streamContent === undefined) {
-													continue;
-												}
-												dispatch({
-													type: "upsertArtifact",
-													input: {
-														nodeId: selectedNode.id,
-														artifact: {
-															id: artifactId,
-															type: "streamArtifact",
-															creatorNodeId: selectedNode.id,
-															object: streamContent,
-														},
-													},
-												});
-												textArtifactObject = {
-													...textArtifactObject,
-													...streamContent,
-												};
-											}
-											dispatch({
-												type: "upsertArtifact",
-												input: {
-													nodeId: selectedNode.id,
-													artifact: {
-														id: artifactId,
-														type: "generatedArtifact",
-														creatorNodeId: selectedNode.id,
-														createdAt: Date.now(),
-														object: textArtifactObject,
-													},
-												},
-											});
-										}}
+										className="relative z-10 rounded-[8px] shadow-[0px_0px_3px_0px_#FFFFFF40_inset] py-[3px] px-[8px] bg-black-80 text-black-30 font-rosart text-[14px] disabled:bg-black-40"
+										onClick={() => execute(selectedNode.id)}
 									>
 										Generate
 									</button>
@@ -604,9 +554,84 @@ export function PropertiesPanel() {
 							/>
 						</TabsContent>
 					)}
+					{selectedNode && isFiles(selectedNode) && (
+						<TabsContentFiles
+							nodeId={selectedNode.id}
+							content={selectedNode.content}
+							onContentChange={(content) => {
+								dispatch({
+									type: "updateNode",
+									input: {
+										nodeId: selectedNode.id,
+										node: {
+											...selectedNode,
+											content,
+										},
+									},
+								});
+							}}
+						/>
+					)}
 					{selectedNode && (
 						<TabsContent value="Result">
-							<TabContentGenerateTextResult node={selectedNode} />
+							<TabContentGenerateTextResult
+								node={selectedNode}
+								onCreateNewTextGenerator={() => {
+									const nodeId = createNodeId();
+									const handleId = createNodeHandleId();
+									dispatch([
+										{
+											type: "addNode",
+											input: {
+												node: {
+													id: nodeId,
+													name: `Untitle node - ${graph.nodes.length + 1}`,
+													position: {
+														x: selectedNode.position.x + 400,
+														y: selectedNode.position.y + 100,
+													},
+													selected: true,
+													type: "action",
+													content: {
+														type: "textGeneration",
+														llm: "anthropic:claude-3-5-sonnet-latest",
+														temperature: 0.7,
+														topP: 1,
+														instruction: "",
+														sources: [{ id: handleId, label: "Source1" }],
+													},
+												},
+											},
+										},
+										{
+											type: "addConnection",
+											input: {
+												connection: {
+													id: createConnectionId(),
+													sourceNodeId: selectedNode.id,
+													sourceNodeType: selectedNode.type,
+													targetNodeId: nodeId,
+													targetNodeHandleId: handleId,
+													targetNodeType: "action",
+												},
+											},
+										},
+										{
+											type: "updateNode",
+											input: {
+												nodeId: selectedNode.id,
+												node: {
+													...selectedNode,
+													selected: false,
+												},
+											},
+										},
+									]);
+									setTab("Prompt");
+								}}
+								onEditPrompt={() => setTab("Prompt")}
+								onGenerateText={() => execute(selectedNode.id)}
+							/>
 						</TabsContent>
 					)}
 				</Tabs>
@@ -638,7 +663,7 @@ function NodeDropdown({
 		(node) => node.content.type === "textGeneration",
 	);
 	const textNodes = nodes.filter((node) => node.content.type === "text");
-	const fileNodes = nodes.filter((node) => node.content.type === "file");
+	const fileNodes = nodes.filter((node) => node.content.type === "files");
 
 	const handleValueChange = (value: string) => {
 		if (!onValueChange) return;
@@ -690,6 +715,112 @@ function NodeDropdown({
 	);
 }
 
+function RevertToDefaultButton({ onClick }: { onClick: () => void }) {
+	const [clicked, setClicked] = useState(false);
+
+	const handleClick = useCallback(() => {
+		onClick();
+		setClicked(true);
+		setTimeout(() => setClicked(false), 2000);
+	}, [onClick]);
+
+	return (
+		<button
+			type="button"
+			className="group flex items-center bg-black-100/30 text-white px-[8px] py-[2px] rounded-md transition-all duration-300 ease-in-out hover:bg-black-100"
+			onClick={handleClick}
+		>
+			<div className="relative h-[12px] w-[12px]">
+				<span
+					className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${clicked ? "opacity-0" : "opacity-100"}`}
+				>
+					<UndoIcon className="h-[12px] w-[12px]" />
+				</span>
+				<span
+					className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${clicked ? "opacity-100" : "opacity-0"}`}
+				>
+					<CheckIcon className="h-[12px] w-[12px]" />
+				</span>
+			</div>
+			<div
+				className="overflow-hidden transition-all duration-300 ease-in-out w-0 data-[clicked=false]:group-hover:w-[98px] data-[clicked=true]:group-hover:w-[40px] group-hover:ml-[4px] flex"
+				data-clicked={clicked}
+			>
+				<span className="whitespace-nowrap text-[12px]">
+					{clicked ? "Revert!" : "Revert to Default"}
+				</span>
+			</div>
+		</button>
+	);
+}
+
+interface SystemPromptTextareaProps
+	extends Pick<
+		DetailedHTMLProps<
+			React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+			HTMLTextAreaElement
+		>,
+		"defaultValue" | "className"
+	> {
+	onValueChange?: (value: string) => void;
+	onRevertToDefault?: () => void;
+	revertValue?: string;
+}
+function SystemPromptTextarea({
+	defaultValue,
+	className,
+	onValueChange,
+	onRevertToDefault,
+	revertValue,
+}: SystemPromptTextareaProps) {
+	const id = useId();
+	return (
+		<div className={clsx("relative", className)}>
+			<textarea
+				className="w-full text-[14px] bg-[hsla(222,21%,40%,0.3)] rounded-[8px] text-white p-[14px] font-rosart outline-none resize-none h-full"
+				defaultValue={defaultValue}
+				ref={(ref) => {
+					if (ref === null) {
+						return;
+					}
+					ref.dataset.refId = id;
+
+					function handleBlur() {
+						if (ref === null) {
+							return;
+						}
+						if (defaultValue !== ref.value) {
+							onValueChange?.(ref.value);
+						}
+					}
+					ref.addEventListener("blur", handleBlur);
+					return () => {
+						ref.removeEventListener("blur", handleBlur);
+					};
+				}}
+			/>
+
+			<div className="absolute bottom-[4px] right-[4px]">
+				<RevertToDefaultButton
+					onClick={() => {
+						onRevertToDefault?.();
+						const textarea = document.querySelector(
+							`textarea[data-ref-id="${id}"]`,
+						);
+						if (
+							revertValue !== undefined &&
+							textarea !== null &&
+							textarea instanceof HTMLTextAreaElement
+						) {
+							textarea.value = revertValue;
+						}
+					}}
+				/>
+			</div>
+		</div>
+	);
+}
+
 function TabsContentPrompt({
 	content,
 	onContentChange,
@@ -708,6 +839,7 @@ function TabsContentPrompt({
 	const {
 		graph: { nodes, connections },
 	} = useGraph();
+	const developerMode = useDeveloperMode();
 	const connectableTextNodes: Text[] = nodes
 		.filter((node) => node.content.type === "text")
 		.map((node) => node as Text);
@@ -715,7 +847,7 @@ function TabsContentPrompt({
 		(node) => node.content.type === "textGeneration",
 	);
 	const connectableFileNodes = nodes.filter(
-		(node) => node.content.type === "file",
+		(node) => node.content.type === "files",
 	);
 	const requirementNode = useNode({
 		targetNodeHandleId: content.requirement?.id,
@@ -766,6 +898,26 @@ function TabsContentPrompt({
 										Claude 3.5 Sonnet
 									</SelectItem>
 								</SelectGroup>
+								<SelectGroup>
+									<SelectLabel>Google</SelectLabel>
+									<SelectItem value="google:gemini-1.5-flash">
+										Gemini 1.5 Flash
+									</SelectItem>
+									<SelectItem value="google:gemini-1.5-pro">
+										Gemini 1.5 Pro
+									</SelectItem>
+									<SelectItem value="google:gemini-2.0-flash-exp">
+										Gemini 2.0 Flash Exp
+									</SelectItem>
+								</SelectGroup>
+								{developerMode && (
+									<SelectGroup>
+										<SelectLabel>Development</SelectLabel>
+										<SelectItem value="dev:error">
+											Mock(Raise an error)
+										</SelectItem>
+									</SelectGroup>
+								)}
 							</SelectContent>
 						</Select>
 					</div>
@@ -953,6 +1105,36 @@ function TabsContentPrompt({
 			</PropertiesPanelCollapsible>
 
 			<div className="border-t border-[hsla(222,21%,40%,1)]" />
+			<PropertiesPanelCollapsible
+				title="System"
+				glanceLabel={content.system === undefined ? "Default" : "Modified"}
+				expandedClassName="flex-1"
+			>
+				<div className="flex-1 flex flex-col gap-[3px]">
+					<p className="text-[11px] text-black-70">
+						System prompts combine requirements and guide you through tasks.
+						Make changes or click "Revert to Default" anytime.
+					</p>
+					<SystemPromptTextarea
+						className="flex-1"
+						defaultValue={content.system ?? textGenerationPrompt}
+						revertValue={textGenerationPrompt}
+						onValueChange={(value) => {
+							onContentChange?.({
+								...content,
+								system: value,
+							});
+						}}
+						onRevertToDefault={() => {
+							onContentChange?.({
+								...content,
+								system: undefined,
+							});
+						}}
+					/>
+				</div>
+			</PropertiesPanelCollapsible>
+			<div className="border-t border-[hsla(222,21%,40%,1)]" />
 
 			<PropertiesPanelContentBox className="flex flex-col gap-[8px] flex-1">
 				<label htmlFor="text" className="font-rosart text-[16px] text-black-30">
@@ -963,6 +1145,27 @@ function TabsContentPrompt({
 					id="text"
 					className="w-full text-[14px] bg-[hsla(222,21%,40%,0.3)] rounded-[8px] text-white p-[14px] font-rosart outline-none resize-none flex-1 mb-[16px]"
 					defaultValue={content.instruction}
+					ref={(ref) => {
+						if (ref === null) {
+							return;
+						}
+
+						function handleBlur() {
+							if (ref === null) {
+								return;
+							}
+							if (content.instruction !== ref.value) {
+								onContentChange?.({
+									...content,
+									instruction: ref.value,
+								});
+							}
+						}
+						ref.addEventListener("blur", handleBlur);
+						return () => {
+							ref.removeEventListener("blur", handleBlur);
+						};
+					}}
 				/>
 			</PropertiesPanelContentBox>
 
@@ -1181,181 +1384,116 @@ function TabsContentPrompt({
 	);
 }
 
-/**
- * Formats a timestamp number into common English date string formats
- */
-const formatTimestamp = {
-	/**
-	 * Format: Nov 25, 2024 10:30:45 AM
-	 */
-	toLongDateTime: (timestamp: number): string => {
-		return new Date(timestamp).toLocaleString("en-US", {
-			year: "numeric",
-			month: "short",
-			day: "numeric",
-			hour: "numeric",
-			minute: "2-digit",
-			second: "2-digit",
-			hour12: true,
-		});
-	},
-
-	/**
-	 * Format: 11/25/2024 10:30 AM
-	 */
-	toShortDateTime: (timestamp: number): string => {
-		return new Date(timestamp).toLocaleString("en-US", {
-			year: "numeric",
-			month: "numeric",
-			day: "numeric",
-			hour: "numeric",
-			minute: "2-digit",
-			hour12: true,
-		});
-	},
-
-	/**
-	 * Format: November 25, 2024
-	 */
-	toLongDate: (timestamp: number): string => {
-		return new Date(timestamp).toLocaleDateString("en-US", {
-			year: "numeric",
-			month: "long",
-			day: "numeric",
-		});
-	},
-
-	/**
-	 * Format: 11/25/2024
-	 */
-	toShortDate: (timestamp: number): string => {
-		return new Date(timestamp).toLocaleDateString("en-US", {
-			year: "numeric",
-			month: "numeric",
-			day: "numeric",
-		});
-	},
-
-	/**
-	 * Format: 10:30:45 AM
-	 */
-	toTime: (timestamp: number): string => {
-		return new Date(timestamp).toLocaleTimeString("en-US", {
-			hour: "numeric",
-			minute: "2-digit",
-			second: "2-digit",
-			hour12: true,
-		});
-	},
-
-	/**
-	 * Format: ISO 8601 (2024-11-25T10:30:45Z)
-	 * Useful for APIs and database storage
-	 */
-	toISO: (timestamp: number): string => {
-		return new Date(timestamp).toISOString();
-	},
-
-	/**
-	 * Returns relative time like "2 hours ago", "in 3 days", etc.
-	 * Supports both past and future dates
-	 */
-	toRelativeTime: (timestamp: number): string => {
-		const now = Date.now();
-		const diff = timestamp - now;
-		const absMs = Math.abs(diff);
-		const isPast = diff < 0;
-
-		// Time units in milliseconds
-		const minute = 60 * 1000;
-		const hour = 60 * minute;
-		const day = 24 * hour;
-		const week = 7 * day;
-		const month = 30 * day;
-		const year = 365 * day;
-
-		// Helper function to format the time with proper pluralization
-		const formatUnit = (value: number, unit: string): string => {
-			const plural = value === 1 ? "" : "s";
-			return isPast
-				? `${value} ${unit}${plural} ago`
-				: `in ${value} ${unit}${plural}`;
-		};
-
-		if (absMs < minute) {
-			return isPast ? "just now" : "in a few seconds";
-		}
-
-		if (absMs < hour) {
-			const mins = Math.floor(absMs / minute);
-			return formatUnit(mins, "minute");
-		}
-
-		if (absMs < day) {
-			const hrs = Math.floor(absMs / hour);
-			return formatUnit(hrs, "hour");
-		}
-
-		if (absMs < week) {
-			const days = Math.floor(absMs / day);
-			return formatUnit(days, "day");
-		}
-
-		if (absMs < month) {
-			const weeks = Math.floor(absMs / week);
-			return formatUnit(weeks, "week");
-		}
-
-		if (absMs < year) {
-			const months = Math.floor(absMs / month);
-			return formatUnit(months, "month");
-		}
-
-		const years = Math.floor(absMs / year);
-		return formatUnit(years, "year");
-	},
-};
-
 function TabContentGenerateTextResult({
 	node,
+	onCreateNewTextGenerator,
+	onGenerateText,
+	onEditPrompt,
 }: {
 	node: Node;
+	onCreateNewTextGenerator?: () => void;
+	onGenerateText: () => void;
+	onEditPrompt: () => void;
 }) {
 	const artifact = useArtifact({ creatorNodeId: node.id });
-	if (artifact === null) {
-		return null;
-	}
-	if (artifact.object.type !== "text") {
-		return null;
+	if (artifact == null || artifact.object.type !== "text") {
+		return (
+			<div className="grid gap-[12px] text-[12px] text-black-30 px-[24px] pt-[120px] relative z-10 text-center justify-center">
+				<div>
+					<p className="font-[800] text-black-30 text-[18px]">
+						Nothing is generated.
+					</p>
+					<p className="text-black-70 text-[12px] text-center leading-5 w-[220px]">
+						Generate with the current Prompt or adjust the Prompt and the
+						results will be displayed.
+					</p>
+				</div>
+
+				<div className="flex flex-col gap-[4px]">
+					<div>
+						<button
+							type="button"
+							className="inline-flex items-center gap-[4px] bg-black hover:bg-white/20 transition-colors px-[4px] text-black-50 hover:text-black-30 rounded"
+							onClick={() => {
+								onGenerateText();
+							}}
+						>
+							<CornerDownRightIcon className="w-[12px] h-[12px]" />
+							Generate with the current Prompt
+						</button>
+					</div>
+					<div>
+						<button
+							type="button"
+							className="inline-flex items-center gap-[4px] bg-black hover:bg-white/20 transition-colors px-[4px] text-black-50 hover:text-black-30 rounded"
+							onClick={() => {
+								onEditPrompt();
+							}}
+						>
+							<CornerDownRightIcon className="w-[12px] h-[12px]" />
+							Adjust the Prompt
+						</button>
+					</div>
+				</div>
+			</div>
+		);
 	}
 	return (
 		<div className="grid gap-[8px] font-rosart text-[12px] text-black-30 px-[24px] py-[8px] relative z-10">
 			<div>{artifact.object.messages.plan}</div>
 
 			{artifact.object.title !== "" && (
-				<Dialog>
-					<DialogTrigger>
+				<DialogPrimitive.Root>
+					<DialogPrimitive.DialogTrigger>
 						<Block size="large">
 							<div className="flex items-center gap-[12px]">
-								<DocumentIcon className="w-[18px] h-[18px] fill-black-30" />
-								<div className="text-[14px]">{artifact.object.title}</div>
+								<div className="px-[8px]">
+									{artifact.type === "generatedArtifact" ? (
+										<DocumentIcon className="w-[20px] h-[20px] fill-black-30 flex-shrink-0" />
+									) : (
+										<SpinnerIcon className="w-[20px] h-[20px] stroke-black-30 animate-follow-through-spin fill-transparent" />
+									)}
+								</div>
+								<div className="flex flex-col gap-[2px]">
+									<div className="text-[14px]">{artifact.object.title}</div>
+									<p className="text-black-70">Click to open</p>
+								</div>
 							</div>
 						</Block>
-					</DialogTrigger>
-					<DialogContent>
+					</DialogPrimitive.DialogTrigger>
+					<DialogContent
+						// Prevent Tooltip within popover opens automatically due to trigger receiving focus
+						// https://github.com/radix-ui/primitives/issues/2248
+						onOpenAutoFocus={(event) => {
+							event.preventDefault();
+						}}
+					>
 						<div className="sr-only">
 							<DialogHeader>
 								<DialogTitle>{artifact.object.title}</DialogTitle>
 							</DialogHeader>
+							<DialogPrimitive.DialogDescription>
+								{artifact.object.content}
+							</DialogPrimitive.DialogDescription>
 						</div>
-						<div className="flex-1">{artifact.object.content}</div>
+						<div className="flex-1 overflow-y-auto">
+							<Markdown>{artifact.object.content}</Markdown>
+						</div>
 						{artifact.type === "generatedArtifact" && (
-							<DialogFooter className="text-[14px] font-bold text-black-70">
-								Generated {formatTimestamp.toRelativeTime(artifact.createdAt)}
+							<DialogFooter className="mt-[10px] flex justify-between">
+								<div className="text-[14px] font-bold text-black-70 ">
+									Generated {formatTimestamp.toRelativeTime(artifact.createdAt)}
+								</div>
+								<div className="text-black-30">
+									<ClipboardButton
+										text={artifact.object.content}
+										sizeClassName="w-[16px] h-[16px]"
+									/>
+								</div>
 							</DialogFooter>
 						)}
 					</DialogContent>
-				</Dialog>
+				</DialogPrimitive.Root>
 			)}
 			<div>{artifact.object.messages.description}</div>
 
@@ -1368,9 +1506,27 @@ function TabContentGenerateTextResult({
 			)}
 
 			{artifact.type === "generatedArtifact" && (
-				<div>
+				<div className="flex flex-col gap-[8px]">
 					<div className="inline-flex items-center gap-[6px] text-black-30/50 font-sans">
 						<p className="italic">Generation completed.</p>
+						<ClipboardButton
+							sizeClassName="w-[12px] h-[12px]"
+							text={artifact.id}
+							tooltip={`Copy the fingerprint: ${artifact.id}`}
+							defaultIcon={<FingerprintIcon className="h-[12px] w-[12px]" />}
+						/>
+					</div>
+					<div>
+						<button
+							type="button"
+							className="inline-flex items-center gap-[4px] bg-black hover:bg-white/20 transition-colors px-[4px] text-black-50 hover:text-black-30 rounded"
+							onClick={() => {
+								onCreateNewTextGenerator?.();
+							}}
+						>
+							<CornerDownRightIcon className="w-[12px] h-[12px]" />
+							Create a new Text Generator with this result as Source
+						</button>
 					</div>
 				</div>
 			)}
@@ -1673,6 +1829,274 @@ function TabContentFile({
 					</PropertiesPanelContentBox>
 				</>
 			)}
+		</div>
+	);
+}
+
+function TabsContentFiles({
+	content,
+	onContentChange,
+}: {
+	nodeId: NodeId;
+	content: FilesContent;
+	onContentChange: (content: FilesContent) => void;
+}) {
+	const [isDragging, setIsDragging] = useState(false);
+
+	const { addToast } = useToast();
+
+	const setFiles = useCallback(
+		async (files: File[]) => {
+			let contentData = content.data;
+			await Promise.all(
+				files.map(async (file) => {
+					const fileData = new FileReader();
+					fileData.readAsArrayBuffer(file);
+					fileData.onload = async () => {
+						if (!fileData.result) {
+							return;
+						}
+						const fileId = createFileId();
+						contentData = [
+							...contentData,
+							{
+								id: fileId,
+								status: "uploading",
+								name: file.name,
+								contentType: file.type,
+								size: file.size,
+							},
+						];
+						try {
+							onContentChange?.({
+								...content,
+								data: contentData,
+							});
+							const blob = await upload(
+								pathJoin(vercelBlobFileFolder, fileId, file.name),
+								file,
+								{
+									access: "public",
+									handleUploadUrl: "/api/files/upload",
+								},
+							);
+							const uploadedAt = Date.now();
+
+							contentData = [
+								...contentData.filter((file) => file.id !== fileId),
+								{
+									id: fileId,
+									status: "processing",
+									name: file.name,
+									contentType: file.type,
+									size: file.size,
+									uploadedAt,
+									fileBlobUrl: blob.url,
+								},
+							];
+
+							onContentChange?.({
+								...content,
+								data: contentData,
+							});
+
+							const parseBlob = await parse(fileId, file.name, blob.url);
+
+							contentData = [
+								...contentData.filter((file) => file.id !== fileId),
+								{
+									id: fileId,
+									status: "completed",
+									name: file.name,
+									contentType: file.type,
+									size: file.size,
+									uploadedAt,
+									fileBlobUrl: blob.url,
+									processedAt: Date.now(),
+									textDataUrl: parseBlob.url,
+								},
+							];
+							onContentChange?.({
+								...content,
+								data: contentData,
+							});
+						} catch (error) {
+							contentData = [
+								...contentData.filter((file) => file.id !== fileId),
+								{
+									id: fileId,
+									status: "failed",
+									name: file.name,
+									contentType: file.type,
+									size: file.size,
+								},
+							];
+							onContentChange?.({
+								...content,
+								data: contentData,
+							});
+
+							addToast({
+								type: "error",
+								message: toErrorWithMessage(error).message,
+							});
+						}
+					};
+				}),
+			);
+		},
+		[content, onContentChange, addToast],
+	);
+
+	const onDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+		e.preventDefault();
+		setIsDragging(true);
+	}, []);
+
+	const onDragLeave = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+		e.preventDefault();
+		setIsDragging(false);
+	}, []);
+
+	const onDrop = useCallback(
+		(e: React.DragEvent<HTMLDivElement>) => {
+			e.preventDefault();
+			setIsDragging(false);
+			setFiles(Array.from(e.dataTransfer.files));
+		},
+		[setFiles],
+	);
+
+	const onFileChange = useCallback(
+		(e: React.ChangeEvent<HTMLInputElement>) => {
+			if (!e.target.files) {
+				return;
+			}
+			setFiles(Array.from(e.target.files));
+		},
+		[setFiles],
+	);
+
+	const handleRemoveFile = useCallback(
+		async (fileToRemove: FileData) => {
+			onContentChange({
+				...content,
+				data: content.data.filter((file) => file.id !== fileToRemove.id),
+			});
+			await remove(fileToRemove);
+		},
+		[content, onContentChange],
+	);
+
+	return (
+		<div className="relative z-10 flex flex-col gap-[2px] h-full text-[14px] text-black-30">
+			<div className="p-[16px] divide-y divide-black-50">
+				{content.data.length > 0 && (
+					<div className="pb-[16px] flex flex-col gap-[8px]">
+						{content.data.map((file) => (
+							<FileListItem
+								key={file.id}
+								fileData={file}
+								onRemove={handleRemoveFile}
+							/>
+						))}
+					</div>
+				)}
+				<div className="py-[16px]">
+					<div
+						className={clsx(
+							"h-[300px] flex flex-col gap-[16px] justify-center items-center rounded-[8px] border border-dashed text-black-70 px-[18px]",
+							isDragging ? "bg-black-80/20 border-black-50" : "border-black-70",
+						)}
+						onDragOver={onDragOver}
+						onDragLeave={onDragLeave}
+						onDrop={onDrop}
+					>
+						{isDragging ? (
+							<>
+								<DocumentIcon className="w-[30px] h-[30px] fill-black-70" />
+								<p className="text-center">Drop to upload your files</p>
+							</>
+						) : (
+							<div className="flex flex-col gap-[16px] justify-center items-center">
+								<ArrowUpFromLineIcon size={38} className="stroke-black-70" />
+								<label
+									htmlFor="file"
+									className="text-center flex flex-col gap-[16px]"
+								>
+									<p>
+										Click to upload or drag and drop files here (supports
+										images, documents, and more).
+									</p>
+									<div className="flex gap-[8px] justify-center items-center">
+										<span>or</span>
+										<span className="font-bold text-black--50 text-[14px] underline cursor-pointer">
+											Select files
+											<input
+												id="file"
+												type="file"
+												onChange={onFileChange}
+												className="hidden"
+											/>
+										</span>
+									</div>
+								</label>
+							</div>
+						)}
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+}
+
+function FileListItem({
+	fileData,
+	onRemove,
+}: {
+	fileData: FileData;
+	onRemove: (file: FileData) => void;
+}) {
+	return (
+		<div className="flex items-center overflow-x-hidden group justify-between bg-black-100 hover:bg-white/10 transition-colors px-[4px] py-[8px] rounded-[8px]">
+			<div className="flex items-center overflow-x-hidden">
+				{fileData.status === "failed" ? (
+					<FileXIcon className="w-[46px] h-[46px] stroke-current stroke-1" />
+				) : (
+					<div className="relative">
+						<FileIcon className="w-[46px] h-[46px] stroke-current stroke-1" />
+						<div className="uppercase absolute bottom-[8px] w-[46px] py-[2px] text-[10px] flex justify-center">
+							<p>
+								{fileData.contentType === "application/pdf"
+									? "pdf"
+									: fileData.contentType === "text/markdown"
+										? "md"
+										: ""}
+							</p>
+						</div>
+					</div>
+				)}
+				<div className="overflow-x-hidden">
+					<p className="truncate">{fileData.name}</p>
+					{fileData.status === "uploading" && <p>Uploading...</p>}
+					{fileData.status === "processing" && <p>Processing...</p>}
+					{fileData.status === "completed" && (
+						<p className="text-black-50">
+							{formatTimestamp.toRelativeTime(fileData.uploadedAt)}
+						</p>
+					)}
+					{fileData.status === "failed" && <p>Failed</p>}
+				</div>
+			</div>
+			<Tooltip text="Remove">
+				<button
+					type="button"
+					className="hidden group-hover:block px-[4px] py-[4px] bg-transparent hover:bg-white/10 rounded-[8px] transition-colors mr-[2px] flex-shrink-0"
+					onClick={() => onRemove(fileData)}
+				>
+					<TrashIcon className="w-[24px] h-[24px] stroke-current stroke-[1px] " />
+				</button>
+			</Tooltip>
 		</div>
 	);
 }

@@ -2,7 +2,7 @@ import { logger as pinoLogger } from "@/lib/logger";
 import { OTLPLogExporter } from "@opentelemetry/exporter-logs-otlp-http";
 import { SemanticResourceAttributes } from "@opentelemetry/semantic-conventions";
 import { captureException } from "@sentry/nextjs";
-import type { RequestCountSchema, TokenConsumedSchema } from "./types";
+import type { LogSchema, OtelLoggerWrapper } from "./types";
 
 import type { AnyValue, Logger } from "@opentelemetry/api-logs";
 import { Resource } from "@opentelemetry/resources";
@@ -90,14 +90,6 @@ function getOrCreateLoggerProvider() {
 		sharedLoggerProvider.addLogRecordProcessor(pinoLogRecordProcessor);
 	}
 	return sharedLoggerProvider;
-}
-
-type LogSchema = TokenConsumedSchema | RequestCountSchema;
-
-interface OtelLoggerWrapper {
-	info: (obj: LogSchema, msg?: string) => void;
-	error: (obj: LogSchema | Error, msg?: string) => void;
-	debug: (obj: LogSchema, msg?: string) => void;
 }
 
 function createEmitLog(otelLogger: Logger) {

@@ -9,10 +9,12 @@ import {
 	useRef,
 	useState,
 } from "react";
+import { deriveFlows } from "../lib/graph";
 import type {
 	Artifact,
 	Connection,
 	ConnectionId,
+	ExecutionIndex,
 	Graph,
 	Node,
 	NodeHandleId,
@@ -22,7 +24,7 @@ import type {
 
 interface UpsertArtifactActionInput {
 	nodeId: NodeId;
-	artifact: Artifact;
+	artifact: Artifact | null;
 }
 interface UpsertArtifactAction {
 	type: "upsertArtifact";
@@ -84,6 +86,12 @@ interface RemoveNodeAction {
 	type: "removeNode";
 	input: RemoveNoeActionInput;
 }
+
+interface AddExecutionIndexAction {
+	type: "addExecutionIndex";
+	input: { executionIndex: ExecutionIndex };
+}
+
 type GraphAction =
 	| UpsertArtifactAction
 	| UpdateNodeAction
@@ -92,16 +100,8 @@ type GraphAction =
 	| UpdateNodePositionAction
 	| UpdateNodeSelectionAction
 	| AddNodeAction
-	| RemoveNodeAction;
-
-export function upsertArtifact(
-	input: UpsertArtifactActionInput,
-): UpsertArtifactAction {
-	return {
-		type: "upsertArtifact",
-		input,
-	};
-}
+	| RemoveNodeAction
+	| AddExecutionIndexAction;
 
 type GraphActionOrActions = GraphAction | GraphAction[];
 
@@ -116,6 +116,10 @@ function applyActions(
 	for (const action of actions) {
 		currentGraph = graphReducer(currentGraph, action);
 	}
+	currentGraph = {
+		...currentGraph,
+		flows: deriveFlows(currentGraph),
+	};
 	return currentGraph;
 }
 
@@ -134,6 +138,16 @@ const GraphContext = createContext<GraphContextValue | undefined>(undefined);
 function graphReducer(graph: Graph, action: GraphAction): Graph {
 	switch (action.type) {
 		case "upsertArtifact":
+			if (action.input.artifact === null) {
+				return {
+					...graph,
+					artifacts: [
+						...graph.artifacts.filter(
+							(artifact) => artifact.creatorNodeId !== action.input.nodeId,
+						),
+					],
+				};
+			}
 			return {
 				...graph,
 				artifacts: [
@@ -190,6 +204,14 @@ function graphReducer(graph: Graph, action: GraphAction): Graph {
 			return {
 				...graph,
 				nodes: graph.nodes.filter((node) => node.id !== action.input.nodeId),
+			};
+		case "addExecutionIndex":
+			return {
+				...graph,
+				executionIndexes: [
+					...graph.executionIndexes,
+					action.input.executionIndex,
+				],
 			};
 		default:
 			return graph;
@@ -293,7 +315,7 @@ export function useNode(query: TargetHandle) {
 interface CreatorNode {
 	creatorNodeId?: NodeId;
 }
-export function useArtifact(query: CreatorNode): Artifact | null {
+export function useArtifact(query: CreatorNode): Artifact | null | undefined {
 	const {
 		graph: { artifacts },
 	} = useGraph();

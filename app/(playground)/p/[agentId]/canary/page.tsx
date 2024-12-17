@@ -1,18 +1,38 @@
 import { agents, db } from "@/drizzle";
-import { playgroundV2Flag } from "@/flags";
-import { del, list } from "@vercel/blob";
+import { developerFlag, playgroundV2Flag } from "@/flags";
+import { del, list, put } from "@vercel/blob";
 import { ReactFlowProvider } from "@xyflow/react";
 import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
-import type { AgentId } from "../beta-proto/types";
-import { putGraph } from "./actions";
-import { Editor } from "./components/editor";
+import { action, putGraph } from "./actions";
+import { Playground } from "./components/playground";
+import { AgentNameProvider } from "./contexts/agent-name";
+import { DeveloperModeProvider } from "./contexts/developer-mode";
+import { ExecutionProvider } from "./contexts/execution";
 import { GraphContextProvider } from "./contexts/graph";
 import { MousePositionProvider } from "./contexts/mouse-position";
+import { PlaygroundModeProvider } from "./contexts/playground-mode";
 import { PropertiesPanelProvider } from "./contexts/properties-panel";
+import { ToastProvider } from "./contexts/toast";
 import { ToolbarContextProvider } from "./contexts/toolbar";
-import type { Graph } from "./types";
-import { buildGraphFolderPath } from "./utils";
+import { executeStep } from "./lib/execution";
+import { isLatestVersion, migrateGraph } from "./lib/graph";
+import { buildGraphExecutionPath, buildGraphFolderPath } from "./lib/utils";
+import type {
+	AgentId,
+	Artifact,
+	ArtifactId,
+	Execution,
+	ExecutionId,
+	FlowId,
+	Graph,
+	NodeId,
+	StepId,
+} from "./types";
+
+// Extend the max duration of the server actions from this page to 5 minutes
+// https://vercel.com/docs/functions/runtimes#max-duration
+export const maxDuration = 300;
 
 // This page is experimental. it requires PlaygroundV2Flag to show this page
 export default async function Page({
@@ -20,8 +40,9 @@ export default async function Page({
 }: {
 	params: Promise<{ agentId: AgentId }>;
 }) {
-	const [playgroundV2, { agentId }] = await Promise.all([
+	const [playgroundV2, developerMode, { agentId }] = await Promise.all([
 		playgroundV2Flag(),
+		developerFlag(),
 		params,
 	]);
 	if (!playgroundV2) {
@@ -35,7 +56,7 @@ export default async function Page({
 		throw new Error("Agent not found");
 	}
 	// TODO: Add schema validation to verify parsed graph matches expected shape
-	const graph = await fetch(agent.graphUrl).then(
+	let graph = await fetch(agent.graphUrl).then(
 		(res) => res.json() as unknown as Graph,
 	);
 
@@ -61,21 +82,81 @@ export default async function Page({
 		return url;
 	}
 
+	let graphUrl = agent.graphUrl;
+	if (!isLatestVersion(graph)) {
+		graph = migrateGraph(graph);
+		graphUrl = await persistGraph(graph);
+	}
+
+	async function updateAgentName(agentName: string) {
+		"use server";
+		await db
+			.update(agents)
+			.set({
+				name: agentName,
+			})
+			.where(eq(agents.id, agentId));
+		return agentName;
+	}
+
+	async function execute(artifactId: ArtifactId, nodeId: NodeId) {
+		"use server";
+		return await action(artifactId, agentId, nodeId);
+	}
+
+	async function executeStepAction(
+		flowId: FlowId,
+		executionId: ExecutionId,
+		stepId: StepId,
+		artifacts: Artifact[],
+	) {
+		"use server";
+		return await executeStep(agentId, flowId, executionId, stepId, artifacts);
+	}
+	async function putExecutionAction(execution: Execution) {
+		"use server";
+		const result = await put(
+			buildGraphExecutionPath(graph.id, execution.id),
+			JSON.stringify(execution),
+			{
+				access: "public",
+			},
+		);
+		return { blobUrl: result.url };
+	}
+
 	return (
-		<GraphContextProvider
-			defaultGraph={graph}
-			onPersistAction={persistGraph}
-			defaultGraphUrl={agent.graphUrl}
-		>
-			<PropertiesPanelProvider>
-				<ReactFlowProvider>
-					<ToolbarContextProvider>
-						<MousePositionProvider>
-							<Editor />
-						</MousePositionProvider>
-					</ToolbarContextProvider>
-				</ReactFlowProvider>
-			</PropertiesPanelProvider>
-		</GraphContextProvider>
+		<DeveloperModeProvider developerMode={developerMode}>
+			<GraphContextProvider
+				defaultGraph={graph}
+				onPersistAction={persistGraph}
+				defaultGraphUrl={graphUrl}
+			>
+				<PropertiesPanelProvider>
+					<ReactFlowProvider>
+						<ToolbarContextProvider>
+							<MousePositionProvider>
+								<ToastProvider>
+									<AgentNameProvider
+										defaultValue={agent.name ?? "Unnamed Agent"}
+										updateAgentNameAction={updateAgentName}
+									>
+										<PlaygroundModeProvider>
+											<ExecutionProvider
+												executeAction={execute}
+												executeStepAction={executeStepAction}
+												putExecutionAction={putExecutionAction}
+											>
+												<Playground />
+											</ExecutionProvider>
+										</PlaygroundModeProvider>
+									</AgentNameProvider>
+								</ToastProvider>
+							</MousePositionProvider>
+						</ToolbarContextProvider>
+					</ReactFlowProvider>
+				</PropertiesPanelProvider>
+			</GraphContextProvider>
+		</DeveloperModeProvider>
 	);
 }

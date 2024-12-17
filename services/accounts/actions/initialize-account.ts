@@ -21,6 +21,7 @@ export const initializeAccount = async (
 			.insert(users)
 			.values({
 				id: userId,
+				email: supabaseUserEmail,
 			})
 			.returning({
 				dbId: users.dbId,

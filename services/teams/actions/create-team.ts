@@ -7,6 +7,7 @@ import {
 	teams,
 	users,
 } from "@/drizzle";
+import { updateGiselleSession } from "@/lib/giselle-session";
 import { getUser } from "@/lib/supabase";
 import { isEmailFromRoute06 } from "@/lib/utils";
 import type { User } from "@supabase/supabase-js";
@@ -17,6 +18,7 @@ import {
 	DRAFT_TEAM_NAME_METADATA_KEY,
 	DRAFT_TEAM_USER_DB_ID_METADATA_KEY,
 } from "../constants";
+import { setCurrentTeam } from "../set-current-team";
 import { createCheckoutSession } from "./create-checkout-session";
 
 export async function createTeam(formData: FormData) {
@@ -31,19 +33,19 @@ export async function createTeam(formData: FormData) {
 	const isInternalUser =
 		supabaseUser.email != null && isEmailFromRoute06(supabaseUser.email);
 	if (isInternalUser) {
-		createInternalTeam(supabaseUser, teamName);
-		// FIXME: change context to the new team
+		const teamDbId = await createInternalTeam(supabaseUser, teamName);
+		await setCurrentTeam(teamDbId);
 		redirect("/settings/team");
 	}
 
 	if (selectedPlan === "free") {
-		createFreeTeam(supabaseUser, teamName);
-		// FIXME: change context to the new team
+		const teamDbId = await createFreeTeam(supabaseUser, teamName);
+		await setCurrentTeam(teamDbId);
 		redirect("/settings/team");
 	}
 
-	const checkoutUrl = await prepareProTeamCreation(supabaseUser, teamName);
-	redirect(checkoutUrl);
+	const checkoutSession = await prepareProTeamCreation(supabaseUser, teamName);
+	redirect(checkoutSession.url);
 }
 
 /**
@@ -61,8 +63,7 @@ async function createCheckout(userDbId: number, teamName: string) {
 	invariant(siteUrl, "NEXT_PUBLIC_SITE_URL is not set");
 	invariant(serviceSiteUrl, "NEXT_PUBLIC_SERVICE_SITE_URL is not set");
 
-	// FIXME: change context to the new team
-	const successUrl = `${siteUrl}/settings/team`;
+	const successUrl = `${siteUrl}/subscriptions/success`;
 	const cancelUrl = `${serviceSiteUrl}/pricing`;
 
 	const subscriptionMetadata: Record<string, string> = {
@@ -70,15 +71,23 @@ async function createCheckout(userDbId: number, teamName: string) {
 		[DRAFT_TEAM_NAME_METADATA_KEY]: teamName,
 	};
 
-	return createCheckoutSession(subscriptionMetadata, successUrl, cancelUrl);
+	const checkoutSession = await createCheckoutSession(
+		subscriptionMetadata,
+		successUrl,
+		cancelUrl,
+	);
+
+	// set checkout id on the session to be able to retrieve it later
+	await updateGiselleSession({ checkoutSessionId: checkoutSession.id });
+	return checkoutSession;
 }
 
 async function createInternalTeam(supabaseUser: User, teamName: string) {
-	await createTeamInDatabase(supabaseUser, teamName, true);
+	return await createTeamInDatabase(supabaseUser, teamName, true);
 }
 
 async function createFreeTeam(supabaseUser: User, teamName: string) {
-	await createTeamInDatabase(supabaseUser, teamName, false);
+	return await createTeamInDatabase(supabaseUser, teamName, false);
 }
 
 async function createTeamInDatabase(
@@ -103,6 +112,7 @@ async function createTeamInDatabase(
 		userDbId,
 		role: "admin",
 	});
+	return teamDbId;
 }
 
 async function getUserDbId(supabaseUser: User) {

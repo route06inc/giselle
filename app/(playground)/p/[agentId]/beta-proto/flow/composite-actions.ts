@@ -16,15 +16,21 @@ export function executeFlow(finalNode: GiselleNode): CompositeAction {
 				},
 			}),
 		);
-		const { streamableValue } = await executeFlowOnServer(
-			getState().graph.agentId,
-			finalNode.id,
-		);
-		for await (const streamContent of readStreamableValue(streamableValue)) {
-			if (streamContent === undefined) {
-				continue;
+		try {
+			const { streamableValue } = await executeFlowOnServer(
+				getState().graph.agentId,
+				finalNode.id,
+			);
+			for await (const streamContent of readStreamableValue(streamableValue)) {
+				if (streamContent === undefined) {
+					continue;
+				}
+				dispatch(streamContent);
 			}
-			dispatch(streamContent);
+		} catch (error: unknown) {
+			if (error instanceof Error) {
+				global.alert(error.message);
+			}
 		}
 	};
 }

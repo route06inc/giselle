@@ -1,4 +1,5 @@
 import { isAuthRetryableFetchError } from "@supabase/supabase-js";
+import { cache } from "react";
 import { withRetry } from "../utils";
 import { createClient } from "./server";
 
@@ -11,7 +12,7 @@ import { createClient } from "./server";
  * IMPORTANT: This function will throw an error if executed while the user is not authenticated.
  * Make sure the user is logged in before calling this function.
  */
-export const getUser = async () => {
+const getUser = async () => {
 	const supabase = await createClient();
 
 	const getUserFunc = async () => {
@@ -39,3 +40,7 @@ export const getUser = async () => {
 
 	return user;
 };
+
+const cachedGetUser = cache(getUser);
+
+export { cachedGetUser as getUser };

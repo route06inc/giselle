@@ -41,8 +41,16 @@ const downloadFile = async (url, destination) => {
 
 		for (const file of filesToDownload) {
 			try {
-				await downloadFile(file.url, file.destination);
-				console.log(`Downloaded: ${file.destination}`);
+				const fileExists = await fs
+					.access(file.destination)
+					.then(() => true)
+					.catch(() => false);
+				if (!fileExists) {
+					await downloadFile(file.url, file.destination);
+					console.log(`Downloaded: ${file.destination}`);
+				} else {
+					console.log(`File already exists: ${file.destination}`);
+				}
 			} catch (error) {
 				console.error(`Error downloading ${file.url}:`, error);
 			}
