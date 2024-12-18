@@ -1,4 +1,4 @@
-import { giselleNodeCategories } from "@/app/(playground)/p/[agentId]/beta-proto/giselle-node/types";
+import { giselleNodeCategories } from "@/app/(playground)/p/[agentId]/prev/beta-proto/giselle-node/types";
 import { agents, db } from "@/drizzle";
 import { eq } from "drizzle-orm";
 

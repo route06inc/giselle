@@ -12,8 +12,8 @@ import React, {
 	useRef,
 	useState,
 } from "react";
-import { TextGenerationIcon } from "../../beta-proto/components/icons/text-generation";
 import { useGraph } from "../contexts/graph";
+import { TextGenerationIcon } from "../prev/beta-proto/components/icons/text-generation";
 import type {
 	File,
 	Files,

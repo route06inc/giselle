@@ -174,7 +174,7 @@ export function initGraph(): Graph {
 		nodes: [],
 		connections: [],
 		artifacts: [],
-		version: "20241213" satisfies LatestGraphVersion,
+		version: "20241217" satisfies LatestGraphVersion,
 		flows: [],
 		executionIndexes: [],
 	};

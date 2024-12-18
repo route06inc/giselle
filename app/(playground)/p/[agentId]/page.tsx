@@ -1,165 +1,164 @@
-import { getOauthCredential } from "@/app/(auth)/lib";
 import { getTeamMembershipByAgentId } from "@/app/(auth)/lib/get-team-membership-by-agent-id";
 import { agents, db } from "@/drizzle";
-import {
-	debugFlag as getDebugFlag,
-	githubIntegrationFlag as getGitHubIntegrationFlag,
-	playgroundV2Flag as getPlaygroundV2Flag,
-	viewFlag as getViewFlag,
-} from "@/flags";
+import { developerFlag } from "@/flags";
 import { getUser } from "@/lib/supabase";
-import {
-	type GitHubUserClient,
-	buildGitHubUserClient,
-	needsAuthorization,
-} from "@/services/external/github";
-import "@xyflow/react/dist/style.css";
+import { del, list, put } from "@vercel/blob";
+import { ReactFlowProvider } from "@xyflow/react";
 import { eq } from "drizzle-orm";
-import { notFound, redirect } from "next/navigation";
-import { Playground } from "./beta-proto/component";
-import type { Repository } from "./beta-proto/github-integration/context";
-import type { Graph } from "./beta-proto/graph/types";
-import {
-	type ReactFlowEdge,
-	type ReactFlowNode,
-	giselleEdgeType,
-	giselleNodeType,
-} from "./beta-proto/react-flow-adapter/types";
-import type { AgentId } from "./beta-proto/types";
-import PlaygroundV2Page from "./canary/page";
+import { notFound } from "next/navigation";
+import { action, putGraph } from "./actions";
+import { Playground } from "./components/playground";
+import { AgentNameProvider } from "./contexts/agent-name";
+import { DeveloperModeProvider } from "./contexts/developer-mode";
+import { ExecutionProvider } from "./contexts/execution";
+import { GraphContextProvider } from "./contexts/graph";
+import { MousePositionProvider } from "./contexts/mouse-position";
+import { PlaygroundModeProvider } from "./contexts/playground-mode";
+import { PropertiesPanelProvider } from "./contexts/properties-panel";
+import { ToastProvider } from "./contexts/toast";
+import { ToolbarContextProvider } from "./contexts/toolbar";
+import { executeStep } from "./lib/execution";
+import { isLatestVersion, migrateGraph } from "./lib/graph";
+import { buildGraphExecutionPath, buildGraphFolderPath } from "./lib/utils";
+import type {
+	AgentId,
+	Artifact,
+	ArtifactId,
+	Execution,
+	ExecutionId,
+	FlowId,
+	Graph,
+	NodeId,
+	StepId,
+} from "./types";
 
 // Extend the max duration of the server actions from this page to 5 minutes
 // https://vercel.com/docs/functions/runtimes#max-duration
 export const maxDuration = 300;
 
-function graphToReactFlow(grpah: Graph) {
-	const nodes: ReactFlowNode[] = grpah.nodes.map((node) => {
-		return {
-			id: node.id,
-			type: giselleNodeType,
-			position: node.ui.position,
-			selected: node.ui.selected,
-			data: {
-				...node,
-			},
-		};
-	});
-
-	const edges: ReactFlowEdge[] = grpah.connectors.map((connector) => {
-		return {
-			id: connector.id,
-			type: giselleEdgeType,
-			source: connector.source,
-			target: connector.target,
-			targetHandle: connector.targetHandle,
-			data: connector,
-		};
-	});
-
-	return {
-		nodes,
-		edges,
-	};
-}
-
-async function getAgent(agentId: AgentId) {
-	const [agent] = await db.select().from(agents).where(eq(agents.id, agentId));
-	const xyFlow = graphToReactFlow(agent.graphv2);
-	return {
-		...agent,
-		graphv2: {
-			...agent.graphv2,
-			xyFlow,
-			flowIndexes: [],
-		},
-	};
-}
-
-async function fetchGitHubRepositories(): Promise<{
-	needsAuthorization: boolean;
-	repositories: Repository[];
-}> {
-	const credential = await getOauthCredential("github");
-	if (!credential) {
-		return { needsAuthorization: true, repositories: [] };
-	}
-
-	const repositories: Awaited<
-		ReturnType<GitHubUserClient["getRepositories"]>
-	>["repositories"] = [];
-	const gitHubClient = buildGitHubUserClient(credential);
-	try {
-		const { installations } = await gitHubClient.getInstallations();
-		const allRepositories = await Promise.all(
-			installations.map(async (installation) => {
-				const { repositories: repos } = await gitHubClient.getRepositories(
-					installation.id,
-				);
-				return repos;
-			}),
-		);
-		repositories.push(...allRepositories.flat());
-		repositories.sort((a, b) => a.name.localeCompare(b.name));
-		return { needsAuthorization: false, repositories };
-	} catch (error) {
-		if (needsAuthorization(error)) {
-			return { needsAuthorization: true, repositories: [] };
-		}
-		throw error;
-	}
-}
-
-async function getGitHubIntegrationSetting(agentDbId: number) {
-	return await db.query.gitHubIntegrations.findFirst({
-		where: (gitHubIntegrations, { eq }) =>
-			eq(gitHubIntegrations.agentDbId, agentDbId),
-	});
-}
-
-export default async function AgentPlaygroundPage({
+export default async function Page({
 	params,
 }: {
 	params: Promise<{ agentId: AgentId }>;
 }) {
-	const { agentId } = await params;
-	const user = await getUser();
+	const [developerMode, { agentId }, user] = await Promise.all([
+		developerFlag(),
+		params,
+		getUser(),
+	]);
 
-	const teamMembership = await getTeamMembershipByAgentId(agentId, user.id);
-
-	if (!teamMembership) {
+	const [agent, teamMembership] = await Promise.all([
+		db.query.agents.findFirst({
+			where: (agents, { eq }) => eq(agents.id, agentId),
+		}),
+		getTeamMembershipByAgentId(agentId, user.id),
+	]);
+	// TODO: Remove graphUrl null check when add notNull constrain to graphUrl column
+	if (agent === undefined || agent.graphUrl === null || !teamMembership) {
 		notFound();
 	}
+	// TODO: Add schema validation to verify parsed graph matches expected shape
+	let graph = await fetch(agent.graphUrl).then(
+		(res) => res.json() as unknown as Graph,
+	);
 
-	const debugFlag = await getDebugFlag();
-	const viewFlag = await getViewFlag();
-	const gitHubIntegrationFlag = await getGitHubIntegrationFlag();
-	const playgroundV2Flag = await getPlaygroundV2Flag();
-	if (playgroundV2Flag) {
-		return redirect(`/p/${agentId}/canary`);
+	async function persistGraph(graph: Graph) {
+		"use server";
+		const { url } = await putGraph(graph);
+		await db
+			.update(agents)
+			.set({
+				graphUrl: url,
+			})
+			.where(eq(agents.id, agentId));
+		const blobList = await list({
+			prefix: buildGraphFolderPath(graph.id),
+		});
+
+		const oldBlobUrls = blobList.blobs
+			.filter((blob) => blob.url !== url)
+			.map((blob) => blob.url);
+		if (oldBlobUrls.length > 0) {
+			await del(oldBlobUrls);
+		}
+		return url;
 	}
 
-	const agent = await getAgent(agentId);
-	const gitHubIntegrationSetting = await getGitHubIntegrationSetting(
-		agent.dbId,
-	);
-	const { repositories, needsAuthorization } = await fetchGitHubRepositories();
+	let graphUrl = agent.graphUrl;
+	if (!isLatestVersion(graph)) {
+		graph = migrateGraph(graph);
+		graphUrl = await persistGraph(graph);
+	}
+
+	async function updateAgentName(agentName: string) {
+		"use server";
+		await db
+			.update(agents)
+			.set({
+				name: agentName,
+			})
+			.where(eq(agents.id, agentId));
+		return agentName;
+	}
+
+	async function execute(artifactId: ArtifactId, nodeId: NodeId) {
+		"use server";
+		return await action(artifactId, agentId, nodeId);
+	}
+
+	async function executeStepAction(
+		flowId: FlowId,
+		executionId: ExecutionId,
+		stepId: StepId,
+		artifacts: Artifact[],
+	) {
+		"use server";
+		return await executeStep(agentId, flowId, executionId, stepId, artifacts);
+	}
+	async function putExecutionAction(execution: Execution) {
+		"use server";
+		const result = await put(
+			buildGraphExecutionPath(graph.id, execution.id),
+			JSON.stringify(execution),
+			{
+				access: "public",
+			},
+		);
+		return { blobUrl: result.url };
+	}
 
 	return (
-		<Playground
-			agentId={agentId}
-			agentName={agent.name || "Untitled Agent"}
-			graph={agent.graphv2}
-			featureFlags={{
-				debugFlag,
-				viewFlag,
-				gitHubIntegrationFlag,
-				playgroundV2Flag,
-			}}
-			gitHubIntegration={{
-				repositories,
-				needsAuthorization,
-				setting: gitHubIntegrationSetting,
-			}}
-		/>
+		<DeveloperModeProvider developerMode={developerMode}>
+			<GraphContextProvider
+				defaultGraph={graph}
+				onPersistAction={persistGraph}
+				defaultGraphUrl={graphUrl}
+			>
+				<PropertiesPanelProvider>
+					<ReactFlowProvider>
+						<ToolbarContextProvider>
+							<MousePositionProvider>
+								<ToastProvider>
+									<AgentNameProvider
+										defaultValue={agent.name ?? "Unnamed Agent"}
+										updateAgentNameAction={updateAgentName}
+									>
+										<PlaygroundModeProvider>
+											<ExecutionProvider
+												executeAction={execute}
+												executeStepAction={executeStepAction}
+												putExecutionAction={putExecutionAction}
+											>
+												<Playground />
+											</ExecutionProvider>
+										</PlaygroundModeProvider>
+									</AgentNameProvider>
+								</ToastProvider>
+							</MousePositionProvider>
+						</ToolbarContextProvider>
+					</ReactFlowProvider>
+				</PropertiesPanelProvider>
+			</GraphContextProvider>
+		</DeveloperModeProvider>
 	);
 }

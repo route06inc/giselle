@@ -73,8 +73,15 @@ const graph: Graph = {
 			name: "Goodday",
 			position: { x: 135, y: 360 },
 			selected: false,
-			type: "variable",
-			content: { type: "text", text: "Today is very good day" },
+			type: "action",
+			content: {
+				type: "textGeneration",
+				llm: "anthropic:claude-3-5-sonnet-latest",
+				temperature: 0.7,
+				topP: 1,
+				instruction: "Good day",
+				sources: [],
+			},
 		},
 		{
 			id: "nd_guzyxfacpt5db2n9lkjify3z",
@@ -104,7 +111,7 @@ const graph: Graph = {
 		{
 			id: "cnnc_x8dy20365eqk9h033a800a5a",
 			sourceNodeId: "nd_h8h4uhp7kov9v7pj1yyofen8",
-			sourceNodeType: "variable",
+			sourceNodeType: "action",
 			targetNodeId: "nd_ffz8hv1isj4w3r4s23a6klkz",
 			targetNodeType: "action",
 			targetNodeHandleId: "ndh_n3xuz7ao5dyfusfukagbi3l7",
@@ -115,6 +122,15 @@ const graph: Graph = {
 			sourceNodeType: "action",
 			targetNodeId: "nd_guzyxfacpt5db2n9lkjify3z",
 			targetNodeHandleId: "ndh_xjlzyp1yq7vd1ih43rxuo8l9",
+			targetNodeType: "action",
+		},
+		// Ghost connection(targetNodeId is not in nodes)
+		{
+			id: "cnnc_ghost_connection",
+			sourceNodeId: "nd_ffz8hv1isj4w3r4s23a6klkz",
+			sourceNodeType: "action",
+			targetNodeId: "nd_fake_node",
+			targetNodeHandleId: "ndh_fake_node_handle",
 			targetNodeType: "action",
 		},
 	],
@@ -133,11 +149,15 @@ describe("deriveFlows", () => {
 		expect(flows[0].nodes.length).toBe(2);
 		expect(flows[1].nodes.length).toBe(3);
 	});
+	test("ignore ghost connectors", () => {
+		console.log(flows[1].jobs[2].steps);
+		expect(flows[1].jobs[2].steps.length).toBe(1);
+	});
 });
 
 describe("isLatestVersion", () => {
 	test("latest version", () => {
-		expect(isLatestVersion({ version: "20241213" } as Graph)).toBe(true);
+		expect(isLatestVersion({ version: "20241217" } as Graph)).toBe(true);
 	});
 	test("old version", () => {
 		expect(isLatestVersion({} as Graph)).toBe(false);
@@ -183,7 +203,7 @@ describe("migrateGraph", () => {
 			],
 			artifacts: [],
 		} as unknown as Graph);
-		expect(after.version).toBe("20241213");
+		expect(after.version).toBe("20241217");
 		expect(after.nodes[0].content.type).toBe("files");
 	});
 });

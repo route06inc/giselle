@@ -1,4 +1,4 @@
-import { giselleNodeArchetypes } from "@/app/(playground)/p/[agentId]/beta-proto/giselle-node/blueprints";
+import { giselleNodeArchetypes } from "@/app/(playground)/p/[agentId]/prev/beta-proto/giselle-node/blueprints";
 import { agents, db } from "@/drizzle";
 import { eq } from "drizzle-orm";
 

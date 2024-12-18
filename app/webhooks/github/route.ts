@@ -1,5 +1,5 @@
-import type { GenerateResult } from "@/app/(playground)/p/[agentId]/beta-proto/flow/types";
-import type { GiselleNodeId } from "@/app/(playground)/p/[agentId]/beta-proto/giselle-node/types";
+import type { GenerateResult } from "@/app/(playground)/p/[agentId]/prev/beta-proto/flow/types";
+import type { GiselleNodeId } from "@/app/(playground)/p/[agentId]/prev/beta-proto/giselle-node/types";
 import { db, gitHubIntegrations } from "@/drizzle";
 import {
 	buildAppInstallationClient,
@@ -15,16 +15,16 @@ import type { NextRequest } from "next/server";
 import {
 	buildTextArtifact,
 	generateArtifactObject,
-} from "../../(playground)/p/[agentId]/beta-proto/flow/server-actions/generate-text";
+} from "../../(playground)/p/[agentId]/prev/beta-proto/flow/server-actions/generate-text";
 import {
 	buildWebSearchArtifact,
 	generateWebSearchArtifactObject,
-} from "../../(playground)/p/[agentId]/beta-proto/flow/server-actions/websearch";
+} from "../../(playground)/p/[agentId]/prev/beta-proto/flow/server-actions/websearch";
 import {
 	buildFlow,
 	buildGenerateResult,
 	buildGeneratorNode,
-} from "../../(playground)/p/[agentId]/beta-proto/flow/utils";
+} from "../../(playground)/p/[agentId]/prev/beta-proto/flow/utils";
 import { parseCommand } from "./command";
 
 function setupHandlers() {

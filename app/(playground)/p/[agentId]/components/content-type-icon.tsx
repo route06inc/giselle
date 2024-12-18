@@ -1,8 +1,8 @@
 import type { SVGProps } from "react";
-import { DocumentIcon } from "../../beta-proto/components/icons/document";
-import { GlobeIcon } from "../../beta-proto/components/icons/globe";
-import { PromptIcon } from "../../beta-proto/components/icons/prompt";
-import { TextGenerationIcon } from "../../beta-proto/components/icons/text-generation";
+import { DocumentIcon } from "../prev/beta-proto/components/icons/document";
+import { GlobeIcon } from "../prev/beta-proto/components/icons/globe";
+import { PromptIcon } from "../prev/beta-proto/components/icons/prompt";
+import { TextGenerationIcon } from "../prev/beta-proto/components/icons/text-generation";
 import type { Node } from "../types";
 
 type ContentTypeIconProps = SVGProps<SVGSVGElement> & {

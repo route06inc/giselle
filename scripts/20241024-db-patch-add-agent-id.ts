@@ -1,4 +1,4 @@
-import { playgroundModes } from "@/app/(playground)/p/[agentId]/beta-proto/graph/types";
+import { playgroundModes } from "@/app/(playground)/p/[agentId]/prev/beta-proto/graph/types";
 import {
 	type MigrateGraphV2Function,
 	migrateAgents,

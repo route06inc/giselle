@@ -1,6 +1,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense } from "react";
 import { AgentTimeCharge } from "./agent-time-charge";
+import { AgentUsage } from "./agent-usage";
 import BillingSection from "./billing-section";
 import { TeamMembers } from "./team-members";
 import { TeamName } from "./team-name";
@@ -34,6 +35,7 @@ export default function TeamPage() {
 				<TeamName />
 			</Suspense>
 			<TeamMembers />
+			<AgentUsage />
 			<BillingSection />
 		</div>
 	);

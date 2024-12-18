@@ -5,19 +5,19 @@ import { fetchCurrentUser } from "@/services/accounts";
 import { fetchCurrentTeam } from "@/services/teams";
 import { createId } from "@paralleldrive/cuid2";
 import { copy, list } from "@vercel/blob";
-import { putGraph } from "../../(playground)/p/[agentId]/canary/actions";
+import { putGraph } from "../../(playground)/p/[agentId]/actions";
 import {
 	buildFileFolderPath,
 	createFileId,
 	createGraphId,
 	pathJoin,
 	pathnameToFilename,
-} from "../../(playground)/p/[agentId]/canary/lib/utils";
+} from "../../(playground)/p/[agentId]/lib/utils";
 import type {
 	AgentId,
 	Graph,
 	Node,
-} from "../../(playground)/p/[agentId]/canary/types";
+} from "../../(playground)/p/[agentId]/types";
 
 interface AgentDuplicationSuccess {
 	result: "success";

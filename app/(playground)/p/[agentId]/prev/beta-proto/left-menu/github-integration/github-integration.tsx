@@ -6,7 +6,7 @@ import { useActionState, useMemo, useState } from "react";
 import type {
 	GitHubNextAction,
 	GitHubTriggerEvent,
-} from "../../../../../../../services/external/github/types";
+} from "../../../../../../../../services/external/github/types";
 import { Label } from "../../components/label";
 import {
 	Select,

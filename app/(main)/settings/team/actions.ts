@@ -3,6 +3,8 @@
 import {
 	type TeamRole,
 	type UserId,
+	agentActivities,
+	agents,
 	db,
 	supabaseUserMappings,
 	teamMemberships,
@@ -11,7 +13,7 @@ import {
 } from "@/drizzle";
 import { getUser } from "@/lib/supabase";
 import { fetchCurrentTeam, isProPlan } from "@/services/teams";
-import { and, asc, count, eq, ne } from "drizzle-orm";
+import { and, asc, count, desc, eq, ne } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 function isUserId(value: string): value is UserId {
@@ -419,6 +421,62 @@ export async function getCurrentUserRole() {
 				error instanceof Error
 					? error.message
 					: "Failed to get current user role",
+		};
+	}
+}
+
+export async function getAgentActivities({
+	limit = 50,
+}: { limit?: number } = {}) {
+	try {
+		const currentTeam = await fetchCurrentTeam();
+
+		const activities = await db
+			.select({
+				agentId: agents.id,
+				agentName: agents.name,
+				startTime: agentActivities.startedAt,
+				endTime: agentActivities.endedAt,
+				usedCharge: agentActivities.totalDurationMs,
+			})
+			.from(agentActivities)
+			.innerJoin(
+				agents,
+				and(
+					eq(agentActivities.agentDbId, agents.dbId),
+					eq(agents.teamDbId, currentTeam.dbId),
+				),
+			)
+			.orderBy(desc(agentActivities.startedAt))
+			.limit(limit);
+
+		const formattedActivities = activities.map((activity) => {
+			const durationInSeconds = Number(activity.usedCharge) / 1000;
+
+			const validDuration = Number.isNaN(durationInSeconds)
+				? 0
+				: durationInSeconds;
+
+			return {
+				...activity,
+				// Convert milliseconds to seconds and round to 2 decimal places
+				usedCharge: Math.ceil(validDuration * 100) / 100,
+			};
+		});
+
+		return {
+			success: true,
+			data: formattedActivities,
+		};
+	} catch (error) {
+		console.error("Failed to get agent activities:", error);
+
+		return {
+			success: false,
+			error:
+				error instanceof Error
+					? error.message
+					: "Failed to get agent activities",
 		};
 	}
 }

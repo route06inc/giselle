@@ -29,11 +29,6 @@ import {
 	useMemo,
 	useState,
 } from "react";
-import { DocumentIcon } from "../../beta-proto/components/icons/document";
-import { PanelCloseIcon } from "../../beta-proto/components/icons/panel-close";
-import { PanelOpenIcon } from "../../beta-proto/components/icons/panel-open";
-import { SpinnerIcon } from "../../beta-proto/components/icons/spinner";
-import { WilliIcon } from "../../beta-proto/components/icons/willi";
 import { action, parse, remove } from "../actions";
 import { vercelBlobFileFolder } from "../constants";
 import { useDeveloperMode } from "../contexts/developer-mode";
@@ -61,6 +56,11 @@ import {
 	pathJoin,
 	toErrorWithMessage,
 } from "../lib/utils";
+import { DocumentIcon } from "../prev/beta-proto/components/icons/document";
+import { PanelCloseIcon } from "../prev/beta-proto/components/icons/panel-close";
+import { PanelOpenIcon } from "../prev/beta-proto/components/icons/panel-open";
+import { SpinnerIcon } from "../prev/beta-proto/components/icons/spinner";
+import { WilliIcon } from "../prev/beta-proto/components/icons/willi";
 import type {
 	FileContent,
 	FileData,

@@ -17,11 +17,11 @@ import {
 	useMemo,
 	useState,
 } from "react";
-import { LayersIcon } from "../../beta-proto/components/icons/layers";
-import { WilliIcon } from "../../beta-proto/components/icons/willi";
 import { useAgentName } from "../contexts/agent-name";
 import { useDeveloperMode } from "../contexts/developer-mode";
 import { useGraph } from "../contexts/graph";
+import { LayersIcon } from "../prev/beta-proto/components/icons/layers";
+import { WilliIcon } from "../prev/beta-proto/components/icons/willi";
 import type { Node, Step } from "../types";
 import { ContentTypeIcon } from "./content-type-icon";
 

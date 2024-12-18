@@ -1,6 +1,6 @@
-import type { GiselleNodeId } from "@/app/(playground)/p/[agentId]/beta-proto/giselle-node/types";
-import type { GitHubIntegrationId } from "@/app/(playground)/p/[agentId]/beta-proto/github-integration/types";
-import type { Graph } from "@/app/(playground)/p/[agentId]/beta-proto/graph/types";
+import type { GiselleNodeId } from "@/app/(playground)/p/[agentId]/prev/beta-proto/giselle-node/types";
+import type { GitHubIntegrationId } from "@/app/(playground)/p/[agentId]/prev/beta-proto/github-integration/types";
+import type { Graph } from "@/app/(playground)/p/[agentId]/prev/beta-proto/graph/types";
 import type {
 	FileId,
 	KnowledgeContentId,
@@ -497,6 +497,25 @@ export const agentTimeUsageReports = pgTable(
 			.references(() => teams.dbId, { onDelete: "cascade" }),
 		accumulatedDurationMs: numeric("accumulated_duration_ms").notNull(),
 		minutesIncrement: integer("minutes_increment").notNull(),
+		stripeMeterEventId: text("stripe_meter_event_id").notNull(),
+		timestamp: timestamp("created_at").defaultNow().notNull(),
+	},
+	(table) => ({
+		teamDbIdIdx: index().on(table.teamDbId),
+		timestampIdx: index().on(table.timestamp),
+		stripeMeterEventIdIdx: index().on(table.stripeMeterEventId),
+	}),
+);
+
+export const userSeatUsageReports = pgTable(
+	"user_seat_usage_reports",
+	{
+		dbId: serial("db_id").primaryKey(),
+		teamDbId: integer("team_db_id")
+			.notNull()
+			.references(() => teams.dbId, { onDelete: "cascade" }),
+		// Keep snapshot for audit purposes
+		userDbIdList: integer("user_db_id_list").array().notNull(),
 		stripeMeterEventId: text("stripe_meter_event_id").notNull(),
 		timestamp: timestamp("created_at").defaultNow().notNull(),
 	},

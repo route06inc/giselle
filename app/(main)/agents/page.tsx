@@ -1,55 +1,66 @@
-import { playgroundV2Flag } from "@/flags";
-import { fetchCurrentUser } from "@/services/accounts";
-import { createAgent, getAgents } from "@/services/agents";
-import { CreateAgentButton } from "@/services/agents/components";
+import { agents, db } from "@/drizzle";
 import { fetchCurrentTeam } from "@/services/teams";
-import { redirect } from "next/navigation";
-import { Suspense } from "react";
+import { and, eq, isNotNull } from "drizzle-orm";
+import Link from "next/link";
+import { type ReactNode, Suspense } from "react";
+import { formatTimestamp } from "../../(playground)/p/[agentId]/lib/utils";
 
-type AgentListProps = {
-	teamDbId: number;
-};
-async function AgentList(props: AgentListProps) {
-	const agents = await getAgents({ teamDbId: props.teamDbId });
-
+function DataList({ label, children }: { label: string; children: ReactNode }) {
 	return (
-		<div className="flex flex-col gap-2">
-			{agents.map(({ id, name }) => (
-				<a key={id} className="flex border border-border p-4" href={`/p/${id}`}>
-					{name ?? id}
-				</a>
+		<div className=" text-black-30">
+			<p className="text-[12px]">{label}</p>
+			<div className="font-bold">{children}</div>
+		</div>
+	);
+}
+
+async function AgentList() {
+	const currentTeam = await fetchCurrentTeam();
+	const dbAgents = await db
+		.select({ id: agents.id, name: agents.name, updatedAt: agents.updatedAt })
+		.from(agents)
+		.where(
+			and(eq(agents.teamDbId, currentTeam.dbId), isNotNull(agents.graphUrl)),
+		);
+	if (dbAgents.length === 0) {
+		return (
+			<div className="flex justify-center items-center h-full">
+				<div className="grid gap-[12px] justify-center text-center">
+					<div>No agents found</div>
+				</div>
+			</div>
+		);
+	}
+	return (
+		<div className="grid gap-[16px] grid-cols-3">
+			{dbAgents.map((agent) => (
+				<Link href={`/p/${agent.id}`} key={agent.id}>
+					<div className="bg-gradient-to-br from-[hsla(187,79%,54%,0.2)] to-[hsla(207,100%,9%,0.2)] p-[18px] relative rounded-[8px]">
+						<div className="divide-y divide-black-70">
+							<div className="h-[60px]">
+								<p className="font-rosart text-black-30 text-[18px]">
+									{agent.name ?? "Unname Agent"}
+								</p>
+							</div>
+							<div className="pt-[8px] grid grid-col-3">
+								<DataList label="Last updated">
+									{formatTimestamp.toRelativeTime(
+										new Date(agent.updatedAt).getTime(),
+									)}
+								</DataList>
+							</div>
+						</div>
+						<div className="absolute z-0 inset-0 border rounded-[8px] mask-fill bg-gradient-to-br bg-origin-border bg-clip-boarder border-transparent from-[hsla(192,73%,84%,0.5)] to-[hsla(192,60%,33%,0.4)]" />
+					</div>
+				</Link>
 			))}
 		</div>
 	);
 }
-export default async function AgentListPage() {
-	const enableV2 = await playgroundV2Flag();
-	if (enableV2) {
-		return redirect("/agents-v2");
-	}
-	const currentUser = await fetchCurrentUser();
-	const currentTeam = await fetchCurrentTeam();
-	async function createAgentAction() {
-		"use server";
-		const agent = await createAgent({
-			teamDbId: currentTeam.dbId,
-			creatorDbId: currentUser.dbId,
-		});
-		redirect(`/p/${agent.id}`);
-	}
+export default function AgentListV2Page() {
 	return (
-		<div className="container mt-8">
-			<section className="text-foreground">
-				<div className="flex flex-col gap-8">
-					<div className="flex justify-between">
-						<h1>Agents</h1>
-						<CreateAgentButton createAgentAction={createAgentAction} />
-					</div>
-					<Suspense fallback={<span>loading</span>}>
-						<AgentList teamDbId={currentTeam.dbId} />
-					</Suspense>
-				</div>
-			</section>
-		</div>
+		<Suspense fallback={<p>loading...</p>}>
+			<AgentList />
+		</Suspense>
 	);
 }

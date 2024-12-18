@@ -176,8 +176,10 @@ type GraphVersion =
 	| "2024-12-10"
 	| "2024-12-11"
 	| "20241212"
-	| "20241213";
-export type LatestGraphVersion = "20241213";
+	| "20241213"
+	| "20241217";
+
+export type LatestGraphVersion = "20241217";
 export interface Graph {
 	id: GraphId;
 	nodes: Node[];

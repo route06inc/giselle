@@ -5,6 +5,7 @@ import type {
 	Flow,
 	Graph,
 	Job,
+	LatestGraphVersion,
 	Node,
 	NodeId,
 	Step,
@@ -15,8 +16,15 @@ export function deriveFlows(graph: Graph): Flow[] {
 	const processedNodes = new Set<NodeId>();
 	const flows: Flow[] = [];
 	const connectionMap = new Map<NodeId, Set<NodeId>>();
+	const nodeIds = new Set<NodeId>(graph.nodes.map((node) => node.id));
 
 	for (const connection of graph.connections) {
+		if (
+			!nodeIds.has(connection.sourceNodeId) ||
+			!nodeIds.has(connection.targetNodeId)
+		) {
+			continue;
+		}
 		if (!connectionMap.has(connection.sourceNodeId)) {
 			connectionMap.set(connection.sourceNodeId, new Set());
 		}
@@ -268,7 +276,8 @@ export function deriveFlows(graph: Graph): Flow[] {
 }
 
 export function isLatestVersion(graph: Graph): boolean {
-	return graph.version === "20241213";
+	const latestGraphVersion = "20241217" satisfies LatestGraphVersion;
+	return graph.version === latestGraphVersion;
 }
 
 export function migrateGraph(graph: Graph): Graph {
@@ -317,6 +326,14 @@ export function migrateGraph(graph: Graph): Graph {
 			version: "20241213",
 			flows: deriveFlows(newGraph),
 			executionIndexes: [],
+		};
+	}
+
+	if (newGraph.version === "20241213") {
+		newGraph = {
+			...newGraph,
+			flows: deriveFlows(newGraph),
+			version: "20241217",
 		};
 	}
 
