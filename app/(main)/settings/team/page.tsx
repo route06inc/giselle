@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { AgentTimeCharge } from "./agent-time-charge";
 import { AgentUsage } from "./agent-usage";
 import BillingSection from "./billing-section";
+import { DangerZone } from "./danger-zone";
 import { TeamMembers } from "./team-members";
 import { TeamName } from "./team-name";
 
@@ -37,6 +38,7 @@ export default function TeamPage() {
 			<TeamMembers />
 			<AgentUsage />
 			<BillingSection />
+			<DangerZone />
 		</div>
 	);
 }
