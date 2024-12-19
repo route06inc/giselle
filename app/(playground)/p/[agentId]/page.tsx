@@ -1,6 +1,7 @@
 import { getTeamMembershipByAgentId } from "@/app/(auth)/lib/get-team-membership-by-agent-id";
 import { agents, db } from "@/drizzle";
 import { developerFlag } from "@/flags";
+import { toUTCDate } from "@/lib/date";
 import {
 	ExternalServiceName,
 	VercelBlobOperation,
@@ -9,7 +10,8 @@ import {
 	withCountMeasurement,
 } from "@/lib/opentelemetry";
 import { getUser } from "@/lib/supabase";
-import { recordAgentUsage } from "@/services/agents/activities";
+import { saveAgentActivity } from "@/services/agents/activities";
+import { reportAgentTimeUsage } from "@/services/usage-based-billing/report-agent-time-usage";
 import { del, list, put } from "@vercel/blob";
 import { ReactFlowProvider } from "@xyflow/react";
 import { eq } from "drizzle-orm";
@@ -197,13 +199,22 @@ export default async function Page({
 		return await executeNode(agentId, executionId, nodeId);
 	}
 
-	async function recordAgentUsageAction(
+	async function onFinishPerformExecutionAction(
 		startedAt: number,
 		endedAt: number,
 		totalDurationMs: number,
 	) {
 		"use server";
-		return await recordAgentUsage(agentId, startedAt, endedAt, totalDurationMs);
+
+		const startedAtDateUTC = toUTCDate(new Date(startedAt));
+		const endedAtDateUTC = toUTCDate(new Date(endedAt));
+		await saveAgentActivity(
+			agentId,
+			startedAtDateUTC,
+			endedAtDateUTC,
+			totalDurationMs,
+		);
+		await reportAgentTimeUsage(endedAtDateUTC);
 	}
 
 	return (
@@ -227,8 +238,10 @@ export default async function Page({
 												executeStepAction={executeStepAction}
 												putExecutionAction={putExecutionAction}
 												retryStepAction={retryStepAction}
-												recordAgentUsageAction={recordAgentUsageAction}
 												executeNodeAction={executeNodeAction}
+												onFinishPerformExecutionAction={
+													onFinishPerformExecutionAction
+												}
 											>
 												<Playground />
 											</ExecutionProvider>

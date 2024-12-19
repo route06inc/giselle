@@ -376,7 +376,7 @@ interface ExecutionContextType {
 		executionId: ExecutionId,
 		forceRetryStepId?: StepId,
 	) => Promise<void>;
-	recordAgentUsageAction: (
+	onFinishPerformExecutionAction: (
 		startedAt: number,
 		endedAt: number,
 		totalDurationMs: number,
@@ -411,7 +411,7 @@ interface ExecutionProviderProps {
 		executionId: ExecutionId,
 		nodeId: NodeId,
 	) => Promise<StreamableValue<TextArtifactObject, unknown>>;
-	recordAgentUsageAction: (
+	onFinishPerformExecutionAction: (
 		startedAt: number,
 		endedAt: number,
 		totalDurationMs: number,
@@ -424,7 +424,7 @@ export function ExecutionProvider({
 	putExecutionAction,
 	retryStepAction,
 	executeNodeAction,
-	recordAgentUsageAction,
+	onFinishPerformExecutionAction,
 }: ExecutionProviderProps) {
 	const { dispatch, flush, graph } = useGraph();
 	const { setTab } = usePropertiesPanel();
@@ -448,6 +448,10 @@ export function ExecutionProvider({
 			stepExecution: CompletedStepExecution,
 			artifact: TextArtifact,
 		) => void;
+		onFinishPerformExecution: (
+			endedAt: number,
+			durationMs: number,
+		) => Promise<void>;
 	}
 	const performFlowExecution = useCallback(
 		async ({
@@ -458,6 +462,7 @@ export function ExecutionProvider({
 			executeStepCallback,
 			updateArtifactCallback,
 			onStepFinish,
+			onFinishPerformExecution,
 		}: ExecuteFlowParams) => {
 			let currentExecution = initialExecution;
 			let totalFlowDurationMs = 0;
@@ -552,16 +557,10 @@ export function ExecutionProvider({
 					},
 				},
 			});
-
-			await recordAgentUsageAction(
-				currentExecution.runStartedAt,
-				runEndedAt,
-				currentExecution.durationMs,
-			);
-
+			await onFinishPerformExecution(runEndedAt, totalFlowDurationMs);
 			return currentExecution;
 		},
-		[dispatch, putExecutionAction, addToast, recordAgentUsageAction],
+		[dispatch, putExecutionAction, addToast],
 	);
 
 	const executeFlow = useCallback(
@@ -611,10 +610,27 @@ export function ExecutionProvider({
 						};
 					});
 				},
+				onFinishPerformExecution: async (
+					endedAt: number,
+					totalDurationMs: number,
+				) => {
+					await onFinishPerformExecutionAction(
+						flowRunStartedAt,
+						endedAt,
+						totalDurationMs,
+					);
+				},
 			});
 			setExecution(finalExecution);
 		},
-		[setPlaygroundMode, executeStepAction, flush, graph, performFlowExecution],
+		[
+			setPlaygroundMode,
+			executeStepAction,
+			flush,
+			graph,
+			performFlowExecution,
+			onFinishPerformExecutionAction,
+		],
 	);
 
 	const retryFlowExecution = useCallback(
@@ -670,10 +686,23 @@ export function ExecutionProvider({
 						};
 					});
 				},
+				onFinishPerformExecution: async (endedAt, durationMs) => {
+					await onFinishPerformExecutionAction(
+						flowRunStartedAt,
+						endedAt,
+						durationMs,
+					);
+				},
 			});
 			setExecution(finalExecution);
 		},
-		[graph.executionIndexes, flush, retryStepAction, performFlowExecution],
+		[
+			graph.executionIndexes,
+			flush,
+			retryStepAction,
+			performFlowExecution,
+			onFinishPerformExecutionAction,
+		],
 	);
 
 	const executeNode = useCallback(
@@ -734,6 +763,13 @@ export function ExecutionProvider({
 						},
 					});
 				},
+				onFinishPerformExecution: async (endedAt, durationMs) => {
+					await onFinishPerformExecutionAction(
+						flowRunStartedAt,
+						endedAt,
+						durationMs,
+					);
+				},
 			});
 			setExecution(finalExecution);
 		},
@@ -744,6 +780,7 @@ export function ExecutionProvider({
 			graph.nodes,
 			performFlowExecution,
 			dispatch,
+			onFinishPerformExecutionAction,
 		],
 	);
 
@@ -754,7 +791,7 @@ export function ExecutionProvider({
 				executeFlow,
 				retryFlowExecution,
 				executeNode,
-				recordAgentUsageAction,
+				onFinishPerformExecutionAction,
 			}}
 		>
 			{children}
