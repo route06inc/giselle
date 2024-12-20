@@ -12,6 +12,12 @@ const timestampToDateTime = (timestamp: number) => new Date(timestamp * 1000);
 
 export const upsertSubscription = async (subscriptionId: string) => {
 	const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+
+	console.log("upsertSubscription");
+	console.log("subscription.id", subscription.id);
+	console.log("subscription.object", subscription.object);
+	console.log("subscription.status", subscription.status);
+
 	const existingSubscriptionRecord = await db
 		.select()
 		.from(subscriptions)

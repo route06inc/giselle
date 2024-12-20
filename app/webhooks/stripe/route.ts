@@ -1,4 +1,5 @@
 import { stripe } from "@/services/external/stripe";
+import { deleteSubscription } from "@/services/external/stripe/actions/delete-subscription";
 import { upsertSubscription } from "@/services/external/stripe/actions/upsert-subscription";
 import type Stripe from "stripe";
 import { handleSubscriptionCycleInvoice } from "./handle-subscription-cycle-invoice";
@@ -60,7 +61,6 @@ export async function POST(req: Request) {
 				break;
 
 			case "customer.subscription.updated":
-			case "customer.subscription.deleted":
 				if (
 					event.data.object.customer == null ||
 					typeof event.data.object.customer !== "string"
@@ -70,6 +70,18 @@ export async function POST(req: Request) {
 					);
 				}
 				await upsertSubscription(event.data.object.id);
+				break;
+
+			case "customer.subscription.deleted":
+				if (
+					event.data.object.customer == null ||
+					typeof event.data.object.customer !== "string"
+				) {
+					throw new Error(
+						"The checkout session is missing a valid customer ID. Please check the session data.",
+					);
+				}
+				await deleteSubscription(event.data.object.id);
 				break;
 
 			case "invoice.created":
