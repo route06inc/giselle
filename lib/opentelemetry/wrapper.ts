@@ -2,6 +2,9 @@ import { getCurrentMeasurementScope, isRoute06User } from "@/app/(auth)/lib";
 import { waitUntil } from "@vercel/functions";
 import type { LanguageModelUsage } from "ai";
 import type { LanguageModelV1 } from "ai";
+import { PDFDocument } from "pdf-lib";
+import type { UnstructuredClient } from "unstructured-client";
+import type { PartitionResponse } from "unstructured-client/sdk/models/operations/partition";
 import type { Strategy } from "unstructured-client/sdk/models/shared";
 import { captureError } from "./log";
 import type { LogSchema, OtelLoggerWrapper } from "./types";
@@ -148,19 +151,30 @@ export const VercelBlobOperation = {
 type VercelBlobOperationType =
 	(typeof VercelBlobOperation)[keyof typeof VercelBlobOperation];
 
+interface UnstructuredOptions {
+	strategy: Strategy;
+	pdf: PDFDocument;
+}
+
+type ServiceOptions = UnstructuredOptions | VercelBlobOperationType | undefined;
+
+function getNumPages(pdf: PDFDocument) {
+	return pdf.getPages().length;
+}
+
 export function withCountMeasurement<T>(
 	logger: OtelLoggerWrapper,
 	operation: () => Promise<T>,
 	externalServiceName: typeof APICallBasedService.Unstructured,
 	measurementStartTime: number | undefined,
-	strategy: Strategy,
+	serviceOptions: UnstructuredOptions,
 ): Promise<T>;
 export function withCountMeasurement<T>(
 	logger: OtelLoggerWrapper,
 	operation: () => Promise<T>,
 	externalServiceName: typeof APICallBasedService.VercelBlob,
 	measurementStartTime: number | undefined,
-	blobOperation: VercelBlobOperationType,
+	serviceOptions: VercelBlobOperationType,
 ): Promise<T>;
 export function withCountMeasurement<T>(
 	logger: OtelLoggerWrapper,
@@ -175,7 +189,7 @@ export function withCountMeasurement<T>(
 	operation: () => Promise<T>,
 	externalServiceName: (typeof APICallBasedService)[keyof typeof APICallBasedService],
 	measurementStartTime?: number,
-	strategyOrOptions?: Strategy | VercelBlobOperationType | undefined,
+	serviceOptions?: ServiceOptions,
 ): Promise<T> {
 	const measurement: MeasurementSchema<T> = (
 		result,
@@ -189,23 +203,38 @@ export function withCountMeasurement<T>(
 			isR06User,
 			requestCount: 1,
 		};
-
 		if (externalServiceName === APICallBasedService.Unstructured) {
-			if (!strategyOrOptions) {
+			const unstructuredOptions = serviceOptions as UnstructuredOptions;
+			if (
+				!unstructuredOptions ||
+				!unstructuredOptions.strategy ||
+				!unstructuredOptions.pdf
+			) {
 				logger.error(
-					new Error("'strategy' is required for Unstructured service"),
+					new Error(
+						"'strategy' and 'numPages' are required for Unstructured service",
+					),
 					"missing required strategy parameter",
 				);
 			}
 			return {
 				...baseMetrics,
 				externalServiceName,
-				strategy: strategyOrOptions as Strategy,
+				strategy: unstructuredOptions.strategy,
+				numPages: getNumPages(unstructuredOptions.pdf),
 			};
 		}
 
 		if (externalServiceName === APICallBasedService.VercelBlob) {
-			const operation = strategyOrOptions as VercelBlobOperationType;
+			const operation = serviceOptions as VercelBlobOperationType;
+			if (!operation) {
+				logger.error(
+					new Error(
+						"'VercelBlobOperationType' is required for VercelBlob service",
+					),
+					"missing required VercelBlobOperationType parameter",
+				);
+			}
 			const operationResult = operation.measure(result as { size: number });
 			return {
 				...baseMetrics,
@@ -222,6 +251,48 @@ export function withCountMeasurement<T>(
 	};
 
 	return withMeasurement(logger, operation, measurement, measurementStartTime);
+}
+
+export type PartitionParameters = {
+	fileName: string;
+	strategy: Strategy;
+	splitPdfPage: boolean;
+	splitPdfConcurrencyLevel: number;
+};
+
+export type MeasureParameters = {
+	logger: OtelLoggerWrapper;
+	startTime: number;
+};
+
+export async function wrappedPartition(
+	client: UnstructuredClient,
+	blobUrl: string,
+	{
+		fileName,
+		strategy,
+		splitPdfPage,
+		splitPdfConcurrencyLevel,
+	}: PartitionParameters,
+	{ logger, startTime }: MeasureParameters,
+): Promise<PartitionResponse> {
+	const content = await fetch(blobUrl).then((response) => response.blob());
+
+	return withCountMeasurement(
+		logger,
+		async () =>
+			client.general.partition({
+				partitionParameters: {
+					files: { fileName, content },
+					strategy,
+					splitPdfPage,
+					splitPdfConcurrencyLevel,
+				},
+			}),
+		ExternalServiceName.Unstructured,
+		startTime,
+		{ strategy, pdf: await PDFDocument.load(await content.arrayBuffer()) },
+	).finally(() => waitForTelemetryExport());
 }
 
 export function withTokenMeasurement<T extends { usage: LanguageModelUsage }>(

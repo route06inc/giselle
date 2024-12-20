@@ -8,6 +8,7 @@ import {
 	withCountMeasurement,
 } from "@/lib/opentelemetry";
 import { put } from "@vercel/blob";
+import { PDFDocument } from "pdf-lib";
 import { UnstructuredClient } from "unstructured-client";
 import { Strategy } from "unstructured-client/sdk/models/shared";
 import { elementsToMarkdown } from "../utils/unstructured";
@@ -80,8 +81,8 @@ export async function parseFile(args: ParseFileInput) {
 	const strategy = Strategy.Fast;
 	const partitionResponse = await withCountMeasurement(
 		logger,
-		() =>
-			client.general.partition({
+		async () => {
+			const result = await client.general.partition({
 				partitionParameters: {
 					files: {
 						fileName: args.name,
@@ -91,10 +92,15 @@ export async function parseFile(args: ParseFileInput) {
 					splitPdfPage: false,
 					splitPdfConcurrencyLevel: 1,
 				},
-			}),
+			});
+			return result;
+		},
 		ExternalServiceName.Unstructured,
 		startTime,
-		strategy,
+		{
+			strategy,
+			pdf: await PDFDocument.load(await content.arrayBuffer()),
+		},
 	);
 	if (partitionResponse.statusCode !== 200) {
 		console.error(partitionResponse.rawResponse);

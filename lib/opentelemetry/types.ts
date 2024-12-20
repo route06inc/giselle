@@ -60,6 +60,7 @@ const BasicRequestCountSchema = RequestCount.extend({
 const UnstructuredRequestCountSchema = RequestCount.extend({
 	externalServiceName: z.literal(ExternalServiceName.Unstructured),
 	strategy: z.nativeEnum(Strategy),
+	numPages: z.number(), // number of PDF pages to handle
 });
 
 const VercelBlobPutSchema = RequestCount.extend({

@@ -80,6 +80,7 @@
 		"next-auth": "^5.0.0-beta.20",
 		"next-themes": "0.3.0",
 		"openai": "4.64.0",
+		"pdf-lib": "1.17.1",
 		"pino": "9.5.0",
 		"posthog-js": "1.194.2",
 		"react": "19.0.0-rc-4d577fd2-20241104",

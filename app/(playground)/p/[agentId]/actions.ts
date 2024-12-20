@@ -4,6 +4,7 @@ import {
 	ExternalServiceName,
 	VercelBlobOperation,
 	createLogger,
+	wrappedPartition as partition,
 	waitForTelemetryExport,
 	withCountMeasurement,
 } from "@/lib/opentelemetry";
@@ -21,29 +22,31 @@ import {
 import type { FileData, FileId, Graph } from "./types";
 
 export async function parse(id: FileId, name: string, blobUrl: string) {
-	const startTime = Date.now();
 	const logger = createLogger("parse");
+
+	const measureParameters = {
+		startTime: Date.now(),
+		logger,
+	};
 	if (process.env.UNSTRUCTURED_API_KEY === undefined) {
 		throw new Error("UNSTRUCTURED_API_KEY is not set");
 	}
-	const client = new UnstructuredClient({
-		security: {
-			apiKeyAuth: process.env.UNSTRUCTURED_API_KEY,
-		},
-	});
-	const response = await fetch(blobUrl);
-	const content = await response.blob();
-	const partitionResponse = await client.general.partition({
-		partitionParameters: {
-			files: {
-				fileName: name,
-				content,
+	const partitionResponse = await partition(
+		new UnstructuredClient({
+			security: {
+				apiKeyAuth: process.env.UNSTRUCTURED_API_KEY,
 			},
+		}),
+		blobUrl,
+		{
+			fileName: name,
 			strategy: Strategy.Fast,
 			splitPdfPage: false,
 			splitPdfConcurrencyLevel: 1,
 		},
-	});
+		measureParameters,
+	);
+	const startTime = Date.now();
 	if (partitionResponse.statusCode !== 200) {
 		console.error(partitionResponse.rawResponse);
 		throw new Error(`Failed to parse file: ${partitionResponse.statusCode}`);
