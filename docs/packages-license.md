@@ -2,7 +2,7 @@
 
 
 ## Summary
-* 660 MIT
+* 661 MIT
 * 122 Apache 2.0
 * 61 ISC
 * 23 New BSD
@@ -4786,6 +4786,17 @@ A JavaScript library for escaping CSS strings and identifiers while generating t
 <a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
 
 Strict TypeScript and Flow types for style based on MDN data
+
+<a name="csv-writer"></a>
+### <a href="https://github.com/ryu1kn/csv-writer#readme">csv-writer</a> v1.6.0 (dependencies)
+#### 
+
+##### Paths
+* /home/runner/work/giselle/giselle
+
+<a href="http://opensource.org/licenses/mit-license">MIT</a> permitted
+
+Convert objects/arrays into a CSV string or write them into a CSV file
 
 <a name="cva"></a>
 ### <a href="https://github.com/joe-bell/cva#readme">cva</a> v1.0.0-beta.1 (dependencies)
